@@ -18,8 +18,7 @@ public class RogueFrame extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 1;
 	
 	private int length = 18; private int height = 12; 
-	private JLabel[] tiles = new JLabel[length*height];
-	private Map map = new Map(height,length);
+	private Map map = new Map(length,height);
 	
 	/**
 	 * RogueFrame constructor
@@ -27,22 +26,12 @@ public class RogueFrame extends JFrame implements KeyListener{
 	public RogueFrame() {
 		super("Rogue Fr@me");
 		
-		JPanel panel;
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new GridLayout(1, 2));
 		setBackground(Color.BLACK);
-		
-		// Setup Grid
-		panel = new JPanel();
-		panel.setBackground(Color.BLACK);
-		panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		panel.setLayout(new GridLayout(height,length));
-		for(int i = 0; i < length*height; i++) {
-			tiles[i] =  map.getTileAt(i).label;
-			panel.add(tiles[i]);
-		}
-		add(panel);
+
+		map.addKeyListener(this);
+		add(map);
 		
 		addKeyListener(this);
 		
@@ -61,34 +50,33 @@ public class RogueFrame extends JFrame implements KeyListener{
 	public static void main(String[] args) {
 		new RogueFrame();
 	}
+	
+	public void replaceMap(String s) {
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < length; x++) {
+				map.getTileAt(x, y).setChar(s);
+			}
+		}
+		map.repaint();
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_UP:
-				for(int i = 0; i < length; i++) {
-					tiles[i].setText(" ^ ");
-				}
+				replaceMap("^");
 				break;
 			case KeyEvent.VK_LEFT:
-				for(int i = 0; i < length; i++) {
-					tiles[i].setText(" < ");
-				}
+				replaceMap("<");
 				break;
 			case KeyEvent.VK_RIGHT:
-				for(int i = 0; i < length; i++) {
-					tiles[i].setText(" > ");
-				}
+				replaceMap(">");
 				break;
 			case KeyEvent.VK_DOWN:
-				for(int i = 0; i < length; i++) {
-					tiles[i].setText(" v ");
-				}
+				replaceMap("V");
 				break;
 			default:
-				for(int i = 0; i < length*height; i++) {
-					tiles[i].setText(" ? ");
-				}
+				replaceMap("?");
 				break;
 		}
 		
