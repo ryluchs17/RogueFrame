@@ -27,11 +27,13 @@ public class RogueFrame extends JFrame implements KeyListener{
 		super("Rogue Fr@me");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new GridLayout(1, 2));
+		setLayout(new BorderLayout());
 		setBackground(Color.BLACK);
 
 		map.addKeyListener(this);
-		add(map);
+		add(map, BorderLayout.CENTER);
+		
+		add(new InfoBar("title", 0, 0, 32), BorderLayout.SOUTH);
 		
 		addKeyListener(this);
 		
@@ -73,7 +75,7 @@ public class RogueFrame extends JFrame implements KeyListener{
 				replaceMap(">");
 				break;
 			case KeyEvent.VK_DOWN:
-				replaceMap("V");
+				replaceMap("v");
 				break;
 			default:
 				replaceMap("?");
