@@ -19,6 +19,8 @@ public class RogueFrame extends JFrame implements KeyListener{
 	
 	private int length = 18; private int height = 12; 
 	private Map map = new Map(length,height);
+	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
+	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
 	
 	/**
 	 * RogueFrame constructor
@@ -30,10 +32,27 @@ public class RogueFrame extends JFrame implements KeyListener{
 		setLayout(new BorderLayout());
 		setBackground(Color.BLACK);
 
-		map.addKeyListener(this);
+		//map.addKeyListener(this);
+		
+		map.setBackground(Color.BLACK);
+		map.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		add(map, BorderLayout.CENTER);
 		
-		add(new InfoBar("title", 0, 0, 32), BorderLayout.SOUTH);
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.BLACK);
+		panel.setLayout(new FlowLayout());
+		
+		hpBar.setBackground(Color.BLACK);
+		hpBar.showDecrease(true);
+		panel.add(hpBar);
+		
+		mpBar.setBackground(Color.BLACK);
+		mpBar.showDecrease(true);
+		mpBar.setColor(Color.BLUE);
+		mpBar.setDecreaseColor(Color.WHITE);
+		panel.add(mpBar);
+		
+		add(panel, BorderLayout.SOUTH);
 		
 		addKeyListener(this);
 		
@@ -76,6 +95,24 @@ public class RogueFrame extends JFrame implements KeyListener{
 				break;
 			case KeyEvent.VK_DOWN:
 				replaceMap("v");
+				break;
+			case KeyEvent.VK_Z:
+				hpBar.shiftValue(-10);
+				hpBar.repaint();
+				mpBar.shiftValue(-10);
+				mpBar.repaint();
+				break;
+			case KeyEvent.VK_X:
+				hpBar.shiftValue(10);
+				hpBar.repaint();
+				mpBar.shiftValue(10);
+				mpBar.repaint();
+				break;
+			case KeyEvent.VK_C:
+				hpBar.setValue(0);
+				hpBar.repaint();
+				mpBar.setValue(0);
+				mpBar.repaint();
 				break;
 			default:
 				replaceMap("?");

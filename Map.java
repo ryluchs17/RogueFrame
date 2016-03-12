@@ -30,24 +30,30 @@ public class Map extends JPanel{
 				tiles[x][y] = new Soil();
 			}
 		}
-		
-		setBackground(Color.LIGHT_GRAY);
-		setBorder(BorderFactory.createLineBorder(Color.GRAY));
 	}
 
 	public AbstractTile getTileAt(int x, int y) {
 		return tiles[x][y];
 	}
 	
+	public int getWidthCenter() {
+		return (this.getWidth()/2) - ((columns*STEP)/2);
+	}
+	
+	public int getHeightCenter() {
+		return (this.getHeight()/2) - ((rows*STEP)/2);
+	}
+	
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		//g.setFont(font);
 		
 		for(int y = 0; y <rows; y++) {
 			for(int x = 0; x < columns; x++) {
 				g.setColor(tiles[x][y].background);
-				g.fillRect(x*STEP, y*STEP, STEP, STEP);
+				g.fillRect(getWidthCenter() + x*STEP, getHeightCenter() + y*STEP, STEP, STEP);
 				g.setColor(tiles[x][y].foreground);
-				g.drawString(tiles[x][y].character, x*STEP, (y+1)*STEP);
+				g.drawString(tiles[x][y].character, getWidthCenter() + x*STEP, getHeightCenter() + (y+1)*STEP);
 			}
 		}
 	}
