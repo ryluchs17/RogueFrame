@@ -9,6 +9,8 @@ import java.awt.*;
 
 public class InfoBar extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	// length of the bar in characters
 	private int length;
 	
@@ -30,6 +32,9 @@ public class InfoBar extends JPanel {
 	
 	// Boolean for toggling whether to show decrease
 	private boolean showDecrease = false;
+	
+//	// Boolean for toggling showing of values
+//	private boolean showValues = false;
 	
 	public static final int STEP = 12;
 	
@@ -132,15 +137,20 @@ public class InfoBar extends JPanel {
 	 * Toggles whether to show the decrease of the bar
 	 * @param d Whether to show the decrease or not
 	 */
-	public void showDecrease(boolean d) {
-		showDecrease = d;
+	public void showDecrease(boolean b) {
+		showDecrease = b;
 	}
+	
+//	public void showValues(boolean b) {
+//		showValues = b;
+//	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		// draw title
 		g.setColor(titleColor);
+		//g.drawString(showValues ? title + " " + value + "/" + maximum : title, 0, STEP);
 		g.drawString(title, 0, STEP);
 		
 		// draw bar
@@ -151,6 +161,11 @@ public class InfoBar extends JPanel {
 			g.setColor(decreaseColor);
 			g.fillRect(((length*value)/maximum), STEP + 2, ((length*decrease)/maximum), STEP);
 		}
+		
+//		if(showValues) {
+//			g.setColor(titleColor);
+//			g.drawString(value + "/" + maximum, 0, STEP*2);
+//		}
 	}
 	
 	public Dimension getPreferredSize() {

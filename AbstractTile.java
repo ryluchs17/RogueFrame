@@ -1,8 +1,4 @@
 import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 /**
  * RougeFrame tile object
@@ -16,9 +12,6 @@ public abstract class AbstractTile {
 	protected String character;
 	protected Color foreground;
 	protected Color background;
-
-	// all of the above compiled into a JLabel
-	public JLabel label;
 	
 	// Determines if entities can pass through it
 	protected boolean solid;
@@ -45,17 +38,6 @@ public abstract class AbstractTile {
 		character = c;
 		foreground = fg;
 		background = bg;
-
-		label = new JLabel(c);
-		label.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setForeground(fg);
-
-		if(bg != Color.BLACK) {
-			label.setOpaque(true);
-			label.setBackground(bg);
-		}
-
 		solid = s;
 	}
 	
@@ -73,12 +55,6 @@ public abstract class AbstractTile {
 	 * This method specifies what happens to the tile each turn regardless of conditions
 	 */
 	abstract public void onTurn();
-
-	public void setLabelDefaults() {
-		label.setText(character);
-		label.setForeground(foreground);
-		label.setBackground(background);
-	}
 
 	/**
 	 * Returns whether the tile is solid

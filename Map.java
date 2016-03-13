@@ -9,6 +9,8 @@ import javax.swing.*;
 
 public class Map extends JPanel{
 
+	private static final long serialVersionUID = 1L;
+	
 	private int columns; private int rows;
 	private AbstractTile[][] tiles;
 	//private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
