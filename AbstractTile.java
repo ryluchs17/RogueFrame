@@ -26,10 +26,6 @@ public abstract class AbstractTile {
 	// private int durability;
 	// private int blastResistance;
 	// private int Material;
-	
-	public void setChar(String s) {
-		character = s;
-	}
 
 	/**
 	 * Fake constructor for Tile
@@ -42,17 +38,17 @@ public abstract class AbstractTile {
 	}
 	
 	/**
-	 * This method specifies what the tile does when an mob interacts with it
+	 * What the tile does when an mob interacts with it
 	 */
 	abstract public void onInteraction(Mob e);
 	
 	/**
-	 * This method specifies what happens to an mob occupying it each turn
+	 * What happens to an mob occupying it each turn
 	 */
 	abstract public void onOccupation(Mob e);
 	
 	/**
-	 * This method specifies what happens to the tile each turn regardless of conditions
+	 * What happens to the tile each turn regardless of conditions
 	 */
 	abstract public void onTurn();
 

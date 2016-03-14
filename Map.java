@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.util.Random;
 
 /**
- * RougeFrame map format
+ * RougeFrame map template
  * @author Ryan Luchs
  *
  */

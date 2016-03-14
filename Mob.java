@@ -1,7 +1,7 @@
 import java.awt.Color;
 
 /**
- * RougeFrame entity object
+ * RougeFrame entity template
  * @author Ryan Luchs
  *
  */
