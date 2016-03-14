@@ -1,9 +1,9 @@
 import java.awt.Color;
 
-public class Soil extends AbstractTile {
+public class Water extends AbstractTile {
 
-	public Soil() {
-		setKeyFields("-", new Color(100, 50, 0) , Color.YELLOW, false);
+	public Water() {
+		setKeyFields("~", Color.WHITE , Color.BLUE, false);
 	}
 
 	public void onInteraction(Mob m) {

@@ -17,7 +17,7 @@ public class RogueFrame extends JFrame implements KeyListener{
 
 	private static final long serialVersionUID = 1;
 	
-	private int length = 18; private int height = 12; 
+	private int length = 40; private int height = 40; 
 	private Map map = new Map(length,height);
 	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
 	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
@@ -85,16 +85,16 @@ public class RogueFrame extends JFrame implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_UP:
-				replaceMap("^");
+				map.shiftView(0, -1);
 				break;
 			case KeyEvent.VK_LEFT:
-				replaceMap("<");
+				map.shiftView(-1, 0);
 				break;
 			case KeyEvent.VK_RIGHT:
-				replaceMap(">");
+				map.shiftView(1, 0);
 				break;
 			case KeyEvent.VK_DOWN:
-				replaceMap("v");
+				map.shiftView(0, 1);
 				break;
 			case KeyEvent.VK_Z:
 				hpBar.shiftValue(-10);
@@ -115,7 +115,6 @@ public class RogueFrame extends JFrame implements KeyListener{
 				mpBar.repaint();
 				break;
 			default:
-				replaceMap("?");
 				break;
 		}
 		
