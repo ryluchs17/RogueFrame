@@ -19,8 +19,8 @@ public abstract class AbstractTile {
 	// Determines whether the tile is full
 	protected boolean occupied = false;
 	
-	// Determines whether or not to display backround instead of the tile
-	protected boolean visible = true;
+	// Determines whether or not to display background instead of the tile
+	protected boolean covered = true;
 	
 	// // Determines how much damage a tile can take before destruction
 	// private int durability;
@@ -81,19 +81,19 @@ public abstract class AbstractTile {
 	}
 
 	/**
-	 * Determines whether the tile is visible
-	 * @return Whether the tile is visible
+	 * Determines whether the tile is covered
+	 * @return Whether the tile is covered
 	 */
-	public boolean isVisible() {
-		return visible;
+	public boolean isCovered() {
+		return covered;
 	}
 
 	/**
 	 * Set tile visibility
-	 * @param isVisible Whether the tile should be visible
+	 * @param iscovered Whether the tile should be covered
 	 */
-	public void setVisible(boolean visible) {
-		this.visible = visible;
+	public void setCovered(boolean covered) {
+		this.covered = covered;
 	}
 
 	//FIX ME

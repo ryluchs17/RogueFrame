@@ -18,7 +18,7 @@ public class RogueFrame extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 1;
 	
 	private int length = 40; private int height = 40; 
-	private Map map = new Map(length,height);
+	private Map map = new Map(length, height, 18, 12);
 	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
 	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
 	
@@ -36,6 +36,7 @@ public class RogueFrame extends JFrame implements KeyListener{
 		
 		map.setBackground(Color.BLACK);
 		map.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		map.setView(5, 5);
 		add(map, BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
@@ -70,15 +71,6 @@ public class RogueFrame extends JFrame implements KeyListener{
 	 */
 	public static void main(String[] args) {
 		new RogueFrame();
-	}
-	
-	public void replaceMap(String s) {
-		for(int y = 0; y < height; y++) {
-			for(int x = 0; x < length; x++) {
-				map.getTileAt(x, y).setChar(s);
-			}
-		}
-		map.repaint();
 	}
 
 	@Override
