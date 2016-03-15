@@ -13,6 +13,10 @@ public abstract class AbstractItem {
 	protected Color foreground;
 	protected Color background;
 	
+	// Flavor text
+	protected String name;
+	protected String description;
+	
 	// XY position on the grid
 	protected int x; protected int y;
 	
@@ -25,5 +29,5 @@ public abstract class AbstractItem {
 	 * What happens when the item is throw
 	 */
 	abstract public void onThrown();
-
+	
 }

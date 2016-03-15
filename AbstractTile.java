@@ -13,6 +13,10 @@ public abstract class AbstractTile {
 	protected Color foreground;
 	protected Color background;
 	
+	// Flavor text
+	protected String name;
+	protected String description;
+	
 	// Determines if entities can pass through it
 	protected boolean solid;
 	
@@ -20,7 +24,7 @@ public abstract class AbstractTile {
 	protected boolean occupied = false;
 	
 	// Determines whether or not to display background instead of the tile
-	protected boolean covered = true;
+	protected boolean covered = false;
 	
 	// // Determines how much damage a tile can take before destruction
 	// private int durability;
@@ -40,12 +44,12 @@ public abstract class AbstractTile {
 	/**
 	 * What the tile does when an mob interacts with it
 	 */
-	abstract public void onInteraction(Mob e);
+	abstract public void onInteraction(AbstractEntity e);
 	
 	/**
 	 * What happens to an mob occupying it each turn
 	 */
-	abstract public void onOccupation(Mob e);
+	abstract public void onOccupation(AbstractEntity e);
 	
 	/**
 	 * What happens to the tile each turn regardless of conditions
@@ -98,7 +102,7 @@ public abstract class AbstractTile {
 	 * @param A the mob to enter the tile
 	 * @return Whether the tile is free to move into or not
 	 */
-	public boolean canEnter(Mob m) {
+	public boolean canEnter(AbstractEntity m) {
 		return !(occupied && solid);
 	}
 }
