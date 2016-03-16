@@ -17,17 +17,28 @@ public abstract class AbstractItem {
 	protected String name;
 	protected String description;
 	
+	// Can be stacked
+	protected boolean isStackable;
+	
+	// Number of used for an item
+	protected int uses;
+	
 	// XY position on the grid
 	protected int x; protected int y;
 	
 	/**
 	 * What happens when the item is used
 	 */
-	abstract public void onUse();
+	abstract public void onUse(AbstractEntity m);
 	
 	/**
 	 * What happens when the item is throw
 	 */
-	abstract public void onThrown();
+	abstract public void onThrown(AbstractTile t);
+	
+	/**
+	 * What happens to an entity that equips this item
+	 */
+	abstract public void onEquipt(AbstractEntity m);
 	
 }
