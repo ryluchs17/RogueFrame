@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+import tile.*;
 import java.util.Random;
 
 /**
@@ -22,17 +23,12 @@ public class Map extends JPanel{
 	private AbstractTile[][] tiles;
 	
 	//private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-	//private int STEP = font.getSize();
+	//private int AbstractTile.STEP = font.getSize();
 	
 	// (x, y) position of the top left corner of the map display
 	private int viewX = 0; private int viewY = 0;
 	// length and height of the map display
 	private int viewColumns; private int viewRows;
-	
-	/**
-	 * STEP^2 is the area of a tile in pixels
-	 */
-	public static final int STEP = 10;
 
 	/**
 	 * Creates a new Map of size columns * rows, with a display of size viewColumns * viewRows.
@@ -45,7 +41,32 @@ public class Map extends JPanel{
 		super();
 		
 		r = new Random();
-		r.setSeed(420L);
+		
+		setFocusable(true);
+
+		this.rows = rows; this.columns = columns;
+		this.viewColumns = 18; this.viewRows = 12;
+		
+		tiles = new AbstractTile[this.columns][this.rows]; 
+
+		for(int y = 0; y < this.rows; y++) {
+			for(int x = 0; x < this.columns; x++) {
+				tiles[x][y] = r.nextBoolean() ? new Soil(x, y) : new Water(x, y);
+			}
+		}
+	}
+	
+	/**
+	 * Creates a new Map of size columns * rows, with a display of size viewColumns * viewRows generated using the given seed.
+	 * @param columns The length of the map in tiles
+	 * @param rows The height of the map in tiles
+	 * @param viewColumns The length of the map display in tiles
+	 * @param viewRows The height of the map display in tiles
+	 */
+	public Map(int columns, int rows, int viewColumns, int viewRows, long seed) {
+		super();
+		
+		r = new Random(seed);
 		
 		setFocusable(true);
 
@@ -76,7 +97,7 @@ public class Map extends JPanel{
 	 * @return The x coordinate that center that map on the x-axis
 	 */
 	private int getWidthCenter() {
-		return (this.getWidth()/2) - ((viewColumns*STEP)/2);
+		return (this.getWidth()/2) - ((viewColumns*AbstractTile.STEP)/2);
 	}
 	
 	/**
@@ -84,7 +105,7 @@ public class Map extends JPanel{
 	 * @return The y coordinate that center that map on the y-axis
 	 */
 	private int getHeightCenter() {
-		return (this.getHeight()/2) - ((viewRows*STEP)/2);
+		return (this.getHeight()/2) - ((viewRows*AbstractTile.STEP)/2);
 	}
 	
 	/**
@@ -127,11 +148,11 @@ public class Map extends JPanel{
 		for(int y = 0; y < viewRows; y++) {
 			for(int x = 0; x < viewColumns; x++) {
 //				g.setColor(tiles[viewX + x][viewY + y].background);
-//				g.fillRect(getWidthCenter() + x*STEP, getHeightCenter() + y*STEP, STEP, STEP);
+//				g.fillRect(getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP, AbstractTile.STEP, AbstractTile.STEP);
 //				g.setColor(tiles[viewX + x][viewY + y].foreground);
-//				g.drawString(tiles[viewX + x][viewY + y].character, getWidthCenter() + x*STEP, getHeightCenter() + (y+1)*STEP);
+//				g.drawString(tiles[viewX + x][viewY + y].character, getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + (y+1)*AbstractTile.STEP);
 				
-				tiles[viewX + x][viewY + y].draw(g, this.getWidthCenter() + x*STEP, getHeightCenter() + y*STEP);
+				tiles[viewX + x][viewY + y].draw(g, this.getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP);
 			}
 		}
 		
@@ -145,7 +166,7 @@ public class Map extends JPanel{
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension((viewColumns+1)*STEP, (viewRows+1)*STEP);
+		return new Dimension((viewColumns+1)*AbstractTile.STEP, (viewRows+1)*AbstractTile.STEP);
 	}
 
 }

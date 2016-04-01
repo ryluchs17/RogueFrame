@@ -1,4 +1,8 @@
+package item;
+
 import java.awt.Color;
+import tile.AbstractTile;
+import entity.AbstractEntity;
 
 /**
  * RogueFrame item template
@@ -10,12 +14,10 @@ public abstract class AbstractItem {
 	
 	// Char and Color to display as
 	protected String character;
-	protected Color foreground;
-	protected Color background;
+	protected Color foreground, background;
 	
 	// Flavor text
-	protected String name;
-	protected String description;
+	protected String name, description;
 	
 	// Can be stacked
 	protected boolean isStackable;
@@ -24,7 +26,7 @@ public abstract class AbstractItem {
 	protected int uses;
 	
 	// XY position on the grid
-	protected int x; protected int y;
+	protected int x, y;
 	
 	/**
 	 * What happens when the item is used

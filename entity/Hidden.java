@@ -1,3 +1,5 @@
+package entity;
+
 import java.awt.Color;
 
 public class Hidden extends AbstractEntity{

@@ -1,4 +1,7 @@
+package tile;
+
 import java.awt.Color;
+import entity.AbstractEntity;
 
 public class Water extends AbstractTile {
 

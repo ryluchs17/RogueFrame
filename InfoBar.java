@@ -1,12 +1,11 @@
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * A class for life bars, mana bars, etc. for video games
  * @author Ryan Luchs
  *
  */
-
-import javax.swing.*;
-import java.awt.*;
-
 public class InfoBar extends JPanel {
 
 	private static final long serialVersionUID = 1L;

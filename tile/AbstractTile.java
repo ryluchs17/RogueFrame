@@ -1,8 +1,9 @@
-
+package tile;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import entity.AbstractEntity;
 
 /**
  * RougeFrame tile object
@@ -41,6 +42,11 @@ public abstract class AbstractTile {
 	 */
 	public static final int STEP = 10;
 
+	/**
+	 * Creates an AbstractTile with the coordinates (x, y)
+	 * @param x the x-coordinate
+	 * @param y the y-coordinate
+	 */
 	public AbstractTile(int x, int y) {
 		this.x = x;
 		this.y = y;
