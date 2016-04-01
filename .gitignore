@@ -5,3 +5,7 @@
 /Soil.class
 /InfoBar.class
 /Water.class
+/ItemPoint.class
+/AbstractEntity.class
+/AbstractItem.class
+/Hidden.class

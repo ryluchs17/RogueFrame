@@ -2,8 +2,15 @@ import java.awt.Color;
 
 public class Soil extends AbstractTile {
 
-	public Soil() {
-		setKeyFields("-", new Color(100, 50, 0) , Color.YELLOW, false);
+	public Soil(int x, int y) {
+		super(x, y);
+
+		character = "-";
+		foreground = new Color(100, 50, 0);
+		background = Color.YELLOW;
+		
+		solid = false;
+		
 		name = "Soil";
 		description = "Soft, loamy soil.";
 	}

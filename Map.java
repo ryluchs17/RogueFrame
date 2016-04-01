@@ -15,6 +15,9 @@ public class Map extends JPanel{
 	// length and height of map
 	private int columns; private int rows;
 	
+	// random number generator for map gen
+	private Random r;
+	
 	// array to store map tiles
 	private AbstractTile[][] tiles;
 	
@@ -41,7 +44,8 @@ public class Map extends JPanel{
 	public Map(int columns, int rows, int viewColumns, int viewRows) {
 		super();
 		
-		Random r = new Random();
+		r = new Random();
+		r.setSeed(420L);
 		
 		setFocusable(true);
 
@@ -52,7 +56,7 @@ public class Map extends JPanel{
 
 		for(int y = 0; y < this.rows; y++) {
 			for(int x = 0; x < this.columns; x++) {
-				tiles[x][y] = r.nextBoolean() ? new Soil() : new Water();
+				tiles[x][y] = r.nextBoolean() ? new Soil(x, y) : new Water(x, y);
 			}
 		}
 	}
@@ -122,10 +126,12 @@ public class Map extends JPanel{
 		
 		for(int y = 0; y < viewRows; y++) {
 			for(int x = 0; x < viewColumns; x++) {
-				g.setColor(tiles[viewX + x][viewY + y].background);
-				g.fillRect(getWidthCenter() + x*STEP, getHeightCenter() + y*STEP, STEP, STEP);
-				g.setColor(tiles[viewX + x][viewY + y].foreground);
-				g.drawString(tiles[viewX + x][viewY + y].character, getWidthCenter() + x*STEP, getHeightCenter() + (y+1)*STEP);
+//				g.setColor(tiles[viewX + x][viewY + y].background);
+//				g.fillRect(getWidthCenter() + x*STEP, getHeightCenter() + y*STEP, STEP, STEP);
+//				g.setColor(tiles[viewX + x][viewY + y].foreground);
+//				g.drawString(tiles[viewX + x][viewY + y].character, getWidthCenter() + x*STEP, getHeightCenter() + (y+1)*STEP);
+				
+				tiles[viewX + x][viewY + y].draw(g, this.getWidthCenter() + x*STEP, getHeightCenter() + y*STEP);
 			}
 		}
 		

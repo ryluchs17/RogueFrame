@@ -1,4 +1,8 @@
+
+
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 /**
  * RougeFrame tile object
@@ -8,14 +12,15 @@ import java.awt.Color;
 
 public abstract class AbstractTile {
 	
+	// The coordinates (x, y) of the tile on the map
+	protected int x, y;
+	
 	// Char and Color to display as
 	protected String character;
-	protected Color foreground;
-	protected Color background;
+	protected Color foreground, background;
 	
 	// Flavor text
-	protected String name;
-	protected String description;
+	protected String name, description;
 	
 	// Determines if entities can pass through it
 	protected boolean solid;
@@ -30,16 +35,18 @@ public abstract class AbstractTile {
 	// private int durability;
 	// private int blastResistance;
 	// private int Material;
-
+	
 	/**
-	 * Fake constructor for Tile
+	 * STEP^2 is the area of a tile in pixels
 	 */
-	protected void setKeyFields(String c, Color fg, Color bg, boolean s) {
-		character = c;
-		foreground = fg;
-		background = bg;
-		solid = s;
+	public static final int STEP = 10;
+
+	public AbstractTile(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
+	
+	// ! ABSTRACT METHODS BEGIN !
 	
 	/**
 	 * What the tile does when an mob interacts with it
@@ -55,6 +62,25 @@ public abstract class AbstractTile {
 	 * What happens to the tile each turn regardless of conditions
 	 */
 	abstract public void onTurn();
+	
+	// ! ABSTRACT METHODS END !
+	
+	/**
+	 * Draws the tile at the given coordinates
+	 * @param g the graphics object to draw on
+	 * @param x x-coordinate
+	 * @param y y-coordinate
+	 */
+	public void draw(Graphics g, int x, int y) {
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setColor(background);
+		g2d.fillRect(x, y, STEP, STEP);
+		g2d.setColor(foreground);
+		g2d.drawString(character, x, y + STEP);
+		
+	}
 
 	/**
 	 * Returns whether the tile is solid

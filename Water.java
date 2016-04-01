@@ -2,8 +2,15 @@ import java.awt.Color;
 
 public class Water extends AbstractTile {
 
-	public Water() {
-		setKeyFields("~", Color.WHITE , Color.BLUE, false);
+	public Water(int x, int y) {
+		super(x, y);
+
+		character = "~";
+		foreground = Color.WHITE;
+		background = Color.BLUE;
+		
+		solid = false;
+		
 		name = "Water";
 		description = "Water of indeterminate depth.";
 	}
