@@ -87,6 +87,36 @@ public abstract class AbstractTile {
 		g2d.drawString(character, x, y + STEP);
 		
 	}
+	
+	/**
+	 * Draws the a text box containing the tile name, description and a same image at the given coordinates
+	 * @param g the graphics object to draw on
+	 * @param x x the x-coordinate
+	 * @param y y the y-coordinate
+	 */
+	public void drawTileText(Graphics g, int x, int y) {
+		
+		double boxRatio = 1.2;
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+		// make an empty black square to put text in
+		g2d.setColor(Color.BLACK);
+		g2d.fillRect(x, y, description.length() * STEP, (int) (boxRatio * STEP * 2));
+		
+		draw(g, (int) (x + (STEP*boxRatio)/2), (int) (y + (STEP*boxRatio)/2));
+		
+		// prepare to draw text and border
+		g2d.setColor(Color.WHITE);
+		
+		// draw in text in white
+		g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
+		g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
+		
+		// draw white rectangle as border
+		g2d.drawRect(x, y, description.length() * STEP, (int) (boxRatio * STEP * 2));
+		
+	}
 
 	/**
 	 * Returns whether the tile is solid

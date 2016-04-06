@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.*;
+
 import javax.swing.*;
 import tile.*;
 import java.util.Random;
@@ -9,7 +11,7 @@ import java.util.Random;
  *
  */
 
-public class Map extends JPanel{
+public class Map extends JPanel implements MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -21,6 +23,9 @@ public class Map extends JPanel{
 	
 	// array to store map tiles
 	private AbstractTile[][] tiles;
+	
+	// point to draw look info at
+	private Point mouse = new Point(0, 0);
 	
 	//private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 	//private int AbstractTile.STEP = font.getSize();
@@ -54,6 +59,8 @@ public class Map extends JPanel{
 				tiles[x][y] = r.nextBoolean() ? new Soil(x, y) : new Water(x, y);
 			}
 		}
+		
+		this.addMouseMotionListener(this);
 	}
 	
 	/**
@@ -80,6 +87,8 @@ public class Map extends JPanel{
 				tiles[x][y] = r.nextBoolean() ? new Soil(x, y) : new Water(x, y);
 			}
 		}
+		
+		this.addMouseMotionListener(this);
 	}
 
 	/**
@@ -162,11 +171,35 @@ public class Map extends JPanel{
 //				+ ") BL: (" + viewX + ", " + (viewRows + viewY + -1)
 //				+ ") BR: (" + (viewColumns + viewX + -1) + ", " + (viewRows + viewY + -1)
 //				+ ")", 0, 10);
+		
+		Rectangle bounds = new Rectangle();
+		
+		for(int y = 0; y < viewRows; y++) {
+			for(int x = 0; x < viewColumns; x++) {
+				bounds.setBounds(getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP, AbstractTile.STEP, AbstractTile.STEP);
+				
+				if(mouse != null && bounds.contains(mouse)) {
+					tiles[viewX + x][viewY + y].drawTileText(g, mouse.x, mouse.y);
+				}
+			}
+		}
 	}
 	
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension((viewColumns+1)*AbstractTile.STEP, (viewRows+1)*AbstractTile.STEP);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mouse = e.getPoint();
+		repaint();
 	}
 
 }
