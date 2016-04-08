@@ -27,6 +27,9 @@ public class Map extends JPanel implements MouseMotionListener {
 	// point to draw look info at
 	private Point mouse = new Point(0, 0);
 	
+	// for mouse detection in tiles
+	Rectangle bounds = new Rectangle();
+	
 	//private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 	//private int AbstractTile.STEP = font.getSize();
 	
@@ -171,15 +174,18 @@ public class Map extends JPanel implements MouseMotionListener {
 //				+ ") BL: (" + viewX + ", " + (viewRows + viewY + -1)
 //				+ ") BR: (" + (viewColumns + viewX + -1) + ", " + (viewRows + viewY + -1)
 //				+ ")", 0, 10);
-		
-		Rectangle bounds = new Rectangle();
-		
+//		
 		for(int y = 0; y < viewRows; y++) {
 			for(int x = 0; x < viewColumns; x++) {
 				bounds.setBounds(getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP, AbstractTile.STEP, AbstractTile.STEP);
 				
 				if(mouse != null && bounds.contains(mouse)) {
 					tiles[viewX + x][viewY + y].drawTileText(g, mouse.x, mouse.y);
+					
+//					g.setColor(Color.WHITE);
+//					g.drawString("mouse @ (" + (viewX + x) + ", " + (viewY + y) + ")", 0, 20);
+					
+					break;
 				}
 			}
 		}
