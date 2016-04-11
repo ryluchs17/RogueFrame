@@ -41,6 +41,11 @@ public abstract class AbstractTile {
 	 * STEP^2 is the area of a tile in pixels
 	 */
 	public static final int STEP = 10;
+	
+	/**
+	 * The ratio of the height of the tooltip to STEP
+	 */
+	public static final double TOOLTIP_BOX_RATIO = 1.2;
 
 	/**
 	 * Creates an AbstractTile with the coordinates (x, y)
@@ -94,17 +99,17 @@ public abstract class AbstractTile {
 	 * @param x x the x-coordinate
 	 * @param y y the y-coordinate
 	 */
-	public void drawTileText(Graphics g, int x, int y) {
+	public void drawTooltip(Graphics g, int x, int y) {
 		
-		double boxRatio = 1.2;
+		
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
 		// make an empty black square to put text in
 		g2d.setColor(Color.BLACK);
-		g2d.fillRect(x, y, description.length() * STEP, (int) (boxRatio * STEP * 2));
+		g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
 		
-		draw(g, (int) (x + (STEP*boxRatio)/2), (int) (y + (STEP*boxRatio)/2));
+		draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
 		
 		// prepare to draw text and border
 		g2d.setColor(Color.WHITE);
@@ -114,8 +119,16 @@ public abstract class AbstractTile {
 		g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
 		
 		// draw white rectangle as border
-		g2d.drawRect(x, y, description.length() * STEP, (int) (boxRatio * STEP * 2));
+		g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
 		
+	}
+	
+	public int getTooltipLength() {
+		return description.length() * STEP;
+	}
+	
+	public int getTooltipHeight() {
+		return (int) (TOOLTIP_BOX_RATIO * STEP * 2) + 1;
 	}
 
 	/**

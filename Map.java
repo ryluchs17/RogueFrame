@@ -27,6 +27,9 @@ public class Map extends JPanel implements MouseMotionListener {
 	// point to draw look info at
 	private Point mouse = new Point(0, 0);
 	
+	// selected tile
+	private AbstractTile select;
+	
 	// for mouse detection in tiles
 	Rectangle bounds = new Rectangle();
 	
@@ -53,7 +56,7 @@ public class Map extends JPanel implements MouseMotionListener {
 		setFocusable(true);
 
 		this.rows = rows; this.columns = columns;
-		this.viewColumns = 18; this.viewRows = 12;
+		this.viewColumns = viewColumns; this.viewRows = viewRows;
 		
 		tiles = new AbstractTile[this.columns][this.rows]; 
 
@@ -62,6 +65,8 @@ public class Map extends JPanel implements MouseMotionListener {
 				tiles[x][y] = r.nextBoolean() ? new Soil(x, y) : new Water(x, y);
 			}
 		}
+		
+		select = tiles[0][0];
 		
 		this.addMouseMotionListener(this);
 	}
@@ -81,7 +86,7 @@ public class Map extends JPanel implements MouseMotionListener {
 		setFocusable(true);
 
 		this.rows = rows; this.columns = columns;
-		this.viewColumns = 18; this.viewRows = 12;
+		this.viewColumns = viewColumns; this.viewRows = viewRows;
 		
 		tiles = new AbstractTile[this.columns][this.rows]; 
 
@@ -90,6 +95,8 @@ public class Map extends JPanel implements MouseMotionListener {
 				tiles[x][y] = r.nextBoolean() ? new Soil(x, y) : new Water(x, y);
 			}
 		}
+		
+		select = tiles[0][0];
 		
 		this.addMouseMotionListener(this);
 	}
@@ -142,6 +149,8 @@ public class Map extends JPanel implements MouseMotionListener {
 	 * @param yOffset The offset for the y-axis
 	 */
 	public void shiftView(int xOffset, int yOffset) {
+		
+		
 		if(viewX + xOffset > -1 && viewX + xOffset < columns - viewColumns + 1) {
 			viewX += xOffset;
 		}
@@ -149,7 +158,11 @@ public class Map extends JPanel implements MouseMotionListener {
 			viewY += yOffset;
 		}
 		
-		repaint();
+		// repaint tooltip to make sure that the box is the correct size
+		repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
+		
+		// repaint tiles
+		repaint(this.getWidthCenter(), this.getHeightCenter(), viewX + ((viewColumns+1)*AbstractTile.STEP), viewY + ((viewRows+1)*AbstractTile.STEP));
 	}
 	
 	@Override
@@ -180,12 +193,12 @@ public class Map extends JPanel implements MouseMotionListener {
 				bounds.setBounds(getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP, AbstractTile.STEP, AbstractTile.STEP);
 				
 				if(mouse != null && bounds.contains(mouse)) {
-					tiles[viewX + x][viewY + y].drawTileText(g, mouse.x, mouse.y);
+					tiles[viewX + x][viewY + y].drawTooltip(g, mouse.x, mouse.y);
+					select = tiles[viewX + x][viewY + y];
 					
 //					g.setColor(Color.WHITE);
 //					g.drawString("mouse @ (" + (viewX + x) + ", " + (viewY + y) + ")", 0, 20);
 					
-					break;
 				}
 			}
 		}
@@ -204,8 +217,10 @@ public class Map extends JPanel implements MouseMotionListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		this.repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
 		mouse = e.getPoint();
-		repaint();
+		this.repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
+		//repaint();
 	}
 
 }
