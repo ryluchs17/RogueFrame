@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+
+import entity.Hidden;
 import tile.*;
 import java.util.Random;
 
@@ -96,6 +98,8 @@ public class Map extends JPanel implements MouseMotionListener {
 			}
 		}
 		
+		tiles[0][1].setOccupant(new Hidden(0, 0, 20));
+		
 		select = tiles[0][0];
 		
 		this.addMouseMotionListener(this);
@@ -181,13 +185,13 @@ public class Map extends JPanel implements MouseMotionListener {
 			}
 		}
 		
-//		g.setColor(Color.WHITE);
-//		g.drawString("TL: (" + viewX + ", " + viewY
-//				+ ") TR: (" + (viewColumns + viewX + -1) + ", " + viewY
-//				+ ") BL: (" + viewX + ", " + (viewRows + viewY + -1)
-//				+ ") BR: (" + (viewColumns + viewX + -1) + ", " + (viewRows + viewY + -1)
-//				+ ")", 0, 10);
-//		
+		g.setColor(Color.WHITE);
+		g.drawString("TL: (" + viewX + ", " + viewY
+				+ ") TR: (" + (viewColumns + viewX + -1) + ", " + viewY
+				+ ") BL: (" + viewX + ", " + (viewRows + viewY + -1)
+				+ ") BR: (" + (viewColumns + viewX + -1) + ", " + (viewRows + viewY + -1)
+				+ ")", 0, 10);
+		
 		for(int y = 0; y < viewRows; y++) {
 			for(int x = 0; x < viewColumns; x++) {
 				bounds.setBounds(getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP, AbstractTile.STEP, AbstractTile.STEP);
@@ -196,8 +200,8 @@ public class Map extends JPanel implements MouseMotionListener {
 					tiles[viewX + x][viewY + y].drawTooltip(g, mouse.x, mouse.y);
 					select = tiles[viewX + x][viewY + y];
 					
-//					g.setColor(Color.WHITE);
-//					g.drawString("mouse @ (" + (viewX + x) + ", " + (viewY + y) + ")", 0, 20);
+					g.setColor(Color.WHITE);
+					g.drawString("mouse @ (" + (viewX + x) + ", " + (viewY + y) + ")", 0, 20);
 					
 				}
 			}
@@ -221,6 +225,8 @@ public class Map extends JPanel implements MouseMotionListener {
 		mouse = e.getPoint();
 		this.repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
 		//repaint();
+		
+		repaint(0, 0, this.getWidth(), 20);
 	}
 
 }

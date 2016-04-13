@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import entity.AbstractEntity;
+import item.ItemPoint;
 
 /**
  * RougeFrame tile object
@@ -31,6 +32,12 @@ public abstract class AbstractTile {
 	
 	// Determines whether or not to display background instead of the tile
 	protected boolean covered = false;
+	
+	// the item contained by this tile
+	protected ItemPoint contents;
+	
+	// the abstract entity occupying this tile
+	protected AbstractEntity occupant;
 	
 	// // Determines how much damage a tile can take before destruction
 	// private int durability;
@@ -91,6 +98,10 @@ public abstract class AbstractTile {
 		g2d.setColor(foreground);
 		g2d.drawString(character, x, y + STEP);
 		
+		if(occupied) {
+			occupant.draw(g, x, y);
+		}
+		
 	}
 	
 	/**
@@ -101,9 +112,25 @@ public abstract class AbstractTile {
 	 */
 	public void drawTooltip(Graphics g, int x, int y) {
 		
-		
-		
 		Graphics2D g2d = (Graphics2D) g;
+		
+		if(occupied) {
+			// make an empty black square to put text in
+			g2d.setColor(Color.BLACK);
+			g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+			
+			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
+			
+			// prepare to draw text and border
+			g2d.setColor(Color.WHITE);
+			
+			// draw in text in white		
+			g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
+			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
+			
+			// draw white rectangle as border
+			g2d.drawRect(x, y, occupant.getDescription.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+		} else {
 		
 		// make an empty black square to put text in
 		g2d.setColor(Color.BLACK);
@@ -114,12 +141,13 @@ public abstract class AbstractTile {
 		// prepare to draw text and border
 		g2d.setColor(Color.WHITE);
 		
-		// draw in text in white
+		// draw in text in white		
 		g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
 		g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
 		
 		// draw white rectangle as border
 		g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+		}
 		
 	}
 	
@@ -129,6 +157,11 @@ public abstract class AbstractTile {
 	
 	public int getTooltipHeight() {
 		return (int) (TOOLTIP_BOX_RATIO * STEP * 2) + 1;
+	}
+	
+	public void setOccupant(AbstractEntity e) {
+		occupant = e;
+		occupied = true;
 	}
 
 	/**
