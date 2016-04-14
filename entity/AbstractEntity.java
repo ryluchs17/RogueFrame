@@ -3,6 +3,7 @@ package entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import tile.AbstractTile;
 
 /**
  * RougeFrame entity template
@@ -12,6 +13,9 @@ import java.awt.Graphics2D;
 
 public abstract class AbstractEntity {
 
+	// XY position on the grid
+	protected int x, y;
+	
 	// Char and Color to display as
 	protected String character;
 	protected Color foreground;
@@ -23,10 +27,9 @@ public abstract class AbstractEntity {
 	protected boolean tangible = true;
 	
 	// Determines whether or not to display the tile under the mob
-	protected boolean visible = true;
-	
-	// XY position on the grid
-	protected int x, y;
+	protected boolean visible = true;	
+
+	// ! STATS STUFF BEGINS !
 	
 	// Health
 	protected int hitpoints = 0;
@@ -43,10 +46,15 @@ public abstract class AbstractEntity {
 	protected int hp, atk, def, mag;
 	
 	// Base stats stuff
-	protected int baseHitpoints, baseAtk, baseDef, baseMag;
+	protected int hp_base, atk_base, def_base, mag_base;
+	
+	// Stat multipliers
+	protected short hp_stage = 0, atk_stage = 0, def_stage = 0, mag_stage = 0;
 	
 	// special unchanging damage stat
 	protected int bDamage = 0;
+	
+	// ! STATS STUFF ENDS !
 	
 	public AbstractEntity(int x, int y, int level) {
 		this.x = x;
@@ -61,11 +69,20 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	// ! ABSTRACT METHODS BEGIN !
+	
+	/**
+	 * The AbtractEntitie's action each turn
+	 */
+	abstract public void onTurn(AbstractTile[][] map);
+	
+	// ! ABSTRACT METHODS END !
+	
 	public void draw(Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g2d.setColor(foreground);
-		g2d.drawString(character, x, y);
+		g2d.drawString(character, x, y + AbstractTile.STEP);
 	}
 	
 //	public void physicalAttack(AbstractEntity e, int baseDamage) {
@@ -77,21 +94,30 @@ public abstract class AbstractEntity {
 //	}
 	
 	public void setStats(boolean fillHitpoints) {
-		hp = ((level * baseHitpoints) / (MAX_LEVEL / 2)) + level;
-		atk = (level * baseAtk) / MAX_LEVEL + 1;
-		def = (level * baseDef) / MAX_LEVEL + 1;
-		mag = (level * baseMag) / MAX_LEVEL + 1;
+		hp = (int) ((((level * hp_base) / (MAX_LEVEL / 2)) + level) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
 		
-		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
-		System.out.println("HP : " + hp);
-		System.out.println("ATK : " + atk);
-		System.out.println("DEF : " + def);
-		System.out.println("MAG : " + mag);
+		atk = (int) (((level * atk_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
+		def = (int) (((level * def_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
+		mag = (int) (((level * mag_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
+		
+//		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
+//		System.out.println("HP : " + hp);
+//		System.out.println("ATK : " + atk);
+//		System.out.println("DEF : " + def);
+//		System.out.println("MAG : " + mag);
 		
 		if(fillHitpoints) {
 			hitpoints = hp;
 		}
 		
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
 	
 	public String getName() {
@@ -101,6 +127,21 @@ public abstract class AbstractEntity {
 	public String getDescription() {
 		return description;
 	}
+	
+	public void goTo(int x, int y) {
+		if(this.x < x) this.x += 1;
+		if(this.x > x) this.x -= 1;
+		if(this.y < y) this.y += 1;
+		if(this.y > y) this.y -= 1;
+	}
+	
+	public void goFrom(int x, int y) {
+		if(this.x < x) this.x -= 1;
+		if(this.x > x) this.x += 1;
+		if(this.y < y) this.y -= 1;
+		if(this.y > y) this.y += 1;
+	}
+	
 	
 	
 }

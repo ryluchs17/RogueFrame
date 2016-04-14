@@ -27,9 +27,6 @@ public abstract class AbstractTile {
 	// Determines if entities can pass through it
 	protected boolean solid;
 	
-	// Determines whether the tile is full
-	protected boolean occupied = false;
-	
 	// Determines whether or not to display background instead of the tile
 	protected boolean covered = false;
 	
@@ -37,7 +34,7 @@ public abstract class AbstractTile {
 	protected ItemPoint contents;
 	
 	// the abstract entity occupying this tile
-	protected AbstractEntity occupant;
+	protected AbstractEntity occupant = null;
 	
 	// // Determines how much damage a tile can take before destruction
 	// private int durability;
@@ -95,11 +92,12 @@ public abstract class AbstractTile {
 		
 		g2d.setColor(background);
 		g2d.fillRect(x, y, STEP, STEP);
-		g2d.setColor(foreground);
-		g2d.drawString(character, x, y + STEP);
 		
-		if(occupied) {
+		if(occupant != null) {
 			occupant.draw(g, x, y);
+		} else {
+			g2d.setColor(foreground);
+			g2d.drawString(character, x, y + STEP);
 		}
 		
 	}
@@ -114,7 +112,23 @@ public abstract class AbstractTile {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		if(occupied) {
+		if(occupant != null) {
+			// make an empty black square to put text in
+			g2d.setColor(Color.BLACK);
+			g2d.fillRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+			
+			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
+			
+			// prepare to draw text and border
+			g2d.setColor(Color.WHITE);
+			
+			// draw in text in white		
+			g2d.drawString(occupant.getName() + ":", x + STEP * 2, y + STEP + 2);
+			g2d.drawString(occupant.getDescription(), x + STEP * 2, y + STEP * 2 + 2);
+			
+			// draw white rectangle as border
+			g2d.drawRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+		} else {
 			// make an empty black square to put text in
 			g2d.setColor(Color.BLACK);
 			g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
@@ -129,24 +143,7 @@ public abstract class AbstractTile {
 			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
 			
 			// draw white rectangle as border
-			g2d.drawRect(x, y, occupant.getDescription.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-		} else {
-		
-		// make an empty black square to put text in
-		g2d.setColor(Color.BLACK);
-		g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-		
-		draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
-		
-		// prepare to draw text and border
-		g2d.setColor(Color.WHITE);
-		
-		// draw in text in white		
-		g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
-		g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
-		
-		// draw white rectangle as border
-		g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+			g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
 		}
 		
 	}
@@ -161,7 +158,14 @@ public abstract class AbstractTile {
 	
 	public void setOccupant(AbstractEntity e) {
 		occupant = e;
-		occupied = true;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
 
 	/**
@@ -177,15 +181,7 @@ public abstract class AbstractTile {
 	 * @return Whether the tile is occupied
 	 */
 	public boolean isOccupied() {
-		return occupied;
-	}
-
-	/**
-	 * Sets whether the tile is occupied
-	 * @param occupied Whether the tile should be occupied
-	 */
-	public void setOccupied(boolean occupied) {
-		this.occupied = occupied;
+		return occupant != null;
 	}
 
 	/**
@@ -204,13 +200,13 @@ public abstract class AbstractTile {
 		this.covered = covered;
 	}
 
-	//FIX ME
+	// TODO FIX ME
 	/**
 	 * Determines whether an mob can enter the tile
 	 * @param A the mob to enter the tile
 	 * @return Whether the tile is free to move into or not
 	 */
 	public boolean canEnter(AbstractEntity m) {
-		return !(occupied && solid);
+		return !(occupant != null && solid);
 	}
 }

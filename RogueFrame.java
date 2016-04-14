@@ -108,6 +108,8 @@ public class RogueFrame extends JFrame implements KeyListener{
 				mpBar.setValue(0);
 				mpBar.repaint();
 				break;
+			case KeyEvent.VK_SPACE:
+				map.rounds(1);
 			default:
 				break;
 		}
