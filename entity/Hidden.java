@@ -1,9 +1,15 @@
 package entity;
 
 import java.awt.Color;
+import java.util.Random;
+
 import tile.AbstractTile;
 
 public class Hidden extends AbstractEntity{
+	private Random r = new Random();
+	
+	private int seekX;
+	private int seekY;
 
 	public Hidden(int x, int y, int level) {
 		super(x, y, level);
@@ -20,13 +26,19 @@ public class Hidden extends AbstractEntity{
 		this.mag_base = 79;
 		
 		setStats(true);
+		
+		seekX = r.nextInt(15);
+		seekY = r.nextInt(15);
 	}
 	
-	public void onTurn(AbstractTile[][] map) {
-		if(x != 0 && y != 0) {
-			map[x][y].setOccupant(null);
-			goFrom(0, 0);
-			map[x][y].setOccupant(this);
+	public void onTurn() {
+		map.tileAt(x, y).setOccupant(null);
+		goTo(seekX, seekY);
+		map.tileAt(x, y).setOccupant(this);
+		
+		if((x == seekX && y == seekY )|| r.nextInt(16) == 8) {
+			seekX = r.nextInt(15);
+			seekY = r.nextInt(15);
 		}
 	}
 }

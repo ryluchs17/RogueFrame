@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import tile.AbstractTile;
+import tile.TileMap;
 
 /**
  * RougeFrame entity template
@@ -17,7 +18,7 @@ public abstract class AbstractEntity {
 	protected int x, y;
 	
 	// The map within which this AbstractEntity exists
-	protected AbstractTile[][] map;
+	protected TileMap map;
 	
 	// Char and Color to display as
 	protected String character;
@@ -77,7 +78,7 @@ public abstract class AbstractEntity {
 	/**
 	 * The AbtractEntitie's action each turn
 	 */
-	abstract public void onTurn(AbstractTile[][] map);
+	abstract public void onTurn();
 	
 	// ! ABSTRACT METHODS END !
 	
@@ -131,22 +132,22 @@ public abstract class AbstractEntity {
 		return description;
 	}
 	
-	public void setMap(AbstractTile[][] map) {
+	public void setMap(TileMap map) {
 		this.map = map;
 	}
 	
 	public void goTo(int x, int y) {
-		if(this.x < x) this.x += 1;
-		if(this.x > x) this.x -= 1;
-		if(this.y < y) this.y += 1;
-		if(this.y > y) this.y -= 1;
+		if(this.x < x && this.x + 1 < map.length()) this.x += 1;
+		if(this.x > x && this.x - 1 > 0) this.x -= 1;
+		if(this.y < y && this.y + 1 < map.height()) this.y += 1;
+		if(this.y > y && this.y - 1 > 0) this.y -= 1;
 	}
 	
 	public void goFrom(int x, int y) {
-		if(this.x < x) this.x -= 1;
-		if(this.x > x) this.x += 1;
-		if(this.y < y) this.y -= 1;
-		if(this.y > y) this.y += 1;
+		if(this.x < x && this.x - 1 > 0) this.x -= 1;
+		if(this.x > x && this.x + 1 < map.length()) this.x += 1;
+		if(this.y < y && this.y - 1 > 0) this.y -= 1;
+		if(this.y > y && this.y + 1 < map.height()) this.y += 1;
 	}
 	
 	

@@ -50,6 +50,9 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		super();
 		
 		setFocusable(true);
+		
+		this.viewColumns = viewColumns;
+		this.viewRows = viewRows;
 
 		map = new TileMap(columns, rows);
 		
@@ -71,6 +74,9 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		super();
 
 		setFocusable(true);
+		
+		this.viewColumns = viewColumns;
+		this.viewRows = viewRows;
 
 		map = new TileMap(columns, rows, seed);
 		

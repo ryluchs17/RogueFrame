@@ -70,6 +70,7 @@ public class TileMap {
 		
 		AbstractEntity e = new Hidden(5, 5, 20);
 		tiles[e.getX()][e.getY()].setOccupant(e);
+		e.setMap(this);
 		entities = new ArrayList<AbstractEntity>();
 		entities.add(e);
 	}
@@ -131,7 +132,7 @@ public class TileMap {
 		}
 		
 		for(int i = 0; i < entities.size(); i++) {
-			entities.get(i).onTurn(tiles);
+			entities.get(i).onTurn();
 		}
 		
 		rounds++;
