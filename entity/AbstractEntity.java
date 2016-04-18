@@ -16,6 +16,9 @@ public abstract class AbstractEntity {
 	// XY position on the grid
 	protected int x, y;
 	
+	// The map within which this AbstractEntity exists
+	protected AbstractTile[][] map;
+	
 	// Char and Color to display as
 	protected String character;
 	protected Color foreground;
@@ -51,8 +54,8 @@ public abstract class AbstractEntity {
 	// Stat multipliers
 	protected short hp_stage = 0, atk_stage = 0, def_stage = 0, mag_stage = 0;
 	
-	// special unchanging damage stat
-	protected int bDamage = 0;
+	// base damage with physical and magical attacks
+	protected int base_physical_damage = 0, base_magic_damage = 0;
 	
 	// ! STATS STUFF ENDS !
 	
@@ -126,6 +129,10 @@ public abstract class AbstractEntity {
 	
 	public String getDescription() {
 		return description;
+	}
+	
+	public void setMap(AbstractTile[][] map) {
+		this.map = map;
 	}
 	
 	public void goTo(int x, int y) {

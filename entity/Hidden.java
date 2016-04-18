@@ -25,7 +25,7 @@ public class Hidden extends AbstractEntity{
 	public void onTurn(AbstractTile[][] map) {
 		if(x != 0 && y != 0) {
 			map[x][y].setOccupant(null);
-			goTo(0, 0);
+			goFrom(0, 0);
 			map[x][y].setOccupant(this);
 		}
 	}

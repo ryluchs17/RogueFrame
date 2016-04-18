@@ -15,7 +15,7 @@ import java.util.Random;
  *
  */
 
-public class Map extends JPanel implements MouseMotionListener {
+public class MapPanel extends JPanel implements MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -55,7 +55,7 @@ public class Map extends JPanel implements MouseMotionListener {
 	 * @param viewColumns The length of the map display in tiles
 	 * @param viewRows The height of the map display in tiles
 	 */
-	public Map(int columns, int rows, int viewColumns, int viewRows) {
+	public MapPanel(int columns, int rows, int viewColumns, int viewRows) {
 		super();
 		
 		r = new Random();
@@ -85,7 +85,7 @@ public class Map extends JPanel implements MouseMotionListener {
 	 * @param viewColumns The length of the map display in tiles
 	 * @param viewRows The height of the map display in tiles
 	 */
-	public Map(int columns, int rows, int viewColumns, int viewRows, long seed) {
+	public MapPanel(int columns, int rows, int viewColumns, int viewRows, long seed) {
 		super();
 		
 		r = new Random(seed);
