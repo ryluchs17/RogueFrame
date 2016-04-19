@@ -67,6 +67,8 @@ public class TileMap {
 
 		for(int y = 0; y < this.rows; y++) {
 			for(int x = 0; x < this.columns; x++) {
+				//tiles[x][y] = generate.nextBoolean() ? (generate.nextBoolean() ? new Water(x, y) : new Soil(x, y)) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
+				//tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
 				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Spike(x, y);
 			}
 		}
@@ -107,6 +109,15 @@ public class TileMap {
 	 */
 	public AbstractTile tileAt(int x, int y) {
 		return tiles[x][y];
+	}
+	
+	/**
+	 * Returns the AbstractEntity at a given index
+	 * @param i The index of the AbstractEntity to get
+	 * @return The AbstractEntity at index i
+	 */
+	public AbstractEntity getEntity(int i) {
+		return entities.get(i);
 	}
 	
 	/**

@@ -41,6 +41,7 @@ public class Spike extends AbstractTile {
 	@Override
 	public void onOccupation(AbstractEntity e) {
 		occupant.addHitpoints(-5);
+		if(foreground != Color.RED) foreground = Color.RED;
 
 	}
 
