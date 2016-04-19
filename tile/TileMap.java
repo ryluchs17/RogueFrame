@@ -1,5 +1,6 @@
 package tile;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 import entity.AbstractEntity;
@@ -15,6 +16,10 @@ public class TileMap {
 	
 	// array to store map tiles
 	private AbstractTile[][] tiles;
+	
+//	// array to store positions of updated tiles
+//	private int[][] update;
+//	private int numToUpdate = 0;
 	
 	// array to store entities
 	private ArrayList<AbstractEntity> entities;
@@ -64,9 +69,11 @@ public class TileMap {
 
 		for(int y = 0; y < this.rows; y++) {
 			for(int x = 0; x < this.columns; x++) {
-				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Water(x, y);
+				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Magma(x, y);
 			}
 		}
+		
+//		update = new int[(this.columns*this.rows)/2][2];
 		
 		AbstractEntity e = new Hidden(5, 5, 20);
 		tiles[e.getX()][e.getY()].setOccupant(e);
@@ -94,7 +101,7 @@ public class TileMap {
 	/**
 	 * Gets the tile at (x, y)
 	 * @param x The x-coordinate
-	 * @param y Hhe y-coordinate
+	 * @param y The y-coordinate
 	 * @return The tile at (x, y)
 	 */
 	public AbstractTile tileAt(int x, int y) {
@@ -127,12 +134,21 @@ public class TileMap {
 	public void tick() {
 		for(int y = 0; y < this.rows; y++) {
 			for(int x = 0; x < this.columns; x++) {
+				if(tiles[x][y].getOccupant() != null) {
+					if(tiles[x][y].getOccupant().isDead()) {
+						tiles[x][y].setOccupant(null);
+					}
+				}
+				
 				tiles[x][y].onTurn();
 			}
 		}
 		
 		for(int i = 0; i < entities.size(); i++) {
 			entities.get(i).onTurn();
+			if(entities.get(i).isDead()) {
+				entities.remove(i);
+			}
 		}
 		
 		rounds++;
@@ -155,4 +171,18 @@ public class TileMap {
 	public int getRounds() {
 		return rounds;
 	}
+
+//	public void updateAt(int x, int y) {
+//		update[numToUpdate][0] = x;
+//		update[numToUpdate][1] = y;
+//		numToUpdate++;
+//	}
+//	
+//	public int[][] getUpdateQueue() {
+//		return update;
+//	}
+//	
+//	public void clearUpdateQueue() {
+//		numToUpdate = 0;
+//	}
 }

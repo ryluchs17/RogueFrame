@@ -160,6 +160,10 @@ public abstract class AbstractTile {
 		occupant = e;
 	}
 	
+	public AbstractEntity getOccupant() {
+		return occupant;
+	}
+	
 	public int getX() {
 		return x;
 	}

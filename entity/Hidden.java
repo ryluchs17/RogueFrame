@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.Random;
 
 import tile.AbstractTile;
@@ -18,7 +19,7 @@ public class Hidden extends AbstractEntity{
 		this.foreground = Color.BLACK;
 		
 		this.name = "Hidden";
-		this.description = "A large black bird that hunts in total darkness.";
+		this.description = "A large black bird that hunts in darkness.";
 		
 		this.hp_base = 100;
 		this.atk_base = 125;
@@ -32,6 +33,8 @@ public class Hidden extends AbstractEntity{
 	}
 	
 	public void onTurn() {
+//		map.updateAt(x, y);
+		
 		map.tileAt(x, y).setOccupant(null);
 		goTo(seekX, seekY);
 		map.tileAt(x, y).setOccupant(this);
@@ -40,5 +43,9 @@ public class Hidden extends AbstractEntity{
 			seekX = r.nextInt(15);
 			seekY = r.nextInt(15);
 		}
+		
+		System.out.println(name + " @ " + x + ", " + y + " hp: " + hitpoints);
+		
+//		map.updateAt(x, y);
 	}
 }

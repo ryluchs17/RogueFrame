@@ -37,6 +37,7 @@ public abstract class AbstractEntity {
 	
 	// Health
 	protected int hitpoints = 0;
+	protected boolean dead = false;
 	
 	// Character Level stuff
 	protected int level;
@@ -89,6 +90,30 @@ public abstract class AbstractEntity {
 		g2d.drawString(character, x, y + AbstractTile.STEP);
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void addHitpoints(int hitpoints) {
+		if(this.hitpoints + hitpoints > hp) {
+			hitpoints = hp;
+		} else {
+			this.hitpoints += hitpoints;
+		}
+		
+		if(this.hitpoints <= 0) {
+			dead = true;
+		}
+	}
+	
+	public boolean isDead() {
+		return dead;
+	}
+	
 //	public void physicalAttack(AbstractEntity e, int baseDamage) {
 //		e.hitpoints -= (level/MAX_LEVEL) * (atk/e.def) * baseDamage; // TODO fix to use float math
 //	}
@@ -104,11 +129,11 @@ public abstract class AbstractEntity {
 		def = (int) (((level * def_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
 		mag = (int) (((level * mag_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
 		
-//		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
-//		System.out.println("HP : " + hp);
-//		System.out.println("ATK : " + atk);
-//		System.out.println("DEF : " + def);
-//		System.out.println("MAG : " + mag);
+		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
+		System.out.println("HP : " + hp);
+		System.out.println("ATK : " + atk);
+		System.out.println("DEF : " + def);
+		System.out.println("MAG : " + mag);
 		
 		if(fillHitpoints) {
 			hitpoints = hp;
@@ -122,14 +147,6 @@ public abstract class AbstractEntity {
 	
 	public int getY() {
 		return y;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getDescription() {
-		return description;
 	}
 	
 	public void setMap(TileMap map) {

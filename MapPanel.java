@@ -88,7 +88,21 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	public void rounds(int r) {
 		map.tick(r);
 		
-		repaint();
+//		int x;
+//		int y;
+//		for(int i = 0; i < map.getUpdateQueue().length; i++) {
+//			x = map.getUpdateQueue()[i][0];
+//			y = map.getUpdateQueue()[i][1];
+//			repaint(this.getWidthCenter() + x*AbstractTile.STEP, this.getHeightCenter() + y*AbstractTile.STEP, AbstractTile.STEP, AbstractTile.STEP);
+//		}
+//		
+//		map.clearUpdateQueue();
+		
+		// repaint tooltip to make sure that the box is the correct size
+		repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
+				
+		// repaint tiles
+		repaint(this.getWidthCenter(), this.getHeightCenter(), viewX + ((viewColumns+1)*AbstractTile.STEP), viewY + ((viewRows+1)*AbstractTile.STEP));
 	}
 
 	/**
