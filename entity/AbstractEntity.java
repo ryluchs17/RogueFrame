@@ -22,7 +22,7 @@ public abstract class AbstractEntity {
 	
 	// Char and Color to display as
 	protected String character;
-	protected Color foreground;
+	protected Color color;
 	
 	// Flavor text
 	protected String name, description;
@@ -61,6 +61,12 @@ public abstract class AbstractEntity {
 	
 	// ! STATS STUFF ENDS !
 	
+	/**
+	 * Creates a new AbstractEntity at (x, y) at the given level
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @param level The level of the AbstractEntity
+	 */
 	public AbstractEntity(int x, int y, int level) {
 		this.x = x;
 		this.y = y;
@@ -83,21 +89,40 @@ public abstract class AbstractEntity {
 	
 	// ! ABSTRACT METHODS END !
 	
+	/**
+	 * Draw the AbstractEntity to the screen
+	 * @param g The graphics object to draw to
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public void draw(Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.setColor(foreground);
+		g2d.setColor(color);
 		g2d.drawString(character, x, y + AbstractTile.STEP);
 	}
 	
+	/**
+	 * Gets the name of this AbstractEnity
+	 * @return The name of this AbstractEntity
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Gets the description of this AbstractEntity
+	 * @return The name of this AbstractEnity
+	 */
 	public String getDescription() {
 		return description;
 	}
 	
+	/**
+	 * Adds the given number to the hitpoints of this AbstractEntity
+	 * The number will not go over the max, if it goes under zero the AbstractEntity is tagged as dead
+	 * @param hitpoints
+	 */
 	public void addHitpoints(int hitpoints) {
 		if(this.hitpoints + hitpoints > hp) {
 			hitpoints = hp;
@@ -110,6 +135,10 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	/**
+	 * Returns whether this AbstractEntity is dead
+	 * @return True if dead
+	 */
 	public boolean isDead() {
 		return dead;
 	}
@@ -122,6 +151,10 @@ public abstract class AbstractEntity {
 //		e.hitpoints -= (level/MAX_LEVEL) * ((mag + e.mag)/(1.75 * e.def)) * baseDamage; // TODO fix to use float math
 //	}
 	
+	/**
+	 * Recalculated the stats of this AbstractEntity
+	 * @param fillHitpoints True if current hitpoints should be set to max after stats are calculated
+	 */
 	public void setStats(boolean fillHitpoints) {
 		hp = (int) ((((level * hp_base) / (MAX_LEVEL / 2)) + level) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
 		
@@ -141,18 +174,36 @@ public abstract class AbstractEntity {
 		
 	}
 	
+	/**
+	 * Get the x-coordinate of this AbstractEntity
+	 * @return The x-coordinate
+	 */
 	public int getX() {
 		return x;
 	}
 	
+	/**
+	 * Get the y-coordinate of this AbstractEntity
+	 * @return The y-coordinate
+	 */
 	public int getY() {
 		return y;
 	}
 	
+	/**
+	 * Sets the TileMap object in which this AbstractEntity exists
+	 * Must be set before an AbstractEntity can exist on-screen
+	 * @param map
+	 */
 	public void setMap(TileMap map) {
 		this.map = map;
 	}
 	
+	/**
+	 * Moves this AbstractEntity one space toward the given point on the map
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public void goTo(int x, int y) {
 		if(this.x < x && this.x + 1 < map.length()) this.x += 1;
 		if(this.x > x && this.x - 1 > 0) this.x -= 1;
@@ -160,6 +211,11 @@ public abstract class AbstractEntity {
 		if(this.y > y && this.y - 1 > 0) this.y -= 1;
 	}
 	
+	/**
+	 * Moves this AbstractEntity one space away from the given point on the map
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public void goFrom(int x, int y) {
 		if(this.x < x && this.x - 1 > 0) this.x -= 1;
 		if(this.x > x && this.x + 1 < map.length()) this.x += 1;

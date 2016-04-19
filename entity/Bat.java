@@ -1,30 +1,35 @@
+/**
+ * 
+ */
 package entity;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.util.Random;
 
-import tile.AbstractTile;
+/**
+ * @author SJHSStudent
+ *
+ */
+public class Bat extends AbstractEntity {
 
-public class Hidden extends AbstractEntity{
 	private Random r = new Random();
 	
 	private int seekX;
 	private int seekY;
-
-	public Hidden(int x, int y, int level) {
+	
+	public Bat(int x, int y, int level) {
 		super(x, y, level);
 		
-		this.character = "H";
-		this.color = Color.BLACK;
+		this.character = "b";
+		this.color = new Color(140, 100, 60);
 		
-		this.name = "Hidden";
-		this.description = "A large black bird that hunts in darkness.";
+		this.name = "Bat";
+		this.description = "A bat! How cute!";
 		
-		this.hp_base = 100;
-		this.atk_base = 125;
-		this.def_base = 52;
-		this.mag_base = 79;
+		this.hp_base = 60;
+		this.atk_base = 75;
+		this.def_base = 40;
+		this.mag_base = 30;
 		
 		setStats(true);
 		
@@ -48,4 +53,5 @@ public class Hidden extends AbstractEntity{
 		
 //		map.updateAt(x, y);
 	}
+
 }

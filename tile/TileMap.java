@@ -1,10 +1,8 @@
 package tile;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
-import entity.AbstractEntity;
-import entity.Hidden;
+import entity.*;
 
 public class TileMap {
 
@@ -69,17 +67,20 @@ public class TileMap {
 
 		for(int y = 0; y < this.rows; y++) {
 			for(int x = 0; x < this.columns; x++) {
-				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Magma(x, y);
+				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Spike(x, y);
 			}
 		}
 		
 //		update = new int[(this.columns*this.rows)/2][2];
 		
-		AbstractEntity e = new Hidden(5, 5, 20);
-		tiles[e.getX()][e.getY()].setOccupant(e);
-		e.setMap(this);
+		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
-		entities.add(e);
+		for(int i = 0; i < 10; i++) {
+			e = new Bat(generate.nextInt(20), generate.nextInt(20), 10);
+			tiles[e.getX()][e.getY()].setOccupant(e);
+			e.setMap(this);
+			entities.add(e);
+		}
 	}
 	
 	/**
