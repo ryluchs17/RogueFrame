@@ -33,8 +33,8 @@ public class Bat extends AbstractEntity {
 		
 		setStats(true);
 		
-		seekX = r.nextInt(15);
-		seekY = r.nextInt(15);
+		seekX = x;
+		seekY = y;
 	}
 	
 	public void onTurn() {
@@ -45,8 +45,8 @@ public class Bat extends AbstractEntity {
 		map.tileAt(x, y).setOccupant(this);
 		
 		if((x == seekX && y == seekY )|| r.nextInt(16) == 8) {
-			seekX = r.nextInt(15);
-			seekY = r.nextInt(15);
+			seekX = r.nextInt(map.length() - 5);
+			seekY = r.nextInt(map.height() - 5);
 		}
 		
 		System.out.println(name + " @ " + x + ", " + y + " hp: " + hitpoints);

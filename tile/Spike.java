@@ -23,7 +23,7 @@ public class Spike extends AbstractTile {
 		solid = false;
 		
 		name = "Spike";
-		description = "Rather pointy...";
+		description = "Rather pointy.";
 	}
 
 	/* (non-Javadoc)
@@ -41,7 +41,10 @@ public class Spike extends AbstractTile {
 	@Override
 	public void onOccupation(AbstractEntity e) {
 		occupant.addHitpoints(-5);
-		if(foreground != Color.RED) foreground = Color.RED;
+		if(foreground != Color.RED) {
+			foreground = Color.RED;
+			description = "That must've hurt...";
+		}
 
 	}
 

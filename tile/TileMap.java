@@ -63,25 +63,76 @@ public class TileMap {
 
 		this.rows = rows; this.columns = columns;
 		
-		tiles = new AbstractTile[this.columns][this.rows]; 
+		tiles = new AbstractTile[this.columns][this.rows];
+		
+		cellularAutomata();
 
-		for(int y = 0; y < this.rows; y++) {
-			for(int x = 0; x < this.columns; x++) {
-				//tiles[x][y] = generate.nextBoolean() ? (generate.nextBoolean() ? new Water(x, y) : new Soil(x, y)) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
-				//tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
-				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Spike(x, y);
-			}
-		}
+//		for(int y = 0; y < this.rows; y++) {
+//			for(int x = 0; x < this.columns; x++) {
+//				//tiles[x][y] = generate.nextBoolean() ? (generate.nextBoolean() ? new Water(x, y) : new Soil(x, y)) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
+//				//tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
+//				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Spike(x, y);
+//			}
+//		}
 		
 //		update = new int[(this.columns*this.rows)/2][2];
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
 		for(int i = 0; i < 10; i++) {
-			e = new Bat(generate.nextInt(20), generate.nextInt(20), 10);
+			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);
 			entities.add(e);
+		}
+	}
+	
+	public void cellularAutomata() {
+		boolean[][] plane = new boolean[columns][rows];
+		boolean[][] nextGen = new boolean[columns][rows];
+		
+		for(int y = 0; y < rows; y++) {
+			for(int x = 0; x < columns; x++) {
+				plane[x][y] = generate.nextBoolean();
+			}
+		}
+		
+		short numberTrue;
+		for(int i = 0; i < 4; i++) {
+			
+			for(int y = 1; y < rows - 1; y++) {
+				for(int x = 1; x < columns - 1; x++) {
+					numberTrue = 0;
+					
+					for(int w = y - 1; w < y + 2; w++) {
+						for(int v = x - 1; v < x + 2; v++) {
+							if(plane[w][v] == true && (w != y && v != x)) {
+								numberTrue++;
+							}
+						}	
+					}
+					
+					if(numberTrue >= 4 && plane[x][y]) {
+						nextGen[x][y] = true;
+					} else if(numberTrue >= 5 && plane[x][y] == false) {
+						nextGen[x][y] = true;
+					}
+						
+				}
+			}
+			
+			for(int y = 1; y < rows - 1; y++) {
+				for(int x = 1; x < columns - 1; x++) {
+					plane[x][y] = nextGen[x][y];
+				}
+			}
+			
+		}
+		
+		for(int y = 0; y < this.rows; y++) {
+			for(int x = 0; x < this.columns; x++) {
+				tiles[x][y] = plane[x][y] ? new Soil(x, y) : new Spike(x, y);
+			}
 		}
 	}
 	
