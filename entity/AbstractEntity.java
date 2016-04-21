@@ -162,11 +162,11 @@ public abstract class AbstractEntity {
 		def = (int) (((level * def_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
 		mag = (int) (((level * mag_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
 		
-		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
-		System.out.println("HP : " + hp);
-		System.out.println("ATK : " + atk);
-		System.out.println("DEF : " + def);
-		System.out.println("MAG : " + mag);
+//		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
+//		System.out.println("HP : " + hp);
+//		System.out.println("ATK : " + atk);
+//		System.out.println("DEF : " + def);
+//		System.out.println("MAG : " + mag);
 		
 		if(fillHitpoints) {
 			hitpoints = hp;

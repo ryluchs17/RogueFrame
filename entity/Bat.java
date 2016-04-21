@@ -49,7 +49,7 @@ public class Bat extends AbstractEntity {
 			seekY = r.nextInt(map.height() - 5);
 		}
 		
-		System.out.println(name + " @ " + x + ", " + y + " hp: " + hitpoints);
+//		System.out.println(name + " @ " + x + ", " + y + " hp: " + hitpoints);
 		
 //		map.updateAt(x, y);
 	}
