@@ -15,14 +15,14 @@ public class Cartographer {
 	public static long seed = 0;
 	
 	// defaults
-	public static final short TILE_DEFAULT_SPACE = 0;
-	public static final short TILE_DEFAULT_WALL = 1;
+	public static final short T_DEFAULT_SPACE = 0;
+	public static final short T_DEFAULT_WALL = 1;
 	
 	// other tiles
-	public static final short TILE_SOIL = 2;
-	public static final short TILE_WATER = 3;
-	public static final short TILE_SPIKE = 4;
-	public static final short TILE_MAGMA = 5;
+	public static final short T_SOIL = 2;
+	public static final short T_WATER = 3;
+	public static final short T_SPIKE = 4;
+	public static final short T_MAGMA = 5;
 	
 	public static boolean isFilled(short id) {
 		return (id % 2) == 1;
@@ -33,25 +33,25 @@ public class Cartographer {
 		
 		switch(id) {
 		
-			case TILE_DEFAULT_SPACE:
+			case T_DEFAULT_SPACE:
 				break;
 				
-			case TILE_DEFAULT_WALL:
+			case T_DEFAULT_WALL:
 				break;
 				
-			case TILE_SOIL:
+			case T_SOIL:
 				tile = new Soil(x, y);
 				break;
 				
-			case TILE_WATER:
+			case T_WATER:
 				tile = new Water(x, y);
 				break;
 			
-			case TILE_SPIKE:
+			case T_SPIKE:
 				tile = new Spike(x, y);
 				break;
 				
-			case TILE_MAGMA:
+			case T_MAGMA:
 				tile = new Magma(x, y);
 				break;
 			

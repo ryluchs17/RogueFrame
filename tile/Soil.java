@@ -12,7 +12,7 @@ public class Soil extends AbstractTile {
 		foreground = new Color(100, 50, 0);
 		background = Color.YELLOW;
 		
-		unpassable = false;
+		passable = true;
 		
 		name = "Soil";
 		description = "Soft, loamy soil.";

@@ -17,6 +17,8 @@ public class Bat extends AbstractEntity {
 	private int seekX;
 	private int seekY;
 	
+	private int sedentaryFor = 0;
+	
 	public Bat(int x, int y, int level) {
 		super(x, y, level);
 		
@@ -40,13 +42,14 @@ public class Bat extends AbstractEntity {
 	public void onTurn() {
 //		map.updateAt(x, y);
 		
-		map.tileAt(x, y).setOccupant(null);
-		goTo(seekX, seekY);
-		map.tileAt(x, y).setOccupant(this);
+		if(goTo(seekX, seekY)) sedentaryFor++;
 		
-		if((x == seekX && y == seekY )|| r.nextInt(16) == 8 || map.tileAt(seekX, seekY).isUnpassable()) {
-			seekX = r.nextInt(map.length() - 5);
-			seekY = r.nextInt(map.height() - 5);
+		System.out.println(sedentaryFor);
+		
+		if((x == seekX && y == seekY )|| sedentaryFor >= 1 || !map.tileAt(seekX, seekY).isPassable()) {
+			seekX = r.nextInt(map.length() - 1);
+			seekY = r.nextInt(map.height() - 1);
+			sedentaryFor = 0;
 		}
 		
 //		System.out.println(name + " @ " + x + ", " + y + " hp: " + hitpoints);

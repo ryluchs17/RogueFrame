@@ -203,12 +203,34 @@ public abstract class AbstractEntity {
 	 * Moves this AbstractEntity one space toward the given point on the map
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
+	 * @return true if the AbstractEntity has moved
 	 */
-	public void goTo(int x, int y) {
-		if(this.x < x && this.x + 1 < map.length() && !(map.tileAt(x, y).isUnpassable())) this.x += 1;
-		if(this.x > x && this.x - 1 > 0 && !(map.tileAt(x, y).isUnpassable())) this.x -= 1;
-		if(this.y < y && this.y + 1 < map.height() && !(map.tileAt(x, y).isUnpassable())) this.y += 1;
-		if(this.y > y && this.y - 1 > 0 && !(map.tileAt(x, y).isUnpassable())) this.y -= 1;
+	public boolean goTo(int x, int y) {
+		int originalX = this.x;
+		int originalY = this.y;
+		
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
+		if(this.x < x && this.x + 1 < map.length()) {
+			if(map.tileAt(this.x + 1, this.y).canEnter()) this.x += 1;
+		}
+		if(this.x > x && this.x - 1 > 0){
+			if(map.tileAt(this.x - 1, this.y).canEnter()) this.x -= 1;
+		}
+		if(this.y < y && this.y + 1 < map.height()){
+			if(map.tileAt(this.x, this.y + 1).canEnter()) this.y += 1;
+		}
+		if(this.y > y && this.y - 1 > 0){
+			if(map.tileAt(this.x, this.y - 1).canEnter()) this.y -= 1;
+		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
+		
+		if(this.x == originalX || this.y == originalY) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	/**

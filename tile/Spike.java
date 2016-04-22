@@ -20,7 +20,7 @@ public class Spike extends AbstractTile {
 		foreground = Color.GRAY;
 		background = Color.BLACK;
 		
-		unpassable = false;
+		passable = true;
 		
 		name = "Spike";
 		description = "Rather pointy.";

@@ -22,7 +22,7 @@ public class Magma extends AbstractTile {
 		foreground = Color.ORANGE;
 		background = Color.RED;
 		
-		unpassable = false;
+		passable = true;
 		
 		name = "Magma";
 		description = "Don't touch the floor.";

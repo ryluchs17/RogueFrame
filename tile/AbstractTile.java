@@ -25,7 +25,7 @@ public abstract class AbstractTile {
 	protected String name, description;
 	
 	// Determines if entities can pass through it
-	protected boolean unpassable;
+	protected boolean passable;
 	
 	// Determines whether or not to display background instead of the tile
 	protected boolean covered = false;
@@ -179,8 +179,8 @@ public abstract class AbstractTile {
 	 * Returns whether the tile is solid
 	 * @return Whether the tile is solid
 	 */
-	public boolean isUnpassable() {
-		return unpassable;
+	public boolean isPassable() {
+		return passable;
 	}
 
 	/**
@@ -212,7 +212,9 @@ public abstract class AbstractTile {
 	 * @param A the mob to enter the tile
 	 * @return Whether the tile is free to move into or not
 	 */
-	public boolean canEnter(AbstractEntity m) {
-		return !(this.isOccupied() || this.isUnpassable());
+	public boolean canEnter() {
+		return (!this.isOccupied()) && this.isPassable();
+//		return true;
+//		return unpassable;
 	}
 }

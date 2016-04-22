@@ -20,7 +20,7 @@ public class DefWall extends AbstractTile {
 		foreground = Color.WHITE;
 		background = Color.BLACK;
 		
-		unpassable = true;
+		passable = false;
 		
 		name = "Wall";
 		description = "A sturdy wall.";
