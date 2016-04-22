@@ -21,11 +21,15 @@ public class Cartographer {
 	// other tiles
 	public static final short TILE_SOIL = 2;
 	public static final short TILE_WATER = 3;
-	public static final short TILE_MAGMA = 4;
-	public static final short TILE_SPIKE = 5;
+	public static final short TILE_SPIKE = 4;
+	public static final short TILE_MAGMA = 5;
+	
+	public static boolean isFilled(short id) {
+		return (id % 2) == 1;
+	}
 	
 	public static AbstractTile makeTile(short id, int x, int y) {
-		AbstractTile tile;
+		AbstractTile tile = null;
 		
 		switch(id) {
 		
@@ -40,17 +44,33 @@ public class Cartographer {
 				break;
 				
 			case TILE_WATER:
-			case TILE_MAGMA:
+				tile = new Water(x, y);
+				break;
+			
 			case TILE_SPIKE:
+				tile = new Spike(x, y);
+				break;
+				
+			case TILE_MAGMA:
+				tile = new Magma(x, y);
+				break;
+			
+			default:
+				tile = new Soil(x, y);
+				break;
 		}
+		
+		return tile;
 	}
 	
-	public static AbstractTile[][] createMapFromBooleanArray(boolean[][] array) {
+	public static AbstractTile[][] createMapFromBooleanArray(int columns, int rows) {
+		boolean[][] array = cellularAutomata(columns, rows);
+		
 		AbstractTile[][] map = new AbstractTile[array.length][array[0].length];
 		
 		for(int y = 0; y < array[0].length; y++) {
 			for(int x = 0; x < array.length; x++) {
-				map[x][y] = array[x][y] ? new Spike(x, y) : new Soil(x, y);
+				map[x][y] = array[x][y] ? new DefWall(x, y) : new Soil(x, y);
 			}
 		}
 		

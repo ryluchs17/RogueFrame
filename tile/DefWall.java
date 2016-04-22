@@ -8,22 +8,22 @@ import java.awt.Color;
 import entity.AbstractEntity;
 
 /**
- * @author SJHSStudent
+ * @author ryan
  *
  */
-public class Spike extends AbstractTile {
+public class DefWall extends AbstractTile {
 
-	public Spike(int x, int y) {
+	public DefWall(int x, int y) {
 		super(x, y);
 
-		character = "^";
-		foreground = Color.GRAY;
+		character = "#";
+		foreground = Color.WHITE;
 		background = Color.BLACK;
 		
-		unpassable = false;
+		unpassable = true;
 		
-		name = "Spike";
-		description = "Rather pointy.";
+		name = "Wall";
+		description = "A sturdy wall.";
 	}
 
 	/* (non-Javadoc)
@@ -40,11 +40,7 @@ public class Spike extends AbstractTile {
 	 */
 	@Override
 	public void onOccupation(AbstractEntity e) {
-		occupant.addHitpoints(-5);
-		if(foreground != Color.RED) {
-			foreground = Color.RED;
-			description = "That must've hurt...";
-		}
+		// TODO Auto-generated method stub
 
 	}
 

@@ -12,7 +12,7 @@ public class Water extends AbstractTile {
 		foreground = Color.WHITE;
 		background = Color.BLUE;
 		
-		solid = false;
+		unpassable = false;
 		
 		name = "Water";
 		description = "Water of indeterminate depth.";

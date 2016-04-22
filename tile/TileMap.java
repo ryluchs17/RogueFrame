@@ -42,7 +42,7 @@ public class TileMap {
 		this.rows = rows; this.columns = columns;
 		
 		Cartographer.seed = generate.nextLong();
-		tiles = Cartographer.createMapFromBooleanArray(Cartographer.cellularAutomata(columns, rows)); 
+		tiles = Cartographer.createMapFromBooleanArray(columns, rows); 
 
 		//cellularAutomata();
 		
@@ -70,7 +70,7 @@ public class TileMap {
 		this.rows = rows; this.columns = columns;
 		
 		Cartographer.seed = seed;
-		tiles = Cartographer.createMapFromBooleanArray(Cartographer.cellularAutomata(columns, rows));
+		tiles = Cartographer.createMapFromBooleanArray(columns, rows);
 
 //		for(int y = 0; y < this.rows; y++) {
 //			for(int x = 0; x < this.columns; x++) {

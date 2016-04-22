@@ -205,10 +205,10 @@ public abstract class AbstractEntity {
 	 * @param y The y-coordinate
 	 */
 	public void goTo(int x, int y) {
-		if(this.x < x && this.x + 1 < map.length()) this.x += 1;
-		if(this.x > x && this.x - 1 > 0) this.x -= 1;
-		if(this.y < y && this.y + 1 < map.height()) this.y += 1;
-		if(this.y > y && this.y - 1 > 0) this.y -= 1;
+		if(this.x < x && this.x + 1 < map.length() && !(map.tileAt(x, y).isUnpassable())) this.x += 1;
+		if(this.x > x && this.x - 1 > 0 && !(map.tileAt(x, y).isUnpassable())) this.x -= 1;
+		if(this.y < y && this.y + 1 < map.height() && !(map.tileAt(x, y).isUnpassable())) this.y += 1;
+		if(this.y > y && this.y - 1 > 0 && !(map.tileAt(x, y).isUnpassable())) this.y -= 1;
 	}
 	
 	/**

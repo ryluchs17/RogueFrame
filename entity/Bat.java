@@ -44,7 +44,7 @@ public class Bat extends AbstractEntity {
 		goTo(seekX, seekY);
 		map.tileAt(x, y).setOccupant(this);
 		
-		if((x == seekX && y == seekY )|| r.nextInt(16) == 8) {
+		if((x == seekX && y == seekY )|| r.nextInt(16) == 8 || map.tileAt(seekX, seekY).isUnpassable()) {
 			seekX = r.nextInt(map.length() - 5);
 			seekY = r.nextInt(map.height() - 5);
 		}
