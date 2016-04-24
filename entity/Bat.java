@@ -42,11 +42,9 @@ public class Bat extends AbstractEntity {
 	public void onTurn() {
 //		map.updateAt(x, y);
 		
-		if(goTo(seekX, seekY)) sedentaryFor++;
+		if(!goTo(seekX, seekY)) sedentaryFor++;
 		
-		System.out.println(sedentaryFor);
-		
-		if((x == seekX && y == seekY )|| sedentaryFor >= 1 || !map.tileAt(seekX, seekY).isPassable()) {
+		if((x == seekX && y == seekY )|| sedentaryFor >= 5 || !map.tileAt(seekX, seekY).isPassable()) {
 			seekX = r.nextInt(map.length() - 1);
 			seekY = r.nextInt(map.height() - 1);
 			sedentaryFor = 0;

@@ -3,6 +3,7 @@ package tile;
 import java.util.ArrayList;
 import java.util.Random;
 import entity.*;
+import gen.Cartographer;
 
 public class TileMap {
 
@@ -41,10 +42,11 @@ public class TileMap {
 
 		this.rows = rows; this.columns = columns;
 		
-		Cartographer.seed = generate.nextLong();
-		tiles = Cartographer.createMapFromBooleanArray(columns, rows); 
-
-		//cellularAutomata();
+		seed = generate.nextLong();
+		
+		Cartographer.r = new Random(seed);
+		//tiles = Cartographer.createClassicMap(columns, rows);
+		tiles = Cartographer.createFort(columns, rows); 
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
@@ -69,16 +71,9 @@ public class TileMap {
 
 		this.rows = rows; this.columns = columns;
 		
-		Cartographer.seed = seed;
-		tiles = Cartographer.createMapFromBooleanArray(columns, rows);
-
-//		for(int y = 0; y < this.rows; y++) {
-//			for(int x = 0; x < this.columns; x++) {
-//				//tiles[x][y] = generate.nextBoolean() ? (generate.nextBoolean() ? new Water(x, y) : new Soil(x, y)) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
-//				//tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : (generate.nextBoolean() ? new Magma(x, y) : new Spike(x, y));
-//				tiles[x][y] = generate.nextBoolean() ? new Soil(x, y) : new Spike(x, y);
-//			}
-//		}
+		Cartographer.r = new Random(seed);
+		//tiles = Cartographer.createClassicMap(columns, rows);
+		tiles = Cartographer.createFort(columns, rows);
 		
 //		update = new int[(this.columns*this.rows)/2][2];
 		

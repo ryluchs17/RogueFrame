@@ -199,6 +199,46 @@ public abstract class AbstractEntity {
 		this.map = map;
 	}
 	
+//	public boolean goLeft() {
+//		if(x - 1 > 0) {
+//			if(map.tileAt(x, y).canEnter()) {
+//				x -= 1;
+//				return true;
+//			}	
+//		}
+//		return false;
+//	}
+//	
+//	public boolean goRight() {
+//		if(x + 1 > 0) {
+//			if(map.tileAt(x, y).canEnter()) {
+//				x += 1;
+//				return true;
+//			}	
+//		}
+//		return false;
+//	}
+//	
+//	public boolean goUp() {
+//		if(y - 1 > 0) {
+//			if(map.tileAt(x, y).canEnter()) {
+//				x -= 1;
+//				return true;
+//			}	
+//		}
+//		return false;
+//	}
+//	
+//	public boolean goDown() {
+//		if(y + 1 < map.height()) {
+//			if(map.tileAt(x, y).canEnter()) {
+//				y += 1;
+//				return true;
+//			}	
+//		}
+//		return false;
+//	}
+	
 	/**
 	 * Moves this AbstractEntity one space toward the given point on the map
 	 * @param x The x-coordinate
@@ -206,31 +246,38 @@ public abstract class AbstractEntity {
 	 * @return true if the AbstractEntity has moved
 	 */
 	public boolean goTo(int x, int y) {
-		int originalX = this.x;
-		int originalY = this.y;
+		boolean moved = false;
 		
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
 		if(this.x < x && this.x + 1 < map.length()) {
-			if(map.tileAt(this.x + 1, this.y).canEnter()) this.x += 1;
+			if(map.tileAt(this.x + 1, this.y).canEnter()) {
+				this.x += 1;
+				moved = true;
+			}
 		}
 		if(this.x > x && this.x - 1 > 0){
-			if(map.tileAt(this.x - 1, this.y).canEnter()) this.x -= 1;
+			if(map.tileAt(this.x - 1, this.y).canEnter()) {
+				this.x -= 1;
+				moved = true;
+			}
 		}
 		if(this.y < y && this.y + 1 < map.height()){
-			if(map.tileAt(this.x, this.y + 1).canEnter()) this.y += 1;
+			if(map.tileAt(this.x, this.y + 1).canEnter()) {
+				this.y += 1;
+				moved = true;
+			}
 		}
 		if(this.y > y && this.y - 1 > 0){
-			if(map.tileAt(this.x, this.y - 1).canEnter()) this.y -= 1;
+			if(map.tileAt(this.x, this.y - 1).canEnter()) {
+				this.y -= 1;
+				moved = true;
+			}
 		}
 		
 		map.tileAt(this.x, this.y).setOccupant(this);
 		
-		if(this.x == originalX || this.y == originalY) {
-			return false;
-		} else {
-			return true;
-		}
+		return moved;
 	}
 	
 	/**

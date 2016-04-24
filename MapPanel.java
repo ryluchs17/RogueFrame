@@ -85,6 +85,11 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		this.addMouseMotionListener(this);
 	}
 	
+	public void setMap(TileMap map) {
+		this.map = map;
+		repaint();
+	}
+	
 	public void rounds(int r) {
 		map.tick(r);
 		

@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import tile.TileMap;
+
 /**
  * @author ryan
  *
@@ -19,6 +21,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 	//private MapPanel map = new MapPanel(20, 20, 15, 15, 420L);
 	//private MapPanel map = new MapPanel(100, 100, 40, 40, 420L);
 	private MapPanel map = new MapPanel(length, height, 35, 35);
+	//private MapPanel map = new MapPanel(length, height, 35, 35, 42L);
 	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
 	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
 	
@@ -52,6 +55,10 @@ public class RoguePanel extends JPanel implements KeyListener{
 		add(panel, BorderLayout.SOUTH);
 		
 		setSize(getPreferredSize());
+	}
+	
+	public void regenerateMap() {
+		map.setMap(new TileMap(length, height));
 	}
 
 	@Override

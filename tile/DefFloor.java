@@ -11,19 +11,19 @@ import entity.AbstractEntity;
  * @author ryan
  *
  */
-public class DefWall extends AbstractTile {
+public class DefFloor extends AbstractTile {
 
-	public DefWall(int x, int y) {
+	public DefFloor(int x, int y) {
 		super(x, y);
-
-		character = "#";
-		foreground = Color.WHITE;
-		background = Color.BLACK; //new Color(128, 0, 0);
 		
-		passable = false;
+		character = ".";
+		foreground = new Color(255, 255, 255);
+		background = Color.BLACK;
 		
-		name = "Wall";
-		description = "A sturdy wall.";
+		passable = true;
+		
+		name = "Floor";
+		description = "Unremarkable";
 	}
 
 	/* (non-Javadoc)
