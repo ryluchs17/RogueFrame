@@ -22,7 +22,7 @@ public class Water extends AbstractTile {
 
 	}
 
-	public void onOccupation(AbstractEntity m) {
+	public void onOccupation() {
 
 	}
 	

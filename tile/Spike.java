@@ -39,11 +39,15 @@ public class Spike extends AbstractTile {
 	 * @see tile.AbstractTile#onOccupation(entity.AbstractEntity)
 	 */
 	@Override
-	public void onOccupation(AbstractEntity e) {
-		occupant.addHitpoints(-5);
-		if(foreground != Color.RED) {
-			foreground = Color.RED;
-			description = "That must've hurt...";
+	public void onOccupation() {
+		// if grounded damage
+		if(occupant.grounded) {
+			occupant.addHitpoints(-5);
+			// if stepped on and not red turn red
+			if(foreground != Color.RED) {
+				foreground = Color.RED;
+				description = "That must've hurt...";
+			}
 		}
 
 	}

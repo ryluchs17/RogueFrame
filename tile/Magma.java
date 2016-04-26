@@ -41,8 +41,12 @@ public class Magma extends AbstractTile {
 	 * @see tile.AbstractTile#onOccupation(entity.AbstractEntity)
 	 */
 	@Override
-	public void onOccupation(AbstractEntity e) {
-		occupant.addHitpoints(-10);
+	public void onOccupation() {
+		if(occupant.grounded) {
+			occupant.kill();
+		} else {
+			occupant.addHitpoints(-10);
+		}
 
 	}
 
@@ -56,7 +60,7 @@ public class Magma extends AbstractTile {
 		background = colorState ? Color.ORANGE : Color.RED;
 		
 		if(occupant != null) {
-			onOccupation(occupant);
+			occupant.addHitpoints(-10);
 		}
 
 	}

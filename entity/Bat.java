@@ -28,6 +28,8 @@ public class Bat extends AbstractEntity {
 		this.name = "Bat";
 		this.description = "A bat! How cute!";
 		
+		grounded = false;
+		
 		this.hp_base = 60;
 		this.atk_base = 75;
 		this.def_base = 40;

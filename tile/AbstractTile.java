@@ -71,7 +71,7 @@ public abstract class AbstractTile {
 	/**
 	 * What happens to an mob initially occupies this tile
 	 */
-	abstract public void onOccupation(AbstractEntity e);
+	abstract public void onOccupation();
 	
 	/**
 	 * What happens to the tile each turn regardless of conditions
@@ -159,7 +159,7 @@ public abstract class AbstractTile {
 	public void setOccupant(AbstractEntity e) {
 		occupant = e;
 		if(occupant != null) {
-			onOccupation(occupant);
+			onOccupation();
 		}
 	}
 	

@@ -39,7 +39,7 @@ public class DefFloor extends AbstractTile {
 	 * @see tile.AbstractTile#onOccupation(entity.AbstractEntity)
 	 */
 	@Override
-	public void onOccupation(AbstractEntity e) {
+	public void onOccupation() {
 		// TODO Auto-generated method stub
 
 	}

@@ -17,6 +17,19 @@ public abstract class AbstractEntity {
 	// XY position on the grid
 	protected int x, y;
 	
+	public static final short EAST = 0;
+	public static final short WEST = 1;
+	public static final short SOUTH = 2;
+	public static final short NORTH = 3;
+
+//	public static final short SOUTH = 0;
+//	public static final short NORTH = 0;
+//	public static final short EAST = 0;
+//	public static final short WEST = 0;
+	
+	// Direction the entity is facing
+	protected short facing = NORTH;
+	
 	// The map within which this AbstractEntity exists
 	protected TileMap map;
 	
@@ -27,11 +40,11 @@ public abstract class AbstractEntity {
 	// Flavor text
 	protected String name, description;
 	
-	// Determines whether the mob interacts with solid objects
-	protected boolean tangible = true;
-	
 	// Determines whether or not to display the tile under the mob
-	protected boolean visible = true;	
+	public boolean visible = true;	
+	
+	// Determines whether the enitity actually makes contact with the tile below it
+	public boolean grounded = true;
 
 	// ! STATS STUFF BEGINS !
 	
@@ -175,6 +188,13 @@ public abstract class AbstractEntity {
 	}
 	
 	/**
+	 * Kills the AbstractEntity
+	 */
+	public void kill() {
+		dead = true;
+	}
+	
+	/**
 	 * Get the x-coordinate of this AbstractEntity
 	 * @return The x-coordinate
 	 */
@@ -285,11 +305,44 @@ public abstract class AbstractEntity {
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
 	 */
-	public void goFrom(int x, int y) {
-		if(this.x < x && this.x - 1 > 0) this.x -= 1;
-		if(this.x > x && this.x + 1 < map.length()) this.x += 1;
-		if(this.y < y && this.y - 1 > 0) this.y -= 1;
-		if(this.y > y && this.y + 1 < map.height()) this.y += 1;
+	public boolean avoid(int x, int y) {
+//		if(this.x < x && this.x - 1 > 0) this.x -= 1;
+//		if(this.x > x && this.x + 1 < map.length()) this.x += 1;
+//		if(this.y < y && this.y - 1 > 0) this.y -= 1;
+//		if(this.y > y && this.y + 1 < map.height()) this.y += 1;
+		
+		boolean moved = false;
+		
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
+		if(this.x > x && this.x + 1 < map.length()) {
+			if(map.tileAt(this.x + 1, this.y).canEnter()) {
+				this.x += 1;
+				moved = true;
+			}
+		}
+		if(this.x < x && this.x - 1 > 0){
+			if(map.tileAt(this.x - 1, this.y).canEnter()) {
+				this.x -= 1;
+				moved = true;
+			}
+		}
+		if(this.y > y && this.y + 1 < map.height()){
+			if(map.tileAt(this.x, this.y + 1).canEnter()) {
+				this.y += 1;
+				moved = true;
+			}
+		}
+		if(this.y < y && this.y - 1 > 0){
+			if(map.tileAt(this.x, this.y - 1).canEnter()) {
+				this.y -= 1;
+				moved = true;
+			}
+		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
+		
+		return moved;
 	}
 	
 	

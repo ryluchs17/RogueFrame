@@ -20,7 +20,8 @@ public class RoguePanel extends JPanel implements KeyListener{
 	//private MapPanel map = new MapPanel(length, height, 18, 12, 420L);
 	//private MapPanel map = new MapPanel(20, 20, 15, 15, 420L);
 	//private MapPanel map = new MapPanel(100, 100, 40, 40, 420L);
-	private MapPanel map = new MapPanel(length, height, 35, 35);
+	private MapPanel map = new MapPanel(length, height, 35, 30);
+	//private MapPanel map = new MapPanel(length, height, 35, 35);
 	//private MapPanel map = new MapPanel(length, height, 35, 35, 42L);
 	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
 	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
