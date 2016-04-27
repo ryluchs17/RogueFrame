@@ -17,15 +17,15 @@ public abstract class AbstractEntity {
 	// XY position on the grid
 	protected int x, y;
 	
-	public static final short EAST = 0;
-	public static final short WEST = 1;
-	public static final short SOUTH = 2;
-	public static final short NORTH = 3;
-
-//	public static final short SOUTH = 0;
-//	public static final short NORTH = 0;
-//	public static final short EAST = 0;
-//	public static final short WEST = 0;
+	public static final short NORTH = 0;
+	public static final short SOUTH = 1;
+	public static final short EAST  = 2;
+	public static final short WEST  = 3;
+	
+	public static final short NORTHEAST = 4;
+	public static final short NORTHWEST = 5;
+	public static final short SOUTHEAST = 6;
+	public static final short SOUTHWEST = 7;
 	
 	// Direction the entity is facing
 	protected short facing = NORTH;
@@ -270,22 +270,37 @@ public abstract class AbstractEntity {
 		
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
-		if(this.x < x && this.x + 1 < map.length()) {
-			if(map.tileAt(this.x + 1, this.y).canEnter()) {
-				this.x += 1;
-				moved = true;
-			}
-		}
 		if(this.x > x && this.x - 1 > 0){
 			if(map.tileAt(this.x - 1, this.y).canEnter()) {
 				this.x -= 1;
 				moved = true;
+				
+				facing = NORTH;
+			}
+		}
+		if(this.x < x && this.x + 1 < map.length()) {
+			if(map.tileAt(this.x + 1, this.y).canEnter()) {
+				this.x += 1;
+				moved = true;
+				
+				facing = SOUTH;
 			}
 		}
 		if(this.y < y && this.y + 1 < map.height()){
 			if(map.tileAt(this.x, this.y + 1).canEnter()) {
 				this.y += 1;
 				moved = true;
+				
+				if(moved) {
+					if(facing == NORTH) {
+						facing = NORTHEAST;
+					}
+					if(facing == SOUTH) {
+						facing = SOUTHEAST;
+					}
+				} else {
+					facing = EAST;
+				}
 			}
 		}
 		if(this.y > y && this.y - 1 > 0){
