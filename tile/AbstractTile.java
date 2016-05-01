@@ -27,6 +27,9 @@ public abstract class AbstractTile {
 	// Determines if entities can pass through it
 	protected boolean passable;
 	
+	// Determines if this tile should be avoided by ai
+	protected boolean avoid = false; 
+	
 	// Determines whether or not to display background instead of the tile
 	protected boolean covered = false;
 	
@@ -69,9 +72,14 @@ public abstract class AbstractTile {
 	abstract public void onInteraction(AbstractEntity e);
 	
 	/**
-	 * What happens to an mob initially occupies this tile
+	 * What happens to an entity initially occupies this tile
 	 */
-	abstract public void onOccupation();
+	abstract public void onEntry();
+	
+	/**
+	 * What happens to an entity that leaves this tile
+	 */
+	abstract public void onExit();
 	
 	/**
 	 * What happens to the tile each turn regardless of conditions
@@ -100,6 +108,10 @@ public abstract class AbstractTile {
 			g2d.drawString(character, x, y + STEP);
 		}
 		
+		if(covered) {
+			g2d.setColor(Color.CYAN);
+			g2d.drawString("X", x, y + STEP);
+		}
 	}
 	
 	/**
@@ -123,7 +135,7 @@ public abstract class AbstractTile {
 			g2d.setColor(Color.WHITE);
 			
 			// draw in text in white		
-			g2d.drawString(occupant.getName() + ":", x + STEP * 2, y + STEP + 2);
+			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
 			g2d.drawString(occupant.getDescription(), x + STEP * 2, y + STEP * 2 + 2);
 			
 			// draw white rectangle as border
@@ -139,12 +151,46 @@ public abstract class AbstractTile {
 			g2d.setColor(Color.WHITE);
 			
 			// draw in text in white		
-			g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
+			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
 			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
 			
 			// draw white rectangle as border
 			g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
 		}
+		
+//		if(occupant != null) {
+//			// make an empty black square to put text in
+//			g2d.setColor(Color.BLACK);
+//			g2d.fillRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+//			
+//			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
+//			
+//			// prepare to draw text and border
+//			g2d.setColor(Color.WHITE);
+//			
+//			// draw in text in white		
+//			g2d.drawString(occupant.getName() + ":", x + STEP * 2, y + STEP + 2);
+//			g2d.drawString(occupant.getDescription(), x + STEP * 2, y + STEP * 2 + 2);
+//			
+//			// draw white rectangle as border
+//			g2d.drawRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+//		} else {
+//			// make an empty black square to put text in
+//			g2d.setColor(Color.BLACK);
+//			g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+//			
+//			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
+//			
+//			// prepare to draw text and border
+//			g2d.setColor(Color.WHITE);
+//			
+//			// draw in text in white		
+//			g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
+//			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
+//			
+//			// draw white rectangle as border
+//			g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+//		}
 		
 	}
 	
@@ -157,9 +203,12 @@ public abstract class AbstractTile {
 	}
 	
 	public void setOccupant(AbstractEntity e) {
+		if(occupant != null) {
+			onExit();
+		}
 		occupant = e;
 		if(occupant != null) {
-			onOccupation();
+			onEntry();
 		}
 	}
 	
@@ -212,9 +261,15 @@ public abstract class AbstractTile {
 	 * @param A the mob to enter the tile
 	 * @return Whether the tile is free to move into or not
 	 */
-	public boolean canEnter() {
-		return (!this.isOccupied()) && this.isPassable();
-//		return true;
-//		return unpassable;
+	public boolean canEnter(AbstractEntity e) {
+		
+		/*
+		 * is hazard true and ignore hazard true == true
+		 * is hazard false and ignore hazard true == true
+		 * is hazard true and ignore hazard false == false
+		 * is hazard false and ignore hazard false == true
+		 */
+		
+		return (!this.isOccupied()) && this.isPassable() && (e.ignore ? true : !avoid);
 	}
 }

@@ -91,6 +91,13 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	}
 	
 	public void rounds(int r) {
+		
+		for(int x = 0, y = 0; y < map.height(); y++) {
+			for(x = 0; x < map.length(); x++) {
+				map.tileAt(x, y).setCovered(false);
+			}
+		}
+		
 		map.tick(r);
 		
 //		int x;
@@ -179,8 +186,8 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		super.paintComponent(g);
 		//g.setFont(font);
 		
-		for(int y = 0; y < viewRows; y++) {
-			for(int x = 0; x < viewColumns; x++) {
+		for(int x = 0, y = 0; y < viewRows; y++) {
+			for(x = 0; x < viewColumns; x++) {
 //				g.setColor(tiles[viewX + x][viewY + y].background);
 //				g.fillRect(getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP, AbstractTile.STEP, AbstractTile.STEP);
 //				g.setColor(tiles[viewX + x][viewY + y].foreground);

@@ -46,11 +46,14 @@ public class TileMap {
 		
 		Cartographer.r = new Random(seed);
 		//tiles = Cartographer.createClassicMap(columns, rows);
-		tiles = Cartographer.createFort(columns, rows); 
+		//tiles = Cartographer.createFort(columns, rows);
+		//tiles = Cartographer.createSafeMap(columns, rows);
+		//tiles = Cartographer.createMaze(columns, rows);
+		tiles = Cartographer.createTest(columns, rows);
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 2; i++) {
 			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);
@@ -101,6 +104,16 @@ public class TileMap {
 	 */
 	public int height() {
 		return rows;
+	}
+	
+	/**
+	 * Returns whether the map contains a given point (x, y)
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @return True if the map contains (x, y)
+	 */
+	public boolean contains(int x, int y) {
+		return x > 0 && x < columns && y > 0 && y < rows;
 	}
 	
 	/**

@@ -43,8 +43,11 @@ public abstract class AbstractEntity {
 	// Determines whether or not to display the tile under the mob
 	public boolean visible = true;	
 	
-	// Determines whether the enitity actually makes contact with the tile below it
+	// Determines whether the entity actually makes contact with the tile below it
 	public boolean grounded = true;
+	
+	// Determines whether or not the entity ignores "avoid" tiles
+	public boolean ignore = false;
 
 	// ! STATS STUFF BEGINS !
 	
@@ -72,6 +75,9 @@ public abstract class AbstractEntity {
 	// base damage with physical and magical attacks
 	protected int base_physical_damage = 0, base_magic_damage = 0;
 	
+//	protected int str, def, mag, res, skl, spd, dp, dm;
+//	protected int m_str, m_def, m_mag, m_res, m_skl, m_spd;
+	
 	// ! STATS STUFF ENDS !
 	
 	/**
@@ -96,7 +102,7 @@ public abstract class AbstractEntity {
 	// ! ABSTRACT METHODS BEGIN !
 	
 	/**
-	 * The AbtractEntitie's action each turn
+	 * The AbtractEntity's action each turn
 	 */
 	abstract public void onTurn();
 	
@@ -113,6 +119,36 @@ public abstract class AbstractEntity {
 		
 		g2d.setColor(color);
 		g2d.drawString(character, x, y + AbstractTile.STEP);
+		
+//		g2d.setColor(Color.CYAN);
+//		switch(facing) {
+//			case NORTH:
+//				g2d.drawLine(x + AbstractTile.STEP/2, y, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			case SOUTH:
+//				g2d.drawLine(x + AbstractTile.STEP/2, y + AbstractTile.STEP, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			case EAST:
+//				g2d.drawLine(x + AbstractTile.STEP, y + AbstractTile.STEP/2, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			case WEST:
+//				g2d.drawLine(x, y + AbstractTile.STEP/2, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			case NORTHEAST:
+//				g2d.drawLine(x + AbstractTile.STEP, y, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			case NORTHWEST:
+//				g2d.drawLine(x, y, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			case SOUTHEAST:
+//				g2d.drawLine(x + AbstractTile.STEP, y + AbstractTile.STEP, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			case SOUTHWEST:
+//				g2d.drawLine(x, y + AbstractTile.STEP, x + AbstractTile.STEP/2, y + AbstractTile.STEP/2);
+//				break;
+//			default:
+//				break;
+//		}
 	}
 	
 	/**
@@ -219,45 +255,201 @@ public abstract class AbstractEntity {
 		this.map = map;
 	}
 	
-//	public boolean goLeft() {
-//		if(x - 1 > 0) {
-//			if(map.tileAt(x, y).canEnter()) {
-//				x -= 1;
-//				return true;
-//			}	
-//		}
-//		return false;
-//	}
-//	
-//	public boolean goRight() {
-//		if(x + 1 > 0) {
-//			if(map.tileAt(x, y).canEnter()) {
-//				x += 1;
-//				return true;
-//			}	
-//		}
-//		return false;
-//	}
-//	
-//	public boolean goUp() {
-//		if(y - 1 > 0) {
-//			if(map.tileAt(x, y).canEnter()) {
-//				x -= 1;
-//				return true;
-//			}	
-//		}
-//		return false;
-//	}
-//	
-//	public boolean goDown() {
-//		if(y + 1 < map.height()) {
-//			if(map.tileAt(x, y).canEnter()) {
-//				y += 1;
-//				return true;
-//			}	
-//		}
-//		return false;
-//	}
+	public int distance(int x, int y) {
+		return (int) Math.sqrt(Math.pow((this.x - x), 2) + Math.pow((this.y - y), 2));
+	}
+	
+	public int distance(AbstractEntity e) {
+		return distance(e.getX(), e.getY());
+	}
+	
+	public int distance(AbstractTile t) {
+		return distance(t.getX(), t.getY());
+	}
+	
+	public boolean isClearPath(int x, int y) {
+		System.out.println("()");
+		
+		if(x == this.x) {
+			// whether this is above the target
+			if(y < this.y) {
+				for(int i = this.y - 1; i > y; i--) {
+					//map.tileAt(this.x, i).setCovered(true);
+					if(!map.tileAt(this.x, i).canEnter(this)) return false;
+				}
+			} else {
+				for(int i = this.y + 1; i < y; i++) {
+					//map.tileAt(this.x, i).setCovered(true);
+					if(!map.tileAt(this.x, i).canEnter(this)) return false;
+				}
+			} 
+		} else if(y == this.y) {
+			// whether this right of the target
+			if(x < this.x) {
+				for(int i = this.x - 1; i > y; i--) {
+					//map.tileAt(i, this.y).setCovered(true);
+					if(!map.tileAt(i, this.y).canEnter(this)) return false;
+				}
+			} else {
+				for(int i = this.x + 1; i < y; i++) {
+					//map.tileAt(i, this.y).setCovered(true);
+					if(!map.tileAt(i, this.y).canEnter(this)) return false;
+				}
+			}
+		} else if(Math.abs(this.x - x) >= (this.y - y)) {
+			float m = (this.y - (float) y)/(this.x - (float) x);
+			
+			float b = y - m*x;
+			
+			//System.out.println("y = " + m + "x + " + b);
+			
+			// whether this is left of the target
+			if(x < this.x) {
+				for(int i = this.x - 1; i > x; i--) {
+					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
+					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
+					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
+				}
+			} else {
+				for(int i = this.x + 1; i < x; i++) {
+					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
+					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
+					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
+				}
+			}
+		} else {
+			float m = (this.x - (float) x)/(this.y - (float) y);
+			
+			float b = x - m*y;
+			
+			System.out.println("x = " + m + "y + " + b);
+			
+			// whether this is above the target
+			if(y < this.y) {
+				for(int i = this.y - 1; i > y; i--) {
+					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
+					//map.tileAt((int) (m*i + b), i).setCovered(true);
+					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
+				}
+			} else {
+				for(int i = this.y + 1; i < y; i++) {
+					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
+					//map.tileAt((int) (m*i + b), i).setCovered(true);
+					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public boolean isClearPath(AbstractEntity e) {
+		return isClearPath(e.getX(), e.getY());
+	}
+	
+	public boolean isClearPath(AbstractTile t) {
+		return isClearPath(t.getX(), t.getY());
+	}
+	
+	public boolean goNorth() {
+		if(y - 1 > 0) {
+			if(map.tileAt(x, y - 1).canEnter(this)) {
+				y -= 1;
+				
+				facing = NORTH;
+				return true;
+			}	
+		}
+		return false;
+	}
+	
+	public boolean goSouth() {
+		if(y + 1 < map.height()) {
+			if(map.tileAt(x, y + 1).canEnter(this)) {
+				y += 1;
+				
+				facing = SOUTH;
+				return true;
+			}	
+		}
+		return false;
+	}
+	
+	public boolean goEast() {
+		if(x + 1 > 0) {
+			if(map.tileAt(x + 1, y).canEnter(this)) {
+				x += 1;
+				
+				facing = EAST;
+				return true;
+			}	
+		}
+		return false;
+	}
+	
+	public boolean goWest() {
+		if(x - 1 > 0) {
+			if(map.tileAt(x - 1, y).canEnter(this)) {
+				x -= 1;
+				
+				facing = WEST;
+				return true;
+			}	
+		}
+		return false;
+	}
+	
+	public boolean goNortheast() {
+		if(map.contains(x + 1, y - 1)) {
+			if(map.tileAt(x + 1, y - 1).canEnter(this)) {
+				x += 1;
+				y -= 1;
+				
+				facing = NORTHEAST;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean goNorthwest() {
+		if(map.contains(x - 1, y - 1)) {
+			if(map.tileAt(x - 1, y - 1).canEnter(this)) {
+				this.x -= 1;
+				this.y -= 1;
+				
+				facing = NORTHWEST;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean goSoutheast() {
+		if(map.contains(x + 1, y + 1)) {
+			if(map.tileAt(x + 1, y + 1).canEnter(this)) {
+				x += 1;
+				y += 1;
+				
+				facing = SOUTHEAST;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean goSouthwest() {
+		if(map.contains(x - 1, y + 1)) {
+			if(map.tileAt(x - 1, y + 1).canEnter(this)) {
+				x -= 1;
+				y += 1;
+				
+				facing = SOUTHWEST;
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * Moves this AbstractEntity one space toward the given point on the map
@@ -270,44 +462,22 @@ public abstract class AbstractEntity {
 		
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
-		if(this.x > x && this.x - 1 > 0){
-			if(map.tileAt(this.x - 1, this.y).canEnter()) {
-				this.x -= 1;
-				moved = true;
-				
-				facing = NORTH;
-			}
-		}
-		if(this.x < x && this.x + 1 < map.length()) {
-			if(map.tileAt(this.x + 1, this.y).canEnter()) {
-				this.x += 1;
-				moved = true;
-				
-				facing = SOUTH;
-			}
-		}
-		if(this.y < y && this.y + 1 < map.height()){
-			if(map.tileAt(this.x, this.y + 1).canEnter()) {
-				this.y += 1;
-				moved = true;
-				
-				if(moved) {
-					if(facing == NORTH) {
-						facing = NORTHEAST;
-					}
-					if(facing == SOUTH) {
-						facing = SOUTHEAST;
-					}
-				} else {
-					facing = EAST;
-				}
-			}
-		}
-		if(this.y > y && this.y - 1 > 0){
-			if(map.tileAt(this.x, this.y - 1).canEnter()) {
-				this.y -= 1;
-				moved = true;
-			}
+		if(this.x < x && this.y > y) {
+			if(goNortheast()) moved = true;
+		} else if(this.x > x && this.y > y) {
+			if(goNorthwest()) moved = true;
+		} else if(this.x < x && this.y < y) {
+			if(goSoutheast()) moved = true;
+		} else if(this.x > x && this.y < y) {
+			if(goSouthwest()) moved = true;
+		} else if(this.y > y){
+			if(goNorth()) moved = true;
+		} else if(this.y < y){
+			if(goSouth()) moved = true;
+		} else if(this.x < x) {
+			if(goEast()) moved = true;
+		} else if(this.x > x){
+			if(goWest()) moved = true;
 		}
 		
 		map.tileAt(this.x, this.y).setOccupant(this);
@@ -330,29 +500,22 @@ public abstract class AbstractEntity {
 		
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
-		if(this.x > x && this.x + 1 < map.length()) {
-			if(map.tileAt(this.x + 1, this.y).canEnter()) {
-				this.x += 1;
-				moved = true;
-			}
-		}
-		if(this.x < x && this.x - 1 > 0){
-			if(map.tileAt(this.x - 1, this.y).canEnter()) {
-				this.x -= 1;
-				moved = true;
-			}
-		}
-		if(this.y > y && this.y + 1 < map.height()){
-			if(map.tileAt(this.x, this.y + 1).canEnter()) {
-				this.y += 1;
-				moved = true;
-			}
-		}
-		if(this.y < y && this.y - 1 > 0){
-			if(map.tileAt(this.x, this.y - 1).canEnter()) {
-				this.y -= 1;
-				moved = true;
-			}
+		if(this.x < x && this.y > y) {
+			if(goSouthwest()) moved = true;
+		} else if(this.x > x && this.y > y) {
+			if(goSoutheast()) moved = true;
+		} else if(this.x < x && this.y < y) {
+			if(goNorthwest()) moved = true;
+		} else if(this.x > x && this.y < y) {
+			if(goNortheast()) moved = true;
+		} else if(this.y > y){
+			if(goSouth()) moved = true;
+		} else if(this.y < y){
+			if(goNorth()) moved = true;
+		} else if(this.x < x) {
+			if(goWest()) moved = true;
+		} else if(this.x > x){
+			if(goEast()) moved = true;
 		}
 		
 		map.tileAt(this.x, this.y).setOccupant(this);
@@ -360,6 +523,120 @@ public abstract class AbstractEntity {
 		return moved;
 	}
 	
+	public void goUntilWallClockwise() {
+		map.tileAt(x, y).setOccupant(null);
+		
+		switch(facing) {
+			case NORTH:
+				if(!goNorth()) facing = NORTHEAST;
+				break;
+			case SOUTH:
+				if(!goSouth()) facing = SOUTHWEST;
+				break;
+			case EAST:
+				if(!goEast()) facing = SOUTHEAST;
+				break;
+			case WEST:
+				if(!goWest()) facing = NORTHWEST;
+				break;
+			case NORTHEAST:
+				if(!goNortheast()) facing = EAST;
+				break;
+			case NORTHWEST:
+				if(!goNorthwest()) facing = NORTH;
+				break;
+			case SOUTHEAST:
+				if(!goSoutheast()) facing = SOUTH;
+				break;
+			case SOUTHWEST:
+				if(!goSouthwest()) facing = WEST;
+				break;
+			default:
+				break;
+		}
+		
+		map.tileAt(x, y).setOccupant(this);
+	}
 	
+	public void goUntilWallCounterclockwise() {
+		map.tileAt(x, y).setOccupant(null);
+		
+		switch(facing) {
+			case NORTH:
+				if(!goNorth()) facing = NORTHWEST;
+				break;
+			case SOUTH:
+				if(!goSouth()) facing = SOUTHEAST;
+				break;
+			case EAST:
+				if(!goEast()) facing = NORTHEAST;
+				break;
+			case WEST:
+				if(!goWest()) facing = SOUTHWEST;
+				break;
+			case NORTHEAST:
+				if(!goNortheast()) facing = NORTH;
+				break;
+			case NORTHWEST:
+				if(!goNorthwest()) facing = WEST;
+				break;
+			case SOUTHEAST:
+				if(!goSoutheast()) facing = EAST;
+				break;
+			case SOUTHWEST:
+				if(!goSouthwest()) facing = SOUTH;
+				break;
+			default:
+				break;
+		}
+		
+		map.tileAt(x, y).setOccupant(this);
+	}
+	
+	public void goUntilWallRight() {
+		map.tileAt(x, y).setOccupant(null);
+		
+		switch(facing) {
+			case NORTH:
+				if(!goNorth()) facing = EAST;
+				break;
+			case SOUTH:
+				if(!goSouth()) facing = WEST;
+				break;
+			case EAST:
+				if(!goEast()) facing = SOUTH;
+				break;
+			case WEST:
+				if(!goWest()) facing = NORTH;
+				break;
+			default:
+				break;
+		}
+		
+		map.tileAt(x, y).setOccupant(this);
+	}
+	
+	public void goUntilWallLeft() {
+		map.tileAt(x, y).setOccupant(null);
+		
+		switch(facing) {
+			case NORTH:
+				if(!goNorth()) facing = WEST;
+				break;
+			case SOUTH:
+				if(!goSouth()) facing = EAST;
+				break;
+			case EAST:
+				if(!goEast()) facing = NORTH;
+				break;
+			case WEST:
+				if(!goWest()) facing = SOUTH;
+				break;
+			default:
+				break;
+		}
+		
+		map.tileAt(x, y).setOccupant(this);
+	}
 	
 }

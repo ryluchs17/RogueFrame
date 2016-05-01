@@ -21,12 +21,20 @@ public class Soil extends AbstractTile {
 	public void onInteraction(AbstractEntity m) {
 
 	}
-
-	public void onOccupation() {
-
-	}
 	
 	public void onTurn() {
+		
+	}
+
+	@Override
+	public void onEntry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onExit() {
+		// TODO Auto-generated method stub
 		
 	}
 

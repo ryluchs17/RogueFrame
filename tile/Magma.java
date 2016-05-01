@@ -23,6 +23,7 @@ public class Magma extends AbstractTile {
 		background = Color.RED;
 		
 		passable = true;
+		avoid = true;
 		
 		name = "Magma";
 		description = "Don't touch the floor.";
@@ -34,19 +35,6 @@ public class Magma extends AbstractTile {
 	@Override
 	public void onInteraction(AbstractEntity e) {
 		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see tile.AbstractTile#onOccupation(entity.AbstractEntity)
-	 */
-	@Override
-	public void onOccupation() {
-		if(occupant.grounded) {
-			occupant.kill();
-		} else {
-			occupant.addHitpoints(-10);
-		}
 
 	}
 
@@ -63,6 +51,21 @@ public class Magma extends AbstractTile {
 			occupant.addHitpoints(-10);
 		}
 
+	}
+
+	@Override
+	public void onEntry() {
+		if(occupant.grounded) {
+			occupant.kill();
+		} else {
+			occupant.addHitpoints(-10);
+		}
+	}
+
+	@Override
+	public void onExit() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

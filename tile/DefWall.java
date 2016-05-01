@@ -36,21 +36,24 @@ public class DefWall extends AbstractTile {
 	}
 
 	/* (non-Javadoc)
-	 * @see tile.AbstractTile#onOccupation(entity.AbstractEntity)
-	 */
-	@Override
-	public void onOccupation() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
 	 * @see tile.AbstractTile#onTurn()
 	 */
 	@Override
 	public void onTurn() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onEntry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onExit() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

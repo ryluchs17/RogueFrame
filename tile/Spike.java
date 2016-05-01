@@ -36,10 +36,16 @@ public class Spike extends AbstractTile {
 	}
 
 	/* (non-Javadoc)
-	 * @see tile.AbstractTile#onOccupation(entity.AbstractEntity)
+	 * @see tile.AbstractTile#onTurn()
 	 */
 	@Override
-	public void onOccupation() {
+	public void onTurn() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onEntry() {
 		// if grounded damage
 		if(occupant.grounded) {
 			occupant.addHitpoints(-5);
@@ -49,16 +55,12 @@ public class Spike extends AbstractTile {
 				description = "That must've hurt...";
 			}
 		}
-
 	}
 
-	/* (non-Javadoc)
-	 * @see tile.AbstractTile#onTurn()
-	 */
 	@Override
-	public void onTurn() {
+	public void onExit() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }
