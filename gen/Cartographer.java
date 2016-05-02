@@ -54,7 +54,7 @@ public class Cartographer {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 40), Const.DEFWALL, Const.DEFFLOOR);
 		shorts = ShortFunc.addCellLayer(Const.SOIL, Const.DEFFLOOR, shorts, 50);
 		shorts = ShortFunc.addCellLayer(Const.WATER, Const.DEFFLOOR, shorts, 40);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.SOIL, shorts, 35);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.SOIL, shorts, 2, 35);
 		//shorts = addLayerOf(T_DEFAULT_FLOOR, T_MAGMA, shorts, );
 		
 		//write("testname.txt", shorts);
@@ -66,7 +66,7 @@ public class Cartographer {
 //		shorts = ShortFunc.addCellLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 40);
 //		shorts = ShortFunc.addCellLayer(Const.DEFWALL, Const.DEFFLOOR, shorts, 40);
 		shorts = ShortFunc.addCellLayer(Const.MAGMA, Const.DEFFLOOR, shorts, 40);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 250);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 2, 250);
 		//shorts = ShortFunc.addCellLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 40);
 		//shorts = ShortFunc.addCellLayer(Const.DEFWALL, Const.DEFFLOOR, shorts, 20);
 		//shorts = ShortFunc.border(Const.MAGMA, shorts);
@@ -78,9 +78,9 @@ public class Cartographer {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 60), Const.DEFWALL, Const.DEFFLOOR);
 //		shorts = ShortFunc.addCellLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 40);
 //		shorts = ShortFunc.addCellLayer(Const.DEFWALL, Const.DEFFLOOR, shorts, 40);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 250);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 250);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 250);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 8, 250);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 4, 250);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 2, 250);
 		//shorts = ShortFunc.addCellLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 40);
 		//shorts = ShortFunc.addCellLayer(Const.DEFWALL, Const.DEFFLOOR, shorts, 20);
 		//shorts = ShortFunc.border(Const.MAGMA, shorts);

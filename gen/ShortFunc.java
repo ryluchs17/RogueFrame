@@ -61,8 +61,8 @@ public class ShortFunc {
 		return array;
 	}
 	
-	public static short[][] addWalkLayer(short newLayerID, short replaceID, short[][] array, int iterations) {
-		boolean[][] newLayer = BoolFunc.invert(BoolFunc.randomWalk(array.length, array[0].length, iterations));
+	public static short[][] addWalkLayer(short newLayerID, short replaceID, short[][] array, int step, int iterations) {
+		boolean[][] newLayer = BoolFunc.invert(BoolFunc.randomWalk(array.length, array[0].length, step, iterations));
 		
 		for(int x = 0, y = 0; y < array[0].length; y++) {
 			for(x = 0; x < array.length; x++) {

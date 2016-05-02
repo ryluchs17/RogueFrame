@@ -48,12 +48,12 @@ public class TileMap {
 		//tiles = Cartographer.createClassicMap(columns, rows);
 		//tiles = Cartographer.createFort(columns, rows);
 		//tiles = Cartographer.createSafeMap(columns, rows);
-		//tiles = Cartographer.createMaze(columns, rows);
-		tiles = Cartographer.createTest(columns, rows);
+		tiles = Cartographer.createMaze(columns, rows);
+		//tiles = Cartographer.createTest(columns, rows);
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
-		for(int i = 0; i < 2; i++) {
+		for(int i = 0; i < 4; i++) {
 			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);

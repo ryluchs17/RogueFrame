@@ -45,15 +45,15 @@ public class Bat extends AbstractEntity {
 	public void onTurn() {
 //		map.updateAt(x, y);
 		
-//		if(!goTo(seekX, seekY)) sedentaryFor++;
-//		
-//		if((x == seekX && y == seekY )|| sedentaryFor >= 5 || !map.tileAt(seekX, seekY).isPassable()) {
-//			seekX = r.nextInt(map.length() - 1);
-//			seekY = r.nextInt(map.height() - 1);
-//			sedentaryFor = 0;
-//		}
+		if(!goTo(seekX, seekY)) sedentaryFor++;
 		
-		this.goUntilWallClockwise();
+		if((x == seekX && y == seekY )|| sedentaryFor >= 5 || !map.tileAt(seekX, seekY).isPassable()) {
+			seekX = r.nextInt(map.length() - 1);
+			seekY = r.nextInt(map.height() - 1);
+			sedentaryFor = 0;
+		}
+		
+		//this.goUntilWallClockwise();
 		
 		color = isClearPath(map.getEntity(1)) ? Color.GREEN : Color.RED;
 		

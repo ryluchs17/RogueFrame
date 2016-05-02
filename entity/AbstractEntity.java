@@ -268,18 +268,18 @@ public abstract class AbstractEntity {
 	}
 	
 	public boolean isClearPath(int x, int y) {
-		System.out.println("()");
+		//System.out.println("()");
 		
 		if(x == this.x) {
 			// whether this is above the target
 			if(y < this.y) {
 				for(int i = this.y - 1; i > y; i--) {
-					//map.tileAt(this.x, i).setCovered(true);
+					map.tileAt(this.x, i).setCovered(true);
 					if(!map.tileAt(this.x, i).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.y + 1; i < y; i++) {
-					//map.tileAt(this.x, i).setCovered(true);
+					map.tileAt(this.x, i).setCovered(true);
 					if(!map.tileAt(this.x, i).canEnter(this)) return false;
 				}
 			} 
@@ -287,16 +287,16 @@ public abstract class AbstractEntity {
 			// whether this right of the target
 			if(x < this.x) {
 				for(int i = this.x - 1; i > y; i--) {
-					//map.tileAt(i, this.y).setCovered(true);
+					map.tileAt(i, this.y).setCovered(true);
 					if(!map.tileAt(i, this.y).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.x + 1; i < y; i++) {
-					//map.tileAt(i, this.y).setCovered(true);
+					map.tileAt(i, this.y).setCovered(true);
 					if(!map.tileAt(i, this.y).canEnter(this)) return false;
 				}
 			}
-		} else if(Math.abs(this.x - x) >= (this.y - y)) {
+		} else if(Math.abs(this.x - x) >= Math.abs(this.y - y)) {
 			float m = (this.y - (float) y)/(this.x - (float) x);
 			
 			float b = y - m*x;
@@ -307,13 +307,13 @@ public abstract class AbstractEntity {
 			if(x < this.x) {
 				for(int i = this.x - 1; i > x; i--) {
 					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
-					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
+					map.tileAt(i, (int) (m*i + b)).setCovered(true);
 					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.x + 1; i < x; i++) {
 					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
-					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
+					map.tileAt(i, (int) (m*i + b)).setCovered(true);
 					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
 				}
 			}
@@ -322,19 +322,19 @@ public abstract class AbstractEntity {
 			
 			float b = x - m*y;
 			
-			System.out.println("x = " + m + "y + " + b);
+			//System.out.println("x = " + m + "y + " + b);
 			
 			// whether this is above the target
 			if(y < this.y) {
 				for(int i = this.y - 1; i > y; i--) {
 					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
-					//map.tileAt((int) (m*i + b), i).setCovered(true);
+					map.tileAt((int) (m*i + b), i).setCovered(true);
 					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.y + 1; i < y; i++) {
 					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
-					//map.tileAt((int) (m*i + b), i).setCovered(true);
+					map.tileAt((int) (m*i + b), i).setCovered(true);
 					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
 				}
 			}

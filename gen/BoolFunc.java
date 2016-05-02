@@ -30,46 +30,109 @@ public class BoolFunc {
 		return array;
 	}
 	
-	public static boolean[][] randomWalk(int columns, int rows, int iterations) {
+//	public static boolean[][] randomWalk(int columns, int rows, int iterations) {
+//		boolean[][] map = fill(new boolean[columns][rows], true);
+//		
+//		int x = columns/2 + 1, y = rows/2 + 1;
+//		
+//		map[x][y] = false;
+//		
+//		int d = Cartographer.r.nextInt(4);
+//		for(int f = 0; f < iterations; f++) {
+//			
+//			if(d == 0 && (!isOutOfBounds(x + 2, y, columns, rows))) {
+//				map[x + 1][y] = false;
+//				map[x + 2][y] = false;
+//				
+//				x += 2;
+//			} else if(d == 1 && (!isOutOfBounds(x - 2, y, columns, rows))) {
+//				map[x - 1][y] = false;
+//				map[x - 2][y] = false;
+//				
+//				x -= 2;
+//			} else if(d == 2 && (!isOutOfBounds(x, y + 2, columns, rows))) {
+//				map[x][y + 1] = false;
+//				map[x][y + 2] = false;
+//				
+//				y += 2;
+//			} else if(!isOutOfBounds(x, y - 2, columns, rows)){
+//				map[x][y - 1] = false;
+//				map[x][y - 2] = false;
+//				
+//				y -= 2;
+//			}
+//			
+//			d = Cartographer.r.nextInt(4);
+//		}
+//		
+//		for(y = 0; y < map[0].length; y++) {
+//			map[0][y] = true;
+//			map[columns - 1][y] = true;
+//		}
+//		
+//		for(x = 0; x < map.length; x++) {
+//			map[x][0] = true;
+//			map[x][rows - 1] = true;
+//		}
+//		
+//		return map;
+//	}
+	
+	public static boolean[][] randomWalk(int columns, int rows, int step, int iterations) {
 		boolean[][] map = fill(new boolean[columns][rows], true);
 		
 		int x = columns/2 + 1, y = rows/2 + 1;
 		
+		// make startpoint clear
 		map[x][y] = false;
 		
+		// the actual walking
 		int d = Cartographer.r.nextInt(4);
 		for(int f = 0; f < iterations; f++) {
 			
-			if(d == 0 && (!isOutOfBounds(x + 2, y, columns, rows))) {
-				map[x + 1][y] = false;
-				map[x + 2][y] = false;
+			// walk right 
+			if(d == 0 && (!isOutOfBounds(x + step, y, columns, rows))) {
+				for(int i = 0; i < step; i++) {
+					map[x + i][y] = false;
+				}
 				
-				x += 2;
-			} else if(d == 1 && (!isOutOfBounds(x - 2, y, columns, rows))) {
-				map[x - 1][y] = false;
-				map[x - 2][y] = false;
+				x += step;
 				
-				x -= 2;
-			} else if(d == 2 && (!isOutOfBounds(x, y + 2, columns, rows))) {
-				map[x][y + 1] = false;
-				map[x][y + 2] = false;
+			// walk left
+			} else if(d == 1 && (!isOutOfBounds(x - step, y, columns, rows))) {
+				for(int i = 0; i > step; i++) {
+					map[x - i][y] = false;
+				}
 				
-				y += 2;
-			} else if(!isOutOfBounds(x, y - 2, columns, rows)){
-				map[x][y - 1] = false;
-				map[x][y - 2] = false;
+				x -= step;
 				
-				y -= 2;
+			// walk down
+			} else if(d == 2 && (!isOutOfBounds(x, y + step, columns, rows))) {
+				for(int i = 0; i < step; i++) {
+					map[x][y + i] = false;
+				}
+				
+				y += step;
+				
+			// walk up
+			} else if(!isOutOfBounds(x, y - step, columns, rows)){
+				for(int i = 0; i < step; i++) {
+					map[x][y - i] = false;
+				}
+				
+				y -= step;
 			}
 			
 			d = Cartographer.r.nextInt(4);
 		}
 		
+		// clear top and bottom borders
 		for(y = 0; y < map[0].length; y++) {
 			map[0][y] = true;
 			map[columns - 1][y] = true;
 		}
 		
+		// clear left and right borders
 		for(x = 0; x < map.length; x++) {
 			map[x][0] = true;
 			map[x][rows - 1] = true;
@@ -111,7 +174,7 @@ public class BoolFunc {
 			}
 		}
 	
-		print(map);
+		//print(map);
 		
 		for(int i = 0; i < 4; i++) {
 			for(int x = 1, y = 1; y < rows - 1; y++) {
@@ -120,7 +183,7 @@ public class BoolFunc {
 				}
 			}
 		
-			print(update);
+			//print(update);
 			
 			for(int x = 1, y = 1; y < rows - 1; y++) {
 				for(x = 1; x < columns - 1; x++) {
