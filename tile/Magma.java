@@ -48,7 +48,7 @@ public class Magma extends AbstractTile {
 		background = colorState ? Color.ORANGE : Color.RED;
 		
 		if(occupant != null) {
-			occupant.addHitpoints(-10);
+			//occupant.addHitpoints(-10);
 		}
 
 	}
@@ -58,7 +58,7 @@ public class Magma extends AbstractTile {
 		if(occupant.grounded) {
 			occupant.kill();
 		} else {
-			occupant.addHitpoints(-10);
+			//occupant.addHitpoints(-10);
 		}
 	}
 

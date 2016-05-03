@@ -31,12 +31,12 @@ public class Bat extends AbstractEntity {
 		
 		grounded = false;
 		
-		this.hp_base = 60;
-		this.atk_base = 75;
-		this.def_base = 40;
-		this.mag_base = 30;
-		
-		setStats(true);
+//		this.hp_base = 60;
+//		this.atk_base = 75;
+//		this.def_base = 40;
+//		this.mag_base = 30;
+//		
+//		setStats(true);
 		
 		seekX = x;
 		seekY = y;
@@ -45,17 +45,17 @@ public class Bat extends AbstractEntity {
 	public void onTurn() {
 //		map.updateAt(x, y);
 		
-		if(!goTo(seekX, seekY)) sedentaryFor++;
+//		if(!goTo(seekX, seekY)) sedentaryFor++;
+//		
+//		if((x == seekX && y == seekY )|| sedentaryFor >= 5 || !map.tileAt(seekX, seekY).isPassable()) {
+//			seekX = r.nextInt(map.length() - 1);
+//			seekY = r.nextInt(map.height() - 1);
+//			sedentaryFor = 0;
+//		}
 		
-		if((x == seekX && y == seekY )|| sedentaryFor >= 5 || !map.tileAt(seekX, seekY).isPassable()) {
-			seekX = r.nextInt(map.length() - 1);
-			seekY = r.nextInt(map.height() - 1);
-			sedentaryFor = 0;
-		}
+		this.goUntilWallClockwise();
 		
-		//this.goUntilWallClockwise();
-		
-		color = isClearPath(map.getEntity(1)) ? Color.GREEN : Color.RED;
+		//color = isClearPath(map.getEntity(1)) ? Color.GREEN : Color.RED;
 		
 //		System.out.println(name + " @ " + x + ", " + y + " hp: " + hitpoints);
 		

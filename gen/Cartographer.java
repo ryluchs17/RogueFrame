@@ -75,12 +75,12 @@ public class Cartographer {
 	}
 	
 	public static AbstractTile[][] createMaze(int columns, int rows) {
-		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 60), Const.DEFWALL, Const.DEFFLOOR);
+		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 55), Const.DEFWALL, Const.DEFFLOOR);
 //		shorts = ShortFunc.addCellLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 40);
 //		shorts = ShortFunc.addCellLayer(Const.DEFWALL, Const.DEFFLOOR, shorts, 40);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 8, 250);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 4, 250);
-		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 2, 250);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 8, 50);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 4, 20);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 2, 30);
 		//shorts = ShortFunc.addCellLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 40);
 		//shorts = ShortFunc.addCellLayer(Const.DEFWALL, Const.DEFFLOOR, shorts, 20);
 		//shorts = ShortFunc.border(Const.MAGMA, shorts);

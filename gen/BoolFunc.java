@@ -78,8 +78,11 @@ public class BoolFunc {
 //		return map;
 //	}
 	
-	public static boolean[][] randomWalk(int columns, int rows, int step, int iterations) {
+	public static boolean[][] randomWalk(int columns, int rows, int step, int percentTrue) {
 		boolean[][] map = fill(new boolean[columns][rows], true);
+		
+		// calculate number of iterations
+		int iterations = (int) (columns * rows * ( (float) percentTrue/100) / step);
 		
 		int x = columns/2 + 1, y = rows/2 + 1;
 		
@@ -124,6 +127,8 @@ public class BoolFunc {
 			}
 			
 			d = Cartographer.r.nextInt(4);
+			
+//			System.out.println("step length: " + step + " | iteration #: " + f);
 		}
 		
 		// clear top and bottom borders

@@ -108,10 +108,10 @@ public abstract class AbstractTile {
 			g2d.drawString(character, x, y + STEP);
 		}
 		
-		if(covered) {
-			g2d.setColor(Color.CYAN);
-			g2d.drawString("X", x, y + STEP);
-		}
+//		if(covered) {
+//			g2d.setColor(Color.CYAN);
+//			g2d.drawString("X", x, y + STEP);
+//		}
 	}
 	
 	/**
@@ -124,40 +124,7 @@ public abstract class AbstractTile {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		if(occupant != null) {
-			// make an empty black square to put text in
-			g2d.setColor(Color.BLACK);
-			g2d.fillRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-			
-			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
-			
-			// prepare to draw text and border
-			g2d.setColor(Color.WHITE);
-			
-			// draw in text in white		
-			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
-			g2d.drawString(occupant.getDescription(), x + STEP * 2, y + STEP * 2 + 2);
-			
-			// draw white rectangle as border
-			g2d.drawRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-		} else {
-			// make an empty black square to put text in
-			g2d.setColor(Color.BLACK);
-			g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-			
-			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
-			
-			// prepare to draw text and border
-			g2d.setColor(Color.WHITE);
-			
-			// draw in text in white		
-			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
-			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
-			
-			// draw white rectangle as border
-			g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-		}
-		
+		// shows (x, y) of tile reather than name
 //		if(occupant != null) {
 //			// make an empty black square to put text in
 //			g2d.setColor(Color.BLACK);
@@ -169,7 +136,7 @@ public abstract class AbstractTile {
 //			g2d.setColor(Color.WHITE);
 //			
 //			// draw in text in white		
-//			g2d.drawString(occupant.getName() + ":", x + STEP * 2, y + STEP + 2);
+//			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
 //			g2d.drawString(occupant.getDescription(), x + STEP * 2, y + STEP * 2 + 2);
 //			
 //			// draw white rectangle as border
@@ -185,12 +152,46 @@ public abstract class AbstractTile {
 //			g2d.setColor(Color.WHITE);
 //			
 //			// draw in text in white		
-//			g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
+//			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
 //			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
 //			
 //			// draw white rectangle as border
 //			g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
 //		}
+		
+		if(occupant != null) {
+			// make an empty black square to put text in
+			g2d.setColor(Color.BLACK);
+			g2d.fillRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+			
+			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
+			
+			// prepare to draw text and border
+			g2d.setColor(Color.WHITE);
+			
+			// draw in text in white		
+			g2d.drawString(occupant.getName() + ":", x + STEP * 2, y + STEP + 2);
+			g2d.drawString(occupant.getDescription(), x + STEP * 2, y + STEP * 2 + 2);
+			
+			// draw white rectangle as border
+			g2d.drawRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+		} else {
+			// make an empty black square to put text in
+			g2d.setColor(Color.BLACK);
+			g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+			
+			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
+			
+			// prepare to draw text and border
+			g2d.setColor(Color.WHITE);
+			
+			// draw in text in white		
+			g2d.drawString(name + ":", x + STEP * 2, y + STEP + 2);
+			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
+			
+			// draw white rectangle as border
+			g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
+		}
 		
 	}
 	

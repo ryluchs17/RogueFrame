@@ -21,12 +21,12 @@ public class Hidden extends AbstractEntity{
 		this.name = "Hidden";
 		this.description = "A large black bird that hunts in darkness.";
 		
-		this.hp_base = 100;
-		this.atk_base = 125;
-		this.def_base = 52;
-		this.mag_base = 79;
-		
-		setStats(true);
+//		this.hp_base = 100;
+//		this.atk_base = 125;
+//		this.def_base = 52;
+//		this.mag_base = 79;
+//		
+//		setStats(true);
 		
 		seekX = r.nextInt(15);
 		seekY = r.nextInt(15);

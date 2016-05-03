@@ -63,20 +63,26 @@ public abstract class AbstractEntity {
 	 */
 	public static final int MAX_LEVEL = 20;
 	
-	// Stats stuff
-	protected int hp, atk, def, mag;
+	// ! STATS STUFF BEGINS !
+
+//	protected int hp, atk, def, mag;
+//	
+//	// Base stats stuff
+//	protected int hp_base, atk_base, def_base, mag_base;
+//	
+//	// Stat multipliers
+//	protected short hp_stage = 0, atk_stage = 0, def_stage = 0, mag_stage = 0;
+//	
+//	// base damage with physical and magical attacks
+//	protected int base_physical_damage = 0, base_magic_damage = 0;
 	
-	// Base stats stuff
-	protected int hp_base, atk_base, def_base, mag_base;
+	protected int str_cap, def_cap, mag_cap, res_cap, skl_cap, spd_cap;
 	
-	// Stat multipliers
-	protected short hp_stage = 0, atk_stage = 0, def_stage = 0, mag_stage = 0;
+	protected int str_gro, def_gro, mag_gro, res_gro, skl_gro, spd_gro;
 	
-	// base damage with physical and magical attacks
-	protected int base_physical_damage = 0, base_magic_damage = 0;
+	public int str, def, mag, res, skl, spd;
 	
-//	protected int str, def, mag, res, skl, spd, dp, dm;
-//	protected int m_str, m_def, m_mag, m_res, m_skl, m_spd;
+	public int dam_str_low = 1, dam_str_high = 1, dam_mag_low = 1, dam_mag_high = 1;
 	
 	// ! STATS STUFF ENDS !
 	
@@ -151,6 +157,69 @@ public abstract class AbstractEntity {
 //		}
 	}
 	
+//	/**
+//	 * Adds the given number to the hitpoints of this AbstractEntity
+//	 * The number will not go over the max, if it goes under zero the AbstractEntity is tagged as dead
+//	 * @param hitpoints
+//	 */
+//	public void addHitpoints(int hitpoints) {
+//		if(this.hitpoints + hitpoints > hp) {
+//			hitpoints = hp;
+//		} else {
+//			this.hitpoints += hitpoints;
+//		}
+//		
+//		if(this.hitpoints <= 0) {
+//			dead = true;
+//		}
+//	}
+	
+	/**
+	 * Returns whether this AbstractEntity is dead
+	 * @return True if dead
+	 */
+	public boolean isDead() {
+		return dead;
+	}
+//	
+//	public void physicalAttack(AbstractEntity e, int baseDamage) {
+//		e.hitpoints -= (level/MAX_LEVEL) * (atk/e.def) * baseDamage; // TODO fix to use float math
+//	}
+//	
+//	public void magicAttack(AbstractEntity e, int baseDamage) {
+//		e.hitpoints -= (level/MAX_LEVEL) * ((mag + e.mag)/(1.75 * e.def)) * baseDamage; // TODO fix to use float math
+//	}
+	
+//	/**
+//	 * Recalculated the stats of this AbstractEntity
+//	 * @param fillHitpoints True if current hitpoints should be set to max after stats are calculated
+//	 */
+//	public void setStats(boolean fillHitpoints) {
+//		hp = (int) ((((level * hp_base) / (MAX_LEVEL / 2)) + level) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
+//		
+//		atk = (int) (((level * atk_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
+//		def = (int) (((level * def_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
+//		mag = (int) (((level * mag_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
+//		
+////		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
+////		System.out.println("HP : " + hp);
+////		System.out.println("ATK : " + atk);
+////		System.out.println("DEF : " + def);
+////		System.out.println("MAG : " + mag);
+//		
+//		if(fillHitpoints) {
+//			hitpoints = hp;
+//		}
+//		
+//	}
+	
+	/**
+	 * Kills the AbstractEntity
+	 */
+	public void kill() {
+		dead = true;
+	}
+	
 	/**
 	 * Gets the name of this AbstractEnity
 	 * @return The name of this AbstractEntity
@@ -165,69 +234,6 @@ public abstract class AbstractEntity {
 	 */
 	public String getDescription() {
 		return description;
-	}
-	
-	/**
-	 * Adds the given number to the hitpoints of this AbstractEntity
-	 * The number will not go over the max, if it goes under zero the AbstractEntity is tagged as dead
-	 * @param hitpoints
-	 */
-	public void addHitpoints(int hitpoints) {
-		if(this.hitpoints + hitpoints > hp) {
-			hitpoints = hp;
-		} else {
-			this.hitpoints += hitpoints;
-		}
-		
-		if(this.hitpoints <= 0) {
-			dead = true;
-		}
-	}
-	
-	/**
-	 * Returns whether this AbstractEntity is dead
-	 * @return True if dead
-	 */
-	public boolean isDead() {
-		return dead;
-	}
-	
-//	public void physicalAttack(AbstractEntity e, int baseDamage) {
-//		e.hitpoints -= (level/MAX_LEVEL) * (atk/e.def) * baseDamage; // TODO fix to use float math
-//	}
-//	
-//	public void magicAttack(AbstractEntity e, int baseDamage) {
-//		e.hitpoints -= (level/MAX_LEVEL) * ((mag + e.mag)/(1.75 * e.def)) * baseDamage; // TODO fix to use float math
-//	}
-	
-	/**
-	 * Recalculated the stats of this AbstractEntity
-	 * @param fillHitpoints True if current hitpoints should be set to max after stats are calculated
-	 */
-	public void setStats(boolean fillHitpoints) {
-		hp = (int) ((((level * hp_base) / (MAX_LEVEL / 2)) + level) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-		
-		atk = (int) (((level * atk_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-		def = (int) (((level * def_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-		mag = (int) (((level * mag_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-		
-//		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
-//		System.out.println("HP : " + hp);
-//		System.out.println("ATK : " + atk);
-//		System.out.println("DEF : " + def);
-//		System.out.println("MAG : " + mag);
-		
-		if(fillHitpoints) {
-			hitpoints = hp;
-		}
-		
-	}
-	
-	/**
-	 * Kills the AbstractEntity
-	 */
-	public void kill() {
-		dead = true;
 	}
 	
 	/**
@@ -255,18 +261,41 @@ public abstract class AbstractEntity {
 		this.map = map;
 	}
 	
+	/**
+	 * Finds the distance between the current position and (x, y)
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @return The distance
+	 */
 	public int distance(int x, int y) {
 		return (int) Math.sqrt(Math.pow((this.x - x), 2) + Math.pow((this.y - y), 2));
 	}
 	
+	/**
+	 * Finds the distance between the current position and the given AbstractEntity
+	 * @param e The AbstractEntity
+	 * @return The distance
+	 */
 	public int distance(AbstractEntity e) {
 		return distance(e.getX(), e.getY());
 	}
 	
+	/**
+	 * Finds the distance between the current position and the given AbstractTile
+	 * @param t The AbstractTile
+	 * @return The distance
+	 */
 	public int distance(AbstractTile t) {
 		return distance(t.getX(), t.getY());
 	}
 	
+	
+	/**
+	 * Determines whether there is an uninterupted straight path to the given point (x, y) from the current position
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @return true if there is an uninterupted straight to (x, y) from the current position
+	 */
 	public boolean isClearPath(int x, int y) {
 		//System.out.println("()");
 		
@@ -274,12 +303,12 @@ public abstract class AbstractEntity {
 			// whether this is above the target
 			if(y < this.y) {
 				for(int i = this.y - 1; i > y; i--) {
-					map.tileAt(this.x, i).setCovered(true);
+					//map.tileAt(this.x, i).setCovered(true);
 					if(!map.tileAt(this.x, i).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.y + 1; i < y; i++) {
-					map.tileAt(this.x, i).setCovered(true);
+					//map.tileAt(this.x, i).setCovered(true);
 					if(!map.tileAt(this.x, i).canEnter(this)) return false;
 				}
 			} 
@@ -287,12 +316,12 @@ public abstract class AbstractEntity {
 			// whether this right of the target
 			if(x < this.x) {
 				for(int i = this.x - 1; i > y; i--) {
-					map.tileAt(i, this.y).setCovered(true);
+					//map.tileAt(i, this.y).setCovered(true);
 					if(!map.tileAt(i, this.y).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.x + 1; i < y; i++) {
-					map.tileAt(i, this.y).setCovered(true);
+					//map.tileAt(i, this.y).setCovered(true);
 					if(!map.tileAt(i, this.y).canEnter(this)) return false;
 				}
 			}
@@ -307,13 +336,13 @@ public abstract class AbstractEntity {
 			if(x < this.x) {
 				for(int i = this.x - 1; i > x; i--) {
 					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
-					map.tileAt(i, (int) (m*i + b)).setCovered(true);
+					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
 					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.x + 1; i < x; i++) {
 					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
-					map.tileAt(i, (int) (m*i + b)).setCovered(true);
+					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
 					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
 				}
 			}
@@ -328,13 +357,13 @@ public abstract class AbstractEntity {
 			if(y < this.y) {
 				for(int i = this.y - 1; i > y; i--) {
 					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
-					map.tileAt((int) (m*i + b), i).setCovered(true);
+					//map.tileAt((int) (m*i + b), i).setCovered(true);
 					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
 				}
 			} else {
 				for(int i = this.y + 1; i < y; i++) {
 					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
-					map.tileAt((int) (m*i + b), i).setCovered(true);
+					//map.tileAt((int) (m*i + b), i).setCovered(true);
 					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
 				}
 			}
@@ -342,125 +371,213 @@ public abstract class AbstractEntity {
 		return true;
 	}
 	
+	/**
+	 * Determines whether there is an uninterupted straight path to the given AbstractEntity from the current position
+	 * @param e The AbstractEntity
+	 * @return true if there is an uninterupted straight the AbstractEntity from the current position
+	 */
 	public boolean isClearPath(AbstractEntity e) {
 		return isClearPath(e.getX(), e.getY());
 	}
 	
+	/**
+	 * Determines whether there is an uninterupted straight path to the given AbstractTile from the current position
+	 * @param t The AbstractTile
+	 * @return true if there is an uninterupted straight the AbstractTile from the current position
+	 */
 	public boolean isClearPath(AbstractTile t) {
 		return isClearPath(t.getX(), t.getY());
 	}
 	
+	/**
+	 * Moves one tile north
+	 * @return true if moved
+	 */
 	public boolean goNorth() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(y - 1 > 0) {
 			if(map.tileAt(x, y - 1).canEnter(this)) {
 				y -= 1;
 				
 				facing = NORTH;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}	
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
+	/**
+	 * Moves one tile south
+	 * @return true if moved
+	 */
 	public boolean goSouth() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(y + 1 < map.height()) {
 			if(map.tileAt(x, y + 1).canEnter(this)) {
 				y += 1;
 				
 				facing = SOUTH;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}	
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
+	/**
+	 * Moves one tile east
+	 * @return true if moved
+	 */
 	public boolean goEast() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(x + 1 > 0) {
 			if(map.tileAt(x + 1, y).canEnter(this)) {
 				x += 1;
 				
 				facing = EAST;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}	
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
+	/**
+	 * Moves one tile west
+	 * @return true if moved
+	 */
 	public boolean goWest() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(x - 1 > 0) {
 			if(map.tileAt(x - 1, y).canEnter(this)) {
 				x -= 1;
 				
 				facing = WEST;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}	
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
+	/**
+	 * Moves one tile northeast
+	 * @return true if moved
+	 */
 	public boolean goNortheast() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(map.contains(x + 1, y - 1)) {
 			if(map.tileAt(x + 1, y - 1).canEnter(this)) {
 				x += 1;
 				y -= 1;
 				
 				facing = NORTHEAST;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
+	/**
+	 * Moves one tile northwest
+	 * @return true if moved
+	 */
 	public boolean goNorthwest() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(map.contains(x - 1, y - 1)) {
 			if(map.tileAt(x - 1, y - 1).canEnter(this)) {
 				this.x -= 1;
 				this.y -= 1;
 				
 				facing = NORTHWEST;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
+	/**
+	 * Moves one tile southeast
+	 * @return true if moved
+	 */
 	public boolean goSoutheast() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(map.contains(x + 1, y + 1)) {
 			if(map.tileAt(x + 1, y + 1).canEnter(this)) {
 				x += 1;
 				y += 1;
 				
 				facing = SOUTHEAST;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
+	/**
+	 * Moves one tile southwest
+	 * @return true if moved
+	 */
 	public boolean goSouthwest() {
+		map.tileAt(this.x, this.y).setOccupant(null);
+		
 		if(map.contains(x - 1, y + 1)) {
 			if(map.tileAt(x - 1, y + 1).canEnter(this)) {
 				x -= 1;
 				y += 1;
 				
 				facing = SOUTHWEST;
+				
+				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
 			}
 		}
+		
+		map.tileAt(this.x, this.y).setOccupant(this);
 		return false;
 	}
 	
 	
 	/**
-	 * Moves this AbstractEntity one space toward the given point on the map
+	 * Moves one space toward the given point on the map
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
-	 * @return true if the AbstractEntity has moved
+	 * @return true if moved
 	 */
 	public boolean goTo(int x, int y) {
 		boolean moved = false;
-		
-		map.tileAt(this.x, this.y).setOccupant(null);
 		
 		if(this.x < x && this.y > y) {
 			if(goNortheast()) moved = true;
@@ -480,15 +597,14 @@ public abstract class AbstractEntity {
 			if(goWest()) moved = true;
 		}
 		
-		map.tileAt(this.x, this.y).setOccupant(this);
-		
 		return moved;
 	}
 	
 	/**
-	 * Moves this AbstractEntity one space away from the given point on the map
+	 * Moves one space away from the given point on the map
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
+	 * @param true if moved
 	 */
 	public boolean avoid(int x, int y) {
 //		if(this.x < x && this.x - 1 > 0) this.x -= 1;
@@ -498,8 +614,6 @@ public abstract class AbstractEntity {
 		
 		boolean moved = false;
 		
-		map.tileAt(this.x, this.y).setOccupant(null);
-		
 		if(this.x < x && this.y > y) {
 			if(goSouthwest()) moved = true;
 		} else if(this.x > x && this.y > y) {
@@ -518,13 +632,13 @@ public abstract class AbstractEntity {
 			if(goEast()) moved = true;
 		}
 		
-		map.tileAt(this.x, this.y).setOccupant(this);
-		
 		return moved;
 	}
 	
+	/**
+	 * The AbstractEntity moves forward until it hits a wall, at which point it turns 45 degrees clockwise
+	 */
 	public void goUntilWallClockwise() {
-		map.tileAt(x, y).setOccupant(null);
 		
 		switch(facing) {
 			case NORTH:
@@ -555,11 +669,12 @@ public abstract class AbstractEntity {
 				break;
 		}
 		
-		map.tileAt(x, y).setOccupant(this);
 	}
 	
+	/**
+	 * The AbstractEntity moves forward until it hits a wall, at which point it turns 45 degrees counterclockwise
+	 */
 	public void goUntilWallCounterclockwise() {
-		map.tileAt(x, y).setOccupant(null);
 		
 		switch(facing) {
 			case NORTH:
@@ -590,11 +705,12 @@ public abstract class AbstractEntity {
 				break;
 		}
 		
-		map.tileAt(x, y).setOccupant(this);
 	}
 	
+	/**
+	 * The AbstractEntity moves forward until it hits a wall, at which point it turns 90 degrees clockwise
+	 */
 	public void goUntilWallRight() {
-		map.tileAt(x, y).setOccupant(null);
 		
 		switch(facing) {
 			case NORTH:
@@ -613,11 +729,12 @@ public abstract class AbstractEntity {
 				break;
 		}
 		
-		map.tileAt(x, y).setOccupant(this);
 	}
 	
+	/**
+	 * The AbstractEntity moves forward until it hits a wall, at which point it turns 90 degrees counterclockwise
+	 */
 	public void goUntilWallLeft() {
-		map.tileAt(x, y).setOccupant(null);
 		
 		switch(facing) {
 			case NORTH:
@@ -636,7 +753,6 @@ public abstract class AbstractEntity {
 				break;
 		}
 		
-		map.tileAt(x, y).setOccupant(this);
 	}
 	
 }
