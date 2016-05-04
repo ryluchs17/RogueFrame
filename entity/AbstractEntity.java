@@ -3,6 +3,8 @@ package entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Random;
+
 import tile.AbstractTile;
 import tile.TileMap;
 
@@ -32,6 +34,9 @@ public abstract class AbstractEntity {
 	
 	// The map within which this AbstractEntity exists
 	protected TileMap map;
+	
+	// The rng used by this AbstractEntity
+	protected Random rng;
 	
 	// Char and Color to display as
 	protected String character;
@@ -92,17 +97,21 @@ public abstract class AbstractEntity {
 	 * @param y The y-coordinate
 	 * @param level The level of the AbstractEntity
 	 */
-	public AbstractEntity(int x, int y, int level) {
+	public AbstractEntity(int x, int y, int level, TileMap map, Random rng) {
 		this.x = x;
 		this.y = y;
 		
-		if(level > MAX_LEVEL) {
-			this.level = MAX_LEVEL;
-		} else if(level < 1) {
-			this.level = 1;
-		} else {
-			this.level = level;
-		}
+		this.map = map;
+		
+		this.rng = rng;
+		
+//		if(level > MAX_LEVEL) {
+//			this.level = MAX_LEVEL;
+//		} else if(level < 1) {
+//			this.level = 1;
+//		} else {
+//			this.level = level;
+//		}
 	}
 	
 	// ! ABSTRACT METHODS BEGIN !
@@ -212,6 +221,29 @@ public abstract class AbstractEntity {
 //		}
 //		
 //	}
+	
+	public void levelUp() {
+		str_cap += rng.nextInt(100) <= str_gro ? 1 : 0;
+		def_cap += rng.nextInt(100) <= def_gro ? 1 : 0;
+		mag_cap += rng.nextInt(100) <= mag_gro ? 1 : 0;
+		res_cap += rng.nextInt(100) <= res_gro ? 1 : 0;
+		skl_cap += rng.nextInt(100) <= skl_gro ? 1 : 0;
+		spd_cap += rng.nextInt(100) <= spd_gro ? 1 : 0;
+	}
+	
+	public void levelUp(int levels) {
+		for(int i = 0; i < levels; i++) {
+			levelUp();
+		}
+	}
+	
+	public boolean hit_str(AbstractEntity e) {
+		return rng.nextInt(100) <= (str - e.def) + (skl - e.spd);
+	}
+	
+	public boolean hit_mag(AbstractEntity e) {
+		return rng.nextInt(100) <= (mag - e.res) + (skl - e.spd);
+	}
 	
 	/**
 	 * Kills the AbstractEntity

@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+import tile.TileMap;
+
 /**
  * @author SJHSStudent
  *
@@ -20,8 +22,8 @@ public class Bat extends AbstractEntity {
 	
 	private int sedentaryFor = 0;
 	
-	public Bat(int x, int y, int level) {
-		super(x, y, level);
+	public Bat(int x, int y, int level, TileMap map, Random rng) {
+		super(x, y, level, map, rng);
 		
 		this.character = "b";
 		this.color = new Color(140, 100, 60);

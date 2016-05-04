@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.Random;
 
 import tile.AbstractTile;
+import tile.TileMap;
 
 public class Hidden extends AbstractEntity{
 	private Random r = new Random();
@@ -12,8 +13,8 @@ public class Hidden extends AbstractEntity{
 	private int seekX;
 	private int seekY;
 
-	public Hidden(int x, int y, int level) {
-		super(x, y, level);
+	public Hidden(int x, int y, int level, TileMap map, Random rng) {
+		super(x, y, level, map, rng);
 		
 		this.character = "H";
 		this.color = Color.BLACK;

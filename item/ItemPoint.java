@@ -14,7 +14,12 @@ public class ItemPoint {
 	
 	// Char and Color to display as
 	private String Character;
-	private Color foreground, background;
+	private Color color;
+	
+	public static final String CHAR_POTION = "!";
+	public static final String CHAR_WEAPON = "/";
+	public static final String CHAR_SCROLL = "$";
+	public static final String CHAR_MISC = "i";
 	
 	public ItemPoint(int x, int y) {
 		this.x = x;

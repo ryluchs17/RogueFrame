@@ -54,7 +54,7 @@ public class TileMap {
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
 		for(int i = 0; i < 4; i++) {
-			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10);
+			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this, generate);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);
 			entities.add(e);
@@ -83,7 +83,7 @@ public class TileMap {
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
 		for(int i = 0; i < 10; i++) {
-			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10);
+			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this, generate);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);
 			entities.add(e);

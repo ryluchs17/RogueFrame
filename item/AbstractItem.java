@@ -14,7 +14,7 @@ public abstract class AbstractItem {
 	
 	// Char and Color to display as
 	protected String character;
-	protected Color foreground, background;
+	protected Color color;
 	
 	// Flavor text
 	protected String name, description;
@@ -22,11 +22,20 @@ public abstract class AbstractItem {
 	// Can be stacked
 	protected boolean isStackable;
 	
-	// Number of used for an item
+	// Number of uses for an item
 	protected int uses;
 	
-	// XY position on the grid
-	protected int x, y;
+	// Min and max damage
+	protected int min_dam, max_dam;
+	
+	// weapon proficiency
+	protected float proficiency = 0.5F;
+	
+	// whether the item does physical or magical damage when equipt
+	protected boolean magical;
+	
+//	// XY position on the grid
+//	protected int x, y;
 	
 	/**
 	 * What happens when the item is used
