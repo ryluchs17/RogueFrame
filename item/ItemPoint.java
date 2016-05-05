@@ -21,9 +21,21 @@ public class ItemPoint {
 	public static final String CHAR_SCROLL = "$";
 	public static final String CHAR_MISC = "i";
 	
-	public ItemPoint(int x, int y) {
+	private short itemID;
+	
+	private AbstractItem contents;
+	
+	public ItemPoint(int x, int y, short itemID) {
 		this.x = x;
 		this.y = y;
+		this.itemID = itemID;
+	}
+	
+	public ItemPoint(int x, int y, AbstractItem item) {
+		this.x = x;
+		this.y = y;
+		this.contents = item;
+		this.itemID = item.getItemID();
 	}
 	
 	public void setPosition(int x, int y) {
@@ -44,5 +56,32 @@ public class ItemPoint {
 	public int getY() {
 		return y;
 	}
-
+	
+//	public void sever() {
+//		
+//	}
+	
+	public short getItemID() {
+		return itemID;
+	}
+	
+	public AbstractItem getContents() {
+		if(contents != null) {
+			return contents;
+		} else {
+//			return Const.makeItem(); TODO IMPLEMENT ME
+			return null;
+		}
+		
+	}
+	
+	public void setContents(AbstractItem item) {
+		contents = item;
+		itemID = item.getItemID();
+	}
+	
+	public boolean containsExistingItem() {
+		return contents != null;
+	}
+	
 }

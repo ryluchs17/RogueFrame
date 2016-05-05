@@ -12,6 +12,9 @@ import entity.AbstractEntity;
 
 public abstract class AbstractItem {
 	
+	// the ID number of the item
+	protected short itemID;
+	
 	// Char and Color to display as
 	protected String character;
 	protected Color color;
@@ -20,10 +23,10 @@ public abstract class AbstractItem {
 	protected String name, description;
 	
 	// Can be stacked
-	protected boolean isStackable;
+	protected boolean stackable;
 	
 	// Number of uses for an item
-	protected int uses;
+	public int uses;
 	
 	// Min and max damage
 	protected int min_dam, max_dam;
@@ -36,6 +39,10 @@ public abstract class AbstractItem {
 	
 //	// XY position on the grid
 //	protected int x, y;
+	
+	public AbstractItem() {
+		
+	}
 	
 	/**
 	 * What happens when the item is used
@@ -52,4 +59,15 @@ public abstract class AbstractItem {
 	 */
 	abstract public void onEquipt(AbstractEntity m);
 	
+	public short getItemID() {
+		return itemID;
+	}
+	
+	public boolean isStackable() {
+		return stackable;
+	}
+	
+	public int getUses() {
+		return uses;
+	}
 }
