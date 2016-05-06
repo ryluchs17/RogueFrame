@@ -28,17 +28,25 @@ public abstract class AbstractItem {
 	// Number of uses for an item
 	public int uses;
 	
-	// Min and max damage
-	protected int min_dam, max_dam;
+	// Damage when wielded as weapon
+	protected int damage;
+	
+	// Hit chance (%) when wielded as weapon
+	protected int hit;
+	
+	// Crit chance (%) when wielded as weapon
+	protected int crit;
 	
 	// weapon proficiency
 	protected float proficiency = 0.5F;
 	
-	// whether the item does physical or magical damage when equipt
+	// whether the item does physical or magical damage when wielded as weapon
 	protected boolean magical;
 	
-//	// XY position on the grid
-//	protected int x, y;
+	public static final String CHAR_POTION = "!";
+	public static final String CHAR_WEAPON = "/";
+	public static final String CHAR_SCROLL = "$";
+	public static final String CHAR_MISC = "i";
 	
 	public AbstractItem() {
 		
@@ -65,9 +73,5 @@ public abstract class AbstractItem {
 	
 	public boolean isStackable() {
 		return stackable;
-	}
-	
-	public int getUses() {
-		return uses;
 	}
 }

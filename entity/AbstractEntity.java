@@ -81,13 +81,13 @@ public abstract class AbstractEntity {
 //	// base damage with physical and magical attacks
 //	protected int base_physical_damage = 0, base_magic_damage = 0;
 	
-	protected int str_cap, def_cap, mag_cap, res_cap, skl_cap, spd_cap;
+	protected int hp_cap, str_cap, def_cap, mag_cap, res_cap, skl_cap, spd_cap;
 	
-	protected int str_gro, def_gro, mag_gro, res_gro, skl_gro, spd_gro;
+	protected int hp_gro, str_gro, def_gro, mag_gro, res_gro, skl_gro, spd_gro;
 	
-	public int str, def, mag, res, skl, spd;
+	public int hp, str, def, mag, res, skl, spd;
 	
-	public int dam_str_low = 1, dam_str_high = 1, dam_mag_low = 1, dam_mag_high = 1;
+	public int dam_str = 0, dam_mag = 0;
 	
 	// ! STATS STUFF ENDS !
 	
@@ -117,9 +117,24 @@ public abstract class AbstractEntity {
 	// ! ABSTRACT METHODS BEGIN !
 	
 	/**
-	 * The AbtractEntity's action each turn
+	 * The AbstractEntity's action each turn
 	 */
 	abstract public void onTurn();
+	
+//	/**
+//	 * What to do when attacking
+//	 */
+//	abstract public void onAttacks(AbstractEntity e);
+	
+	/**
+	 * What to do when attacked
+	 */
+	abstract public void onAttacked(AttackEvent e);
+	
+	/**
+	 * What to do when killed
+	 */
+	abstract public void onDeath();
 	
 	// ! ABSTRACT METHODS END !
 	
@@ -223,6 +238,7 @@ public abstract class AbstractEntity {
 //	}
 	
 	public void levelUp() {
+		hp_cap  += rng.nextInt(100) <= hp_gro  ? 2 : 1;
 		str_cap += rng.nextInt(100) <= str_gro ? 1 : 0;
 		def_cap += rng.nextInt(100) <= def_gro ? 1 : 0;
 		mag_cap += rng.nextInt(100) <= mag_gro ? 1 : 0;
@@ -238,11 +254,19 @@ public abstract class AbstractEntity {
 	}
 	
 	public boolean hit_str(AbstractEntity e) {
-		return rng.nextInt(100) <= (str - e.def) + (skl - e.spd);
+		return rng.nextInt(100) <= (/*hit + */ str + skl) - (e.def + e.spd);
 	}
 	
 	public boolean hit_mag(AbstractEntity e) {
-		return rng.nextInt(100) <= (mag - e.res) + (skl - e.spd);
+		return rng.nextInt(100) <= (/*hit + */ mag + skl) - (e.res + e.spd);
+	}
+	
+	public boolean crit_str(AbstractEntity e) {
+		return rng.nextInt(100) <= /*crit + */str - e.def;
+	}
+	
+	public boolean crit_mag(AbstractEntity e) {
+		return rng.nextInt(100) <= /*crit + */mag - e.res;
 	}
 	
 	/**

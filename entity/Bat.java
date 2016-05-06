@@ -64,4 +64,16 @@ public class Bat extends AbstractEntity {
 //		map.updateAt(x, y);
 	}
 
+	@Override
+	public void onAttacked(AttackEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDeath() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
