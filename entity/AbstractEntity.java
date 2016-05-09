@@ -53,8 +53,22 @@ public abstract class AbstractEntity {
 	
 	// Determines whether or not the entity ignores "avoid" tiles
 	public boolean ignore = false;
+	
+	// ! FACTION STUFF !
+	
+	/*
+	 * Faction is the product of several primes,
+	 * if faction % (number) is 0 then the creature is
+	 * part of that faction 
+	 */
+	
+	protected int faction;
+	
+	public static final int FACT_PLAYERALLY = 2;
+	
+	public static final int FACT_CHAOS = 3;
 
-	// ! STATS STUFF BEGINS !
+	// ! STATS STUFF !
 	
 	// Health
 	protected int hitpoints = 0;
@@ -68,7 +82,7 @@ public abstract class AbstractEntity {
 	 */
 	public static final int MAX_LEVEL = 20;
 	
-	// ! STATS STUFF BEGINS !
+	// ! MORE STATS STUFF BEGINS !
 
 //	protected int hp, atk, def, mag;
 //	
@@ -236,6 +250,22 @@ public abstract class AbstractEntity {
 //		}
 //		
 //	}
+	
+	public int getFaction() {
+		return faction;
+	}
+	
+	public void addFaction(int faction) {
+		this.faction *= faction;
+	}
+	
+	public void removeFaction(int faction) {
+		this.faction /= faction;
+	}
+	
+	public boolean isFaction(int faction) {
+		return this.faction % faction == 0;
+	}
 	
 	public void levelUp() {
 		hp_cap  += rng.nextInt(100) <= hp_gro  ? 2 : 1;

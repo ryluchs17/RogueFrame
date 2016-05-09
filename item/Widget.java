@@ -18,7 +18,7 @@ public class Widget extends AbstractItem {
 	 * 
 	 */
 	public Widget() {
-		itemID = 0;
+		super();
 		
 		this.character = CHAR_MISC;
 		this.color = Color.WHITE;

@@ -1,6 +1,9 @@
 package item;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import tile.AbstractTile;
 import entity.AbstractEntity;
 
@@ -12,8 +15,8 @@ import entity.AbstractEntity;
 
 public abstract class AbstractItem {
 	
-	// the ID number of the item
-	protected short itemID;
+//	// The coordinates (x, y) of the item point on the map
+//	private int x = 0, y = 0;
 	
 	// Char and Color to display as
 	protected String character;
@@ -27,6 +30,8 @@ public abstract class AbstractItem {
 	
 	// Number of uses for an item
 	public int uses;
+	
+	// ! COMBAT STUFF !
 	
 	// Damage when wielded as weapon
 	protected int damage;
@@ -42,6 +47,8 @@ public abstract class AbstractItem {
 	
 	// whether the item does physical or magical damage when wielded as weapon
 	protected boolean magical;
+	
+	// ! DISPLAY STUFF !
 	
 	public static final String CHAR_POTION = "!";
 	public static final String CHAR_WEAPON = "/";
@@ -67,9 +74,41 @@ public abstract class AbstractItem {
 	 */
 	abstract public void onEquipt(AbstractEntity m);
 	
-	public short getItemID() {
-		return itemID;
+	public void draw(Graphics g, int x, int y) {
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setColor(color);
+		g2d.drawString(character, x, y + AbstractTile.STEP);
+		
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+//	public void setPosition(int x, int y) {
+//		this.x = x;
+//		this.y = y;
+//	}
+//
+//	/**
+//	 * @return the x
+//	 */
+//	public int getX() {
+//		return x;
+//	}
+//
+//	/**
+//	 * @return the y
+//	 */
+//	public int getY() {
+//		return y;
+//	}
 	
 	public boolean isStackable() {
 		return stackable;
