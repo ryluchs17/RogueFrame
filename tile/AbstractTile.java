@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import entity.AbstractEntity;
 import item.AbstractItem;
-import item.ItemPoint;
 
 /**
  * RougeFrame tile object
@@ -58,12 +57,12 @@ public abstract class AbstractTile {
 	/**
 	 * The text color that tooltips for an item filled Tile displays as
 	 */
-	public static final Color TOOLTIP_ITEM = new Color(100, 194, 255); //TODO FIX
+	public static final Color TOOLTIP_ITEM = new Color(97, 247, 255);
 	
 	/**
 	 * The text color that tooltips for an occupied Tile displays as
 	 */
-	public static final Color TOOLTIP_ENTITY = new Color(194, 226, 255);
+	public static final Color TOOLTIP_ENTITY = new Color(255, 105, 97);
 
 	/**
 	 * Creates an AbstractTile with the coordinates (x, y)

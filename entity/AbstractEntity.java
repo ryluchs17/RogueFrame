@@ -54,19 +54,19 @@ public abstract class AbstractEntity {
 	// Determines whether or not the entity ignores "avoid" tiles
 	public boolean ignore = false;
 	
-	// ! FACTION STUFF !
+	// ! TYPE STUFF !
 	
 	/*
-	 * Faction is the product of several primes,
+	 * Type is the product of several primes,
 	 * if faction % (number) is 0 then the creature is
 	 * part of that faction 
 	 */
 	
-	protected int faction;
+	protected int type;
 	
-	public static final int FACT_PLAYERALLY = 2;
+	public static final int TYPE_PLAYER = 2;
 	
-	public static final int FACT_CHAOS = 3;
+	public static final int TYPE_PLAYER_ALLY = 3;
 
 	// ! STATS STUFF !
 	
@@ -251,20 +251,20 @@ public abstract class AbstractEntity {
 //		
 //	}
 	
-	public int getFaction() {
-		return faction;
+	public int getType() {
+		return type;
 	}
 	
-	public void addFaction(int faction) {
-		this.faction *= faction;
+	public void addType(int faction) {
+		this.type *= faction;
 	}
 	
-	public void removeFaction(int faction) {
-		this.faction /= faction;
+	public void removeType(int faction) {
+		this.type /= faction;
 	}
 	
-	public boolean isFaction(int faction) {
-		return this.faction % faction == 0;
+	public boolean isType(int faction) {
+		return this.type % faction == 0;
 	}
 	
 	public void levelUp() {
@@ -281,6 +281,15 @@ public abstract class AbstractEntity {
 		for(int i = 0; i < levels; i++) {
 			levelUp();
 		}
+		
+		System.out.println("HP: " + hp_cap);
+		System.out.println("STR: " + str_cap);
+		System.out.println("DEF: " + def_cap);
+		System.out.println("MAG: " + mag_cap);
+		System.out.println("RES: " + res_cap);
+		System.out.println("SKL: " + skl_cap);
+		System.out.println("SPD: " + spd_cap);
+		System.out.println();
 	}
 	
 	public boolean hit_str(AbstractEntity e) {
@@ -839,6 +848,36 @@ public abstract class AbstractEntity {
 				break;
 		}
 		
+	}
+	
+	/**
+	 * The AbstractEntity walks one step in a random direction
+	 * @returns True if the AbstractEntity moved
+	 */
+	public boolean randomWalk() {
+		
+		facing = (short) rng.nextInt(8);
+		
+		switch(facing) {
+			case NORTH:
+				return goNorth();
+			case SOUTH:
+				return goSouth();
+			case EAST:
+				return goEast();
+			case WEST:
+				return goWest();
+			case NORTHEAST:
+				return goNortheast();
+			case NORTHWEST:
+				return goNorthwest();
+			case SOUTHEAST:
+				return goSoutheast();
+			case SOUTHWEST:
+				return goSouthwest();
+			default:
+				return false;
+		}
 	}
 	
 }
