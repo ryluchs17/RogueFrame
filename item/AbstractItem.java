@@ -25,8 +25,19 @@ public abstract class AbstractItem {
 	// Flavor text
 	protected String name, description;
 	
+	// What to display when not yet identified
+	public static String name_if_unidentitied;
+	
+	// ! STORAGE STUFF !
+	
 	// Can be stacked
 	protected boolean stackable;
+	
+	// determines whether the item can be removed from the top spot of the inventory
+	protected boolean cursed = false;
+	
+	// determines whether the item can be removed from inventory
+	protected boolean locked = false;
 	
 	// Number of uses for an item
 	public int uses;

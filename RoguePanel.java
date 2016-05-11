@@ -7,6 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import tile.TileMap;
+import item.*;
 
 /**
  * @author ryan
@@ -43,15 +44,20 @@ public class RoguePanel extends JPanel implements KeyListener{
 		panel.setBackground(Color.BLACK);
 		panel.setLayout(new FlowLayout());
 		
-		hpBar.setBackground(Color.BLACK);
-		hpBar.showDecrease(true);
-		panel.add(hpBar);
+//		hpBar.setBackground(Color.BLACK);
+//		hpBar.showDecrease(true);
+//		panel.add(hpBar);
+//		
+//		mpBar.setBackground(Color.BLACK);
+//		mpBar.showDecrease(true);
+//		mpBar.setColor(Color.BLUE);
+//		mpBar.setDecreaseColor(Color.WHITE);
+//		panel.add(mpBar);
 		
-		mpBar.setBackground(Color.BLACK);
-		mpBar.showDecrease(true);
-		mpBar.setColor(Color.BLUE);
-		mpBar.setDecreaseColor(Color.WHITE);
-		panel.add(mpBar);
+		Inventory i = new Inventory();
+		i.set(0, new Widget());
+		
+		panel.add(new InventoryPanel(i));
 		
 		add(panel, BorderLayout.SOUTH);
 		
@@ -65,16 +71,16 @@ public class RoguePanel extends JPanel implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
-			case KeyEvent.VK_UP:
+			case KeyEvent.VK_J:
 				map.shiftView(0, -1);
 				break;
-			case KeyEvent.VK_LEFT:
+			case KeyEvent.VK_H:
 				map.shiftView(-1, 0);
 				break;
-			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_L:
 				map.shiftView(1, 0);
 				break;
-			case KeyEvent.VK_DOWN:
+			case KeyEvent.VK_K:
 				map.shiftView(0, 1);
 				break;
 			case KeyEvent.VK_Z:

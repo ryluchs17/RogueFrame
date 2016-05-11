@@ -22,6 +22,10 @@ public class Inventory {
 		items = new AbstractItem[5];
 	}
 	
+	public Inventory(AbstractItem[] items) {
+		this.items = items;
+	}
+	
 //	public Inventory(AbstractEntity owner) {
 //		items = new AbstractItem[5];
 //		
@@ -35,6 +39,14 @@ public class Inventory {
 	public void set(int index, AbstractItem i) {
 		if(index >= 0 && index <= 4) {
 			items[index] = i;
+		}
+	}
+	
+	public AbstractItem get(int index) {
+		if(index >= 0 && index <= 4) {
+			return items[index];
+		} else {
+			return null;
 		}
 	}
 	
@@ -86,6 +98,14 @@ public class Inventory {
 		}
 		
 		return false;
+	}
+	
+	public void clean() {
+		for(int i = 0; i < items.length; i++) {
+			if(items[i] != null && items[i].isStackable() && items[i].uses == 0) {
+				items[i] = null;
+			}
+		}
 	}
 	
 //	public int get(short ItemID) {
