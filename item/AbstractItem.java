@@ -40,7 +40,7 @@ public abstract class AbstractItem {
 	protected boolean locked = false;
 	
 	// Number of uses for an item
-	public int uses;
+	public int uses = 1;
 	
 	// ! COMBAT STUFF !
 	
@@ -100,6 +100,10 @@ public abstract class AbstractItem {
 	
 	public String getDescription() {
 		return description;
+	}
+	
+	public Float getProficiency() {
+		return proficiency;
 	}
 
 //	public void setPosition(int x, int y) {

@@ -60,7 +60,7 @@ public class Inventory {
 		return select;
 	}
 	
-	public void swap( int index, AbstractTile t) {
+	public void swap(int index, AbstractTile t) {
 		if(index >= 0 && index <= 4) {
 			AbstractItem temp;
 			
@@ -79,13 +79,13 @@ public class Inventory {
 		if((index1 >= 0 && index1 <= 4) && (index2 >= 0 && index2 <= 4)) {
 			AbstractItem temp;
 			
-			if(items[index1] != null && items[index2] != null && items[index1].getName().equals(items[index2].getName()) && items[index1].isStackable()) {
+			if(items[index1] != null && items[index2] != null && items[index1].getName().equals(items[index2].getName()) && items[index1].isStackable() && items[index1] != items[index2]) {
 				items[index1].uses += items[index2].uses;
 				items[index2] = null;
 			} else {
 				temp = items[index1];
 				items[index1] = items[index2];
-				items[index2] = items[index1];
+				items[index2] = temp;
 			}
 		}
 	}

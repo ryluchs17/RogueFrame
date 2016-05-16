@@ -25,6 +25,8 @@ public class Widget extends AbstractItem {
 		
 		this.name = "Widget";
 		this.description = "TEST ITEM!";
+		
+		this.stackable = true;
 	}
 
 	/* (non-Javadoc)
