@@ -25,19 +25,30 @@ import tile.AbstractTile;
  */
 public class InventoryPanel extends JPanel implements MouseListener{
 	
+	/* 
+	 * Buttons I need:
+	 * - information
+	 * - drop/swap
+	 * - use
+	 * - throw
+	 * 
+	 */
+	
 	public final static short MODE_SELECT = 0;
 	public final static short MODE_INFO = 1;
 	
 	private short mode = 1;
 	
+	private static final int length_chars = 20;
+	
 	private static Rectangle equiptbutton = new Rectangle(0, 0, AbstractTile.STEP * 2, AbstractTile.STEP);
-	private static Rectangle infobutton = new Rectangle(0, AbstractTile.STEP * 2, AbstractTile.STEP * 2, AbstractTile.STEP);
+	private static Rectangle leftbutton = new Rectangle(0, AbstractTile.STEP * 6, AbstractTile.STEP, AbstractTile.STEP);
+	private static Rectangle rightbutton = new Rectangle( (length_chars - 1) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP, AbstractTile.STEP);
+	private static Rectangle button = new Rectangle(AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * 20, AbstractTile.STEP);
 	
 	private short selected = 0;
 	
 	Inventory items;
-	
-	int length_chars = 20;
 	
 	/**
 	 * 
@@ -49,7 +60,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		
 		this.setBackground(Color.BLACK);
 		this.addMouseListener(this);
-		//this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+//		this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 	}
 	
 	@Override
@@ -66,9 +77,9 @@ public class InventoryPanel extends JPanel implements MouseListener{
 					i = items.get(y);
 					
 					if(i != null) {
-						i.draw(g, AbstractTile.STEP * 2, y * AbstractTile.STEP);
+						i.draw(g, (this.getWidth()/2) - AbstractTile.STEP * 4, y * AbstractTile.STEP);
 						if(y == selected){ g2d.setColor(AbstractTile.TOOLTIP_ITEM); }else{ g2d.setColor(Color.WHITE); };
-						g2d.drawString(i.getName() + (i.isStackable() ? (" (" + i.uses + ") ") : " "), AbstractTile.STEP * 4, (y + 1) * AbstractTile.STEP);
+						g2d.drawString(i.getName() + (i.isStackable() ? (" (" + i.uses + ") ") : " "), (this.getWidth()/2) - AbstractTile.STEP * 2, (y + 1) * AbstractTile.STEP);
 					}
 				}
 				
@@ -81,12 +92,21 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				}
 				
 				g2d.setColor(Color.YELLOW);
-				g2d.drawString("(?)", infobutton.x, infobutton.y);
+				
+//				g2d.fillRect(button.x, button.y, button.width, button.height);
+				
+				g2d.drawString("Details", button.x, button.y + AbstractTile.STEP);
+				g2d.drawString("<", leftbutton.x, leftbutton.y + AbstractTile.STEP);
+				g2d.drawString(">", rightbutton.x, rightbutton.y + AbstractTile.STEP);
 				break;
 		
 			case MODE_INFO:
-				items.get(selected).drawText(g, 0, 0);
-				
+				if(items.get(selected) == null) {
+					g2d.setColor(Color.WHITE);
+					g2d.drawString("Nothing selected", 0, AbstractTile.STEP);
+				} else {
+					items.get(selected).drawText(g, 0, 0);
+				}
 				break;
 				
 			default:
@@ -98,7 +118,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(AbstractTile.STEP * length_chars, (AbstractTile.STEP + 2) * 5);
+		return new Dimension(AbstractTile.STEP * length_chars, (AbstractTile.STEP + 2) * 6);
 	}
 
 	@Override
@@ -129,7 +149,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 					repaint();
 				}
 				
-				if(infobutton.contains(mouse)) {
+				if(button.contains(mouse)) {
 					mode = MODE_INFO;
 					repaint();
 				}
