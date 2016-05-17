@@ -60,8 +60,7 @@ public class TileMap {
 			e.setMap(this);
 			entities.add(e);
 		}
-		
-		tiles[0][0].setItem(new Widget());
+
 	}
 	
 	/**

@@ -57,9 +57,9 @@ public class RoguePanel extends JPanel implements KeyListener{
 		Inventory i = new Inventory();
 		i.set(0, new Widget());
 		i.set(1, new Widget());
-		i.set(2, new Widget());
-		i.set(3, new Widget());
-		i.set(4, new Widget());
+		i.set(4, new BlockedSlot());
+		
+		i.equip();
 		
 		panel.add(new InventoryPanel(i));
 		

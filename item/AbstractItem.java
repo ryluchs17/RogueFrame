@@ -94,16 +94,27 @@ public abstract class AbstractItem {
 		
 	}
 	
+	public void drawText(Graphics g, int x, int y) {
+		
+		draw(g, x, y);
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(name, x + AbstractTile.STEP, y + AbstractTile.STEP);
+		g2d.drawString(description, x, y + (AbstractTile.STEP + 2) * 2);
+		g2d.drawString(damage + " x " + proficiency + " damage" , x, y + (AbstractTile.STEP + 2) * 3);
+		g2d.drawString(hit + "%" + " hit", x, y + (AbstractTile.STEP + 2) * 4);
+		g2d.drawString(crit + "%" + " crit", x, y + (AbstractTile.STEP + 2) * 5);
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
 	
 	public String getDescription() {
 		return description;
-	}
-	
-	public Float getProficiency() {
-		return proficiency;
 	}
 
 //	public void setPosition(int x, int y) {

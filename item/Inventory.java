@@ -3,7 +3,6 @@
  */
 package item;
 
-import entity.AbstractEntity;
 import tile.AbstractTile;
 
 /**
@@ -12,11 +11,9 @@ import tile.AbstractTile;
  */
 public class Inventory {
 	
-//	private AbstractEntity owner;
+	private boolean equipt;
 	
 	private AbstractItem[] items;
-	
-	private AbstractItem select;
 	
 	public Inventory() {
 		items = new AbstractItem[5];
@@ -25,16 +22,6 @@ public class Inventory {
 	public Inventory(AbstractItem[] items) {
 		this.items = items;
 	}
-	
-//	public Inventory(AbstractEntity owner) {
-//		items = new AbstractItem[5];
-//		
-//		this.owner = owner;
-//	}
-//	
-//	public void setOwner(AbstractEntity e) {
-//		owner = e;
-//	}
 	
 	public void set(int index, AbstractItem i) {
 		if(index >= 0 && index <= 4) {
@@ -50,18 +37,22 @@ public class Inventory {
 		}
 	}
 	
-	public void select(int index) {
+	public void remove(int index) {
 		if(index >= 0 && index <= 4) {
-			select = items[index];
+			items[index] = null;
 		}
 	}
 	
-	public AbstractItem selected() {
-		return select;
+	public void equip() {
+		if(items[0] != null) equipt = !equipt;
+	}
+	
+	public boolean hasEquipt() {
+		return equipt;
 	}
 	
 	public void swap(int index, AbstractTile t) {
-		if(index >= 0 && index <= 4) {
+		if(index >= 0 && index <= 4 && !(index == 0 && equipt)) {
 			AbstractItem temp;
 			
 			if(t.hasItem() && items[index].getName().equals(t.getItem().getName()) && items[index].isStackable()) {
@@ -76,7 +67,7 @@ public class Inventory {
 	}
 	
 	public void swap(int index1, int index2) {
-		if((index1 >= 0 && index1 <= 4) && (index2 >= 0 && index2 <= 4)) {
+		if((index1 >= 0 && index1 <= 4) && (index2 >= 0 && index2 <= 4) && !((index1 == 0 || index2 == 0) && equipt)) {
 			AbstractItem temp;
 			
 			if(items[index1] != null && items[index2] != null && items[index1].getName().equals(items[index2].getName()) && items[index1].isStackable() && items[index1] != items[index2]) {
