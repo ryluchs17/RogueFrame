@@ -103,9 +103,9 @@ public abstract class AbstractItem {
 		g2d.setColor(Color.WHITE);
 		g2d.drawString(name, x + AbstractTile.STEP, y + AbstractTile.STEP);
 		g2d.drawString(description, x, y + (AbstractTile.STEP + 2) * 2);
-		g2d.drawString(damage + " x " + proficiency + " damage" , x, y + (AbstractTile.STEP + 2) * 3);
-		g2d.drawString(hit + "%" + " hit", x, y + (AbstractTile.STEP + 2) * 4);
-		g2d.drawString(crit + "%" + " crit", x, y + (AbstractTile.STEP + 2) * 5);
+		g2d.drawString(damage + " x " + proficiency + " damage" , x, y + (AbstractTile.STEP + 2) * 4);
+		g2d.drawString(hit + "%" + " hit", x, y + (AbstractTile.STEP + 2) * 5);
+		g2d.drawString(crit + "%" + " crit", x, y + (AbstractTile.STEP + 2) * 6);
 		
 	}
 	
