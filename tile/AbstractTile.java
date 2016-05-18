@@ -47,7 +47,7 @@ public abstract class AbstractTile {
 	/**
 	 * STEP^2 is the area of a tile in pixels
 	 */
-	public static final int STEP = 10;
+	public static final int STEP = 12;
 	
 	/**
 	 * The ratio of the height of the tooltip to STEP

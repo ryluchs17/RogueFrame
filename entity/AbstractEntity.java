@@ -111,13 +111,13 @@ public abstract class AbstractEntity {
 	 * @param y The y-coordinate
 	 * @param level The level of the AbstractEntity
 	 */
-	public AbstractEntity(int x, int y, int level, TileMap map, Random rng) {
+	public AbstractEntity(int x, int y, int level, TileMap map) {
 		this.x = x;
 		this.y = y;
 		
 		this.map = map;
 		
-		this.rng = rng;
+		this.rng = map.getRNG();
 		
 //		if(level > MAX_LEVEL) {
 //			this.level = MAX_LEVEL;
@@ -878,6 +878,26 @@ public abstract class AbstractEntity {
 			default:
 				return false;
 		}
+	}
+	
+	public boolean teleport(int x, int y) {
+		if(x > 0 && x < map.length() && y > 0 && y < map.height() && map.tileAt(x, y).canEnter(this)) {
+			map.tileAt(this.x, this.y).setOccupant(null);
+			map.tileAt(x, y).setOccupant(this);
+			return true;
+		}
+		return false;
+	}
+	
+	public void randomTeleport() {
+		map.tileAt(x, y).setOccupant(null);
+		
+		while(!map.tileAt(x, y).canEnter(this)) {
+			x = rng.nextInt(map.length());
+			y = rng.nextInt(map.height());
+		}
+		
+		map.tileAt(x, y).setOccupant(this);
 	}
 	
 }

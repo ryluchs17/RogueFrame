@@ -38,6 +38,9 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	private int viewX = 0; private int viewY = 0;
 	// length and height of the map display
 	private int viewColumns; private int viewRows;
+	
+	// the font to display as
+	private static final Font font = new Font("Monospaced", Font.PLAIN, 12);
 
 	/**
 	 * Creates a new Map of size columns * rows, with a display of size viewColumns * viewRows.
@@ -88,6 +91,10 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	public void setMap(TileMap map) {
 		this.map = map;
 		repaint();
+	}
+	
+	public TileMap getMap() {
+		return map;
 	}
 	
 	public void rounds(int r) {
@@ -184,7 +191,7 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//g.setFont(font);
+		g.setFont(font);
 		
 		for(int x = 0, y = 0; y < viewRows; y++) {
 			for(x = 0; x < viewColumns; x++) {

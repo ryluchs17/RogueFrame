@@ -4,8 +4,11 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
+
 import javax.swing.*;
 
+import entity.*;
 import tile.TileMap;
 import item.*;
 
@@ -27,6 +30,8 @@ public class RoguePanel extends JPanel implements KeyListener{
 	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
 	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
 	
+	AbstractEntity player;
+	
 	/**
 	 * RogueFrame constructor
 	 */
@@ -39,6 +44,9 @@ public class RoguePanel extends JPanel implements KeyListener{
 		map.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		map.setView(5, 5);
 		add(map, BorderLayout.CENTER);
+		
+		player = new Player(0, 0, 10, map.getMap());
+		player.randomTeleport();
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
@@ -77,15 +85,19 @@ public class RoguePanel extends JPanel implements KeyListener{
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_J:
 				map.shiftView(0, -1);
+				player.goNorth();
 				break;
 			case KeyEvent.VK_H:
 				map.shiftView(-1, 0);
+				player.goWest();
 				break;
 			case KeyEvent.VK_L:
 				map.shiftView(1, 0);
+				player.goEast();
 				break;
 			case KeyEvent.VK_K:
 				map.shiftView(0, 1);
+				player.goSouth();
 				break;
 			case KeyEvent.VK_Z:
 				hpBar.shiftValue(-10);

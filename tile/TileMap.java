@@ -46,16 +46,16 @@ public class TileMap {
 		seed = generate.nextLong();
 		
 		Cartographer.r = new Random(seed);
-		//tiles = Cartographer.createClassicMap(columns, rows);
+		tiles = Cartographer.createClassicMap(columns, rows);
 		//tiles = Cartographer.createFort(columns, rows);
 		//tiles = Cartographer.createSafeMap(columns, rows);
-		tiles = Cartographer.createMaze(columns, rows);
+		//tiles = Cartographer.createMaze(columns, rows);
 		//tiles = Cartographer.createTest(columns, rows);
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
 		for(int i = 0; i < 4; i++) {
-			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this, generate);
+			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);
 			entities.add(e);
@@ -85,7 +85,7 @@ public class TileMap {
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
 		for(int i = 0; i < 10; i++) {
-			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this, generate);
+			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);
 			entities.add(e);
@@ -154,6 +154,10 @@ public class TileMap {
 	 */
 	public long getSeed() {
 		return seed;
+	}
+	
+	public Random getRNG() {
+		return generate;
 	}
 	
 	/**
