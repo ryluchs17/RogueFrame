@@ -110,6 +110,8 @@ public abstract class AbstractTile {
 		
 		g2d.setColor(background);
 		g2d.fillRect(x, y, STEP, STEP);
+//		g2d.setColor(Color.YELLOW);
+//		g2d.drawRect(x, y, STEP, STEP);
 		
 		if(occupant != null) {
 			occupant.draw(g, x, y);
@@ -117,7 +119,7 @@ public abstract class AbstractTile {
 			item.draw(g, x, y);
 		} else {
 			g2d.setColor(foreground);
-			g2d.drawString(character, x, y + STEP);
+			g2d.drawString(character, x, y + (int) (STEP*0.75));
 		}
 		
 //		if(covered) {

@@ -90,15 +90,16 @@ public abstract class AbstractItem {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g2d.setColor(color);
-		g2d.drawString(character, x, y + AbstractTile.STEP);
+		g2d.drawString(character, x, y + (int) (AbstractTile.STEP * 0.75));
 		
 	}
 	
 	public void drawText(Graphics g, int x, int y) {
 		
-		draw(g, x, y);
-		
 		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setColor(color);
+		g2d.drawString(character, x, y + AbstractTile.STEP);
 		
 		g2d.setColor(Color.WHITE);
 		g2d.drawString(name, x + AbstractTile.STEP, y + AbstractTile.STEP);

@@ -162,7 +162,7 @@ public abstract class AbstractEntity {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g2d.setColor(color);
-		g2d.drawString(character, x, y + AbstractTile.STEP);
+		g2d.drawString(character, x, y + (int) (AbstractTile.STEP * 0.75));
 		
 //		g2d.setColor(Color.CYAN);
 //		switch(facing) {

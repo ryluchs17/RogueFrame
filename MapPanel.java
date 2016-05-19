@@ -40,7 +40,7 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	private int viewColumns; private int viewRows;
 	
 	// the font to display as
-	private static final Font font = new Font("Monospaced", Font.PLAIN, 12);
+	public static final Font font = new Font("Monospaced", Font.PLAIN, 12);
 
 	/**
 	 * Creates a new Map of size columns * rows, with a display of size viewColumns * viewRows.
@@ -200,7 +200,7 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 //				g.setColor(tiles[viewX + x][viewY + y].foreground);
 //				g.drawString(tiles[viewX + x][viewY + y].character, getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + (y+1)*AbstractTile.STEP);
 				
-				map.tileAt(viewX + x, viewY + y).draw(g, this.getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + y*AbstractTile.STEP);
+				map.tileAt(viewX + x, viewY + y).draw(g, this.getWidthCenter() + x*AbstractTile.STEP - 2, getHeightCenter() + y*AbstractTile.STEP - 2);
 			}
 		}
 		

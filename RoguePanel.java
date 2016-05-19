@@ -30,7 +30,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
 	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
 	
-	AbstractEntity player;
+	private AbstractEntity player;
 	
 	/**
 	 * RogueFrame constructor
@@ -47,6 +47,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 		
 		player = new Player(0, 0, 10, map.getMap());
 		player.randomTeleport();
+		map.getMap().addEntity(player);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
@@ -84,20 +85,36 @@ public class RoguePanel extends JPanel implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_J:
-				map.shiftView(0, -1);
-				player.goNorth();
+				if(player.goNorth()) map.shiftView(0, -1);
+				map.rounds(1);
 				break;
 			case KeyEvent.VK_H:
-				map.shiftView(-1, 0);
-				player.goWest();
+				if(player.goWest()) map.shiftView(-1, 0);
+				map.rounds(1);
 				break;
 			case KeyEvent.VK_L:
-				map.shiftView(1, 0);
-				player.goEast();
+				if(player.goEast()) map.shiftView(1, 0);
+				map.rounds(1);
 				break;
 			case KeyEvent.VK_K:
-				map.shiftView(0, 1);
-				player.goSouth();
+				if(player.goSouth()) map.shiftView(0, 1);
+				map.rounds(1);
+				break;
+			case KeyEvent.VK_Y:
+				if(player.goNorthwest()) map.shiftView(-1, -1);
+				map.rounds(1);
+				break;
+			case KeyEvent.VK_U:
+				if(player.goNortheast()) map.shiftView(1, -1);
+				map.rounds(1);
+				break;
+			case KeyEvent.VK_B:
+				if(player.goSouthwest()) map.shiftView(-1, 1);
+				map.rounds(1);
+				break;
+			case KeyEvent.VK_N:
+				if(player.goSoutheast()) map.shiftView(1, 1);
+				map.rounds(1);
 				break;
 			case KeyEvent.VK_Z:
 				hpBar.shiftValue(-10);

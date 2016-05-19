@@ -73,6 +73,8 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
+		g2d.setFont(MapPanel.font);
+		
 		AbstractItem i;
 		switch(mode) {
 		

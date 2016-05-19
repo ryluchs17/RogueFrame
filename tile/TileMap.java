@@ -137,6 +137,10 @@ public class TileMap {
 		return entities.get(i);
 	}
 	
+	public void addEntity(AbstractEntity e) {
+		entities.add(e);
+	}
+	
 	/**
 	 * Sets the seed for the map's random number generator
 	 * @param The seed the random number generator
