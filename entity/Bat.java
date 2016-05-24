@@ -65,6 +65,7 @@ public class Bat extends AbstractEntity {
 //		System.out.println(name + " @ " + x + ", " + y + " hp: " + hitpoints);
 		
 //		map.updateAt(x, y);
+		
 	}
 
 	@Override

@@ -43,6 +43,14 @@ public class Inventory {
 		}
 	}
 	
+	public boolean exists(int index) {
+		if(index >= 0 && index <= 4) {
+			return items[index] != null;
+		} else {
+			return false;
+		}
+	}
+	
 	public void equip() {
 		if(items[0] != null) equipt = !equipt;
 	}
@@ -55,7 +63,7 @@ public class Inventory {
 		if(index >= 0 && index <= 4 && !(index == 0 && equipt)) {
 			AbstractItem temp;
 			
-			if(t.hasItem() && items[index].getName().equals(t.getItem().getName()) && items[index].isStackable()) {
+			if(t.hasItem() && items[index] != null && items[index].getName().equals(t.getItem().getName()) && items[index].isStackable()) {
 				items[index].uses += t.getItem().uses;
 				t.setItem(null);
 			} else {

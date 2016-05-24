@@ -9,32 +9,34 @@ import entity.AbstractEntity;
 import tile.AbstractTile;
 
 /**
- * @author SJHSStudent
+ * @author ryan
  *
  */
-public class Widget extends AbstractItem {
+public class Sword extends AbstractItem {
 
-	/**
-	 * 
-	 */
-	public Widget() {
+	public Sword() {
 		
-		this.character = CHAR_MISC;
-		this.color = Color.WHITE;
+		this.character = AbstractItem.CHAR_WEAPON;
+		this.color = Color.GRAY;
 		
-		this.name = "Widget";
-		this.description = "TEST ITEM!";
+		this.name = "Sword";
+		this.description = "A weapon for cutting and thrusting";
 		
-		this.stackable = true;
+		this.stackable = false;
+		
+		this.damage = 6;
+		this.hit = 80;
+		this.crit = 10;
+		this.magical = false;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see item.AbstractItem#onUse(entity.AbstractEntity)
 	 */
 	@Override
 	public void onUse(AbstractEntity m) {
 		// TODO Auto-generated method stub
-
+		improve();
 	}
 
 	/* (non-Javadoc)

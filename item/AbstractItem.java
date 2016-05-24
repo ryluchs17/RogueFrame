@@ -56,6 +56,8 @@ public abstract class AbstractItem {
 	// weapon proficiency
 	protected float proficiency = 0.5F;
 	
+	protected float max_proficiency = 1.5F;
+	
 	// whether the item does physical or magical damage when wielded as weapon
 	protected boolean magical;
 	
@@ -94,6 +96,15 @@ public abstract class AbstractItem {
 		
 	}
 	
+	public void drawUnshifted(Graphics g, int x, int y) {
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setColor(color);
+		g2d.drawString(character, x, y + AbstractTile.STEP);
+		
+	}
+	
 	public void drawText(Graphics g, int x, int y) {
 		
 		Graphics2D g2d = (Graphics2D) g;
@@ -104,7 +115,7 @@ public abstract class AbstractItem {
 		g2d.setColor(Color.WHITE);
 		g2d.drawString(name, x + AbstractTile.STEP, y + AbstractTile.STEP);
 		g2d.drawString(description, x, y + (AbstractTile.STEP + 2) * 2);
-		g2d.drawString(damage + " x " + proficiency + " damage" , x, y + (AbstractTile.STEP + 2) * 4);
+		g2d.drawString((int) (damage * proficiency) + " damage" , x, y + (AbstractTile.STEP + 2) * 4);
 		g2d.drawString(hit + "%" + " hit", x, y + (AbstractTile.STEP + 2) * 5);
 		g2d.drawString(crit + "%" + " crit", x, y + (AbstractTile.STEP + 2) * 6);
 		
@@ -139,5 +150,25 @@ public abstract class AbstractItem {
 	
 	public boolean isStackable() {
 		return stackable;
+	}
+	
+	public int getDamage() {
+		return (int) (damage * proficiency);
+	}
+	
+	public int getHit() {
+		return hit;
+	}
+	
+	public int getCrit() {
+		return crit;
+	}
+	
+	public boolean isMagical() {
+		return magical;
+	}
+	
+	public void improve() {
+		if(proficiency < max_proficiency) proficiency += 0.01;
 	}
 }

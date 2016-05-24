@@ -91,7 +91,7 @@ public class RogueFrame extends JFrame implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case "new game":
-				game.regenerateMap();
+				game.newGame();
 				break;
 			default:
 				break;

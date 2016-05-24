@@ -32,6 +32,9 @@ public class RoguePanel extends JPanel implements KeyListener{
 	
 	private AbstractEntity player;
 	
+	private InventoryPanel ip;
+	private StatusPanel sp;
+	
 	/**
 	 * RogueFrame constructor
 	 */
@@ -62,58 +65,97 @@ public class RoguePanel extends JPanel implements KeyListener{
 //		mpBar.setColor(Color.BLUE);
 //		mpBar.setDecreaseColor(Color.WHITE);
 //		panel.add(mpBar);
-		
-		Inventory i = new Inventory();
-		i.set(0, new Widget());
-		i.set(1, new Widget());
-		i.set(4, new BlockedSlot());
-		
-		i.equip();
-		
-		panel.add(new InventoryPanel(i));
+		ip = new InventoryPanel(player);
+		panel.add(ip);
 		
 		add(panel, BorderLayout.SOUTH);
+		
+		sp = new StatusPanel(player);
+		add(sp , BorderLayout.WEST);
 		
 		setSize(getPreferredSize());
 	}
 	
-	public void regenerateMap() {
+	public void newGame() {
 		map.setMap(new TileMap(length, height));
+		player.setMap(map.getMap());
+		map.getMap().addEntity(player);
 	}
+		
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
-			case KeyEvent.VK_J:
-				if(player.goNorth()) map.shiftView(0, -1);
+			case KeyEvent.VK_K:
+				if(player.goNorth()) {
+					map.shiftView(0, -1);
+				} else {
+					player.attack(0, -1);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_H:
-				if(player.goWest()) map.shiftView(-1, 0);
+				if(player.goWest()) {
+					map.shiftView(-1, 0);
+				} else {
+					player.attack(-1, 0);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_L:
-				if(player.goEast()) map.shiftView(1, 0);
+				if(player.goEast()) {
+					map.shiftView(1, 0);
+				} else {
+					player.attack(1, 0);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
-			case KeyEvent.VK_K:
-				if(player.goSouth()) map.shiftView(0, 1);
+			case KeyEvent.VK_J:
+				if(player.goSouth()) {
+					map.shiftView(0, 1);
+				} else {
+					player.attack(0, 1);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_Y:
-				if(player.goNorthwest()) map.shiftView(-1, -1);
+				if(player.goNorthwest()) {
+					map.shiftView(-1, -1);
+				} else {
+					player.attack(-1, -1);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_U:
-				if(player.goNortheast()) map.shiftView(1, -1);
+				if(player.goNortheast()) {
+					map.shiftView(1, -1);
+				} else {
+					player.attack(1, -1);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_B:
-				if(player.goSouthwest()) map.shiftView(-1, 1);
+				if(player.goSouthwest()) {
+					map.shiftView(-1, 1);
+				} else {
+					player.attack(-1, 1);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_N:
-				if(player.goSoutheast()) map.shiftView(1, 1);
+				if(player.goSoutheast()) {
+					map.shiftView(1, 1);
+				} else {
+					player.attack(1, 1);
+				}
+				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_Z:
@@ -134,8 +176,12 @@ public class RoguePanel extends JPanel implements KeyListener{
 				mpBar.setValue(0);
 				mpBar.repaint();
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_PERIOD:
 				map.rounds(1);
+				break;
+			case KeyEvent.VK_SPACE:
+				sp.repaint();
+				break;
 			default:
 				break;
 		}

@@ -18,7 +18,6 @@ public class BlockedSlot extends AbstractItem {
 	 * 
 	 */
 	public BlockedSlot() {
-		super();
 		
 		this.character = "X";
 		this.color = Color.RED;

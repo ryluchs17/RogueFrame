@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import item.Inventory;
 import tile.AbstractTile;
 import tile.TileMap;
 
@@ -35,6 +36,9 @@ public abstract class AbstractEntity {
 	// The map within which this AbstractEntity exists
 	protected TileMap map;
 	
+	// The inventory that this AbstractEntity possesses
+	protected Inventory inventory;
+	
 	// The rng used by this AbstractEntity
 	protected Random rng;
 	
@@ -56,23 +60,18 @@ public abstract class AbstractEntity {
 	
 	// ! TYPE STUFF !
 	
-	/*
-	 * Type is the product of several primes,
-	 * if faction % (number) is 0 then the creature is
-	 * part of that faction 
-	 */
+//	/*
+//	 * Type is the product of several primes,
+//	 * if faction % (number) is 0 then the creature is
+//	 * part of that faction 
+//	 */
 	
-	protected int type;
+	public static boolean FACTION_HOSTILE = false;
+	public static boolean FACTION_PLAYER_OR_ALLY = true;
 	
-	public static final int TYPE_PLAYER = 2;
-	
-	public static final int TYPE_PLAYER_ALLY = 3;
+	protected boolean faction = FACTION_HOSTILE;
 
 	// ! STATS STUFF !
-	
-	// Health
-	protected int hitpoints = 0;
-	protected boolean dead = false;
 	
 	// Character Level stuff
 	protected int level;
@@ -164,6 +163,11 @@ public abstract class AbstractEntity {
 		g2d.setColor(color);
 		g2d.drawString(character, x, y + (int) (AbstractTile.STEP * 0.75));
 		
+		if(hp < hp_cap && hp > 0) {
+			g2d.setColor(Color.GREEN);
+			g2d.drawLine(x, y + AbstractTile.STEP - 1, x  + (AbstractTile.STEP * hp)/hp_cap, y + AbstractTile.STEP - 1);
+		}
+		
 //		g2d.setColor(Color.CYAN);
 //		switch(facing) {
 //			case NORTH:
@@ -195,6 +199,23 @@ public abstract class AbstractEntity {
 //		}
 	}
 	
+	/**
+	 * Sets the TileMap object in which this AbstractEntity exists
+	 * Must be set before an AbstractEntity can exist on-screen
+	 * @param map
+	 */
+	public void setMap(TileMap map) {
+		this.map = map;
+	}
+	
+	public TileMap getMap() {
+		return map;
+	}
+	
+	public Inventory getInventory() {
+		return inventory;
+	}
+	
 //	/**
 //	 * Adds the given number to the hitpoints of this AbstractEntity
 //	 * The number will not go over the max, if it goes under zero the AbstractEntity is tagged as dead
@@ -212,13 +233,6 @@ public abstract class AbstractEntity {
 //		}
 //	}
 	
-	/**
-	 * Returns whether this AbstractEntity is dead
-	 * @return True if dead
-	 */
-	public boolean isDead() {
-		return dead;
-	}
 //	
 //	public void physicalAttack(AbstractEntity e, int baseDamage) {
 //		e.hitpoints -= (level/MAX_LEVEL) * (atk/e.def) * baseDamage; // TODO fix to use float math
@@ -251,20 +265,16 @@ public abstract class AbstractEntity {
 //		
 //	}
 	
-	public int getType() {
-		return type;
+	public boolean getFaction() {
+		return faction;
 	}
 	
-	public void addType(int faction) {
-		this.type *= faction;
+	public void setFaction(boolean faction) {
+		this.faction = faction;
 	}
 	
-	public void removeType(int faction) {
-		this.type /= faction;
-	}
-	
-	public boolean isType(int faction) {
-		return this.type % faction == 0;
+	public void switchFaction() {
+		faction = !faction;
 	}
 	
 	public void levelUp() {
@@ -275,6 +285,8 @@ public abstract class AbstractEntity {
 		res_cap += rng.nextInt(100) <= res_gro ? 1 : 0;
 		skl_cap += rng.nextInt(100) <= skl_gro ? 1 : 0;
 		spd_cap += rng.nextInt(100) <= spd_gro ? 1 : 0;
+		
+		resetStats();
 	}
 	
 	public void levelUp(int levels) {
@@ -292,27 +304,68 @@ public abstract class AbstractEntity {
 		System.out.println();
 	}
 	
+	public void resetStats() {
+		hp = hp_cap;
+		str = str_cap;
+		def = def_cap;
+		mag = mag_cap;
+		res = res_cap;
+		skl = skl_cap;
+		spd = spd_cap;
+	}
+	
 	public boolean hit_str(AbstractEntity e) {
-		return rng.nextInt(100) <= (/*hit + */ str + skl) - (e.def + e.spd);
+		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getHit() : 0 + str + skl) - (e.def + e.spd);
 	}
 	
 	public boolean hit_mag(AbstractEntity e) {
-		return rng.nextInt(100) <= (/*hit + */ mag + skl) - (e.res + e.spd);
+		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getHit() : 0 + mag + skl) - (e.res + e.spd);
 	}
 	
 	public boolean crit_str(AbstractEntity e) {
-		return rng.nextInt(100) <= /*crit + */str - e.def;
+		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getCrit() : 0 + str) - e.def;
 	}
 	
 	public boolean crit_mag(AbstractEntity e) {
-		return rng.nextInt(100) <= /*crit + */mag - e.res;
+		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getCrit() : 0 + mag) - e.res;
+	}
+	
+	public void attack(AbstractEntity e) {
+		if(inventory.hasEquipt()) {
+			inventory.get(0).onUse(this);
+			
+			System.out.print(e.hp + " -> ");
+			
+			if(inventory.get(0).isMagical()) {
+				e.hp -= hit_mag(e) ? crit_mag(e) ? inventory.get(0).getDamage() + mag/2 : inventory.get(0).getDamage() : 0;
+			} else {
+				e.hp -= hit_str(e) ? crit_str(e) ? inventory.get(0).getDamage() + str/2 : inventory.get(0).getDamage() : 0;
+			}
+			
+			System.out.println(e.hp);
+			
+		} else {
+			e.hp -= hit_str(e) ? crit_str(e) ? dam_str + str/2 : dam_str : 0;
+		}
+	}
+	
+	public void attack(AbstractTile t) {
+		if(t.isOccupied() /*&& faction != t.getOccupant().getFaction()*/) {
+			attack(t.getOccupant());
+		} else {
+			t.onInteraction(this);
+		}
+	}
+	
+	public void attack(int xOffset, int yOffset) {
+		attack(map.tileAt(x + xOffset, y + yOffset));
 	}
 	
 	/**
 	 * Kills the AbstractEntity
 	 */
 	public void kill() {
-		dead = true;
+		hp = 0;
 	}
 	
 	/**
@@ -348,15 +401,6 @@ public abstract class AbstractEntity {
 	}
 	
 	/**
-	 * Sets the TileMap object in which this AbstractEntity exists
-	 * Must be set before an AbstractEntity can exist on-screen
-	 * @param map
-	 */
-	public void setMap(TileMap map) {
-		this.map = map;
-	}
-	
-	/**
 	 * Finds the distance between the current position and (x, y)
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
@@ -382,6 +426,30 @@ public abstract class AbstractEntity {
 	 */
 	public int distance(AbstractTile t) {
 		return distance(t.getX(), t.getY());
+	}
+	
+	public AbstractTile getTileFacing() {
+		switch(facing) {
+			case NORTH:
+				return map.tileAt(x, y - 1);
+			case SOUTH:
+				return map.tileAt(x, y + 1);
+			case EAST:
+				return map.tileAt(x + 1, y);
+			case WEST:
+				return map.tileAt(x - 1, y);
+			case NORTHEAST:
+				return map.tileAt(x + 1, y - 1);
+			case NORTHWEST:
+				return map.tileAt(x - 1, y - 1);
+			case SOUTHEAST:
+				return map.tileAt(x + 1, y + 1);
+			case SOUTHWEST:
+				return map.tileAt(x - 1, y + 1);
+			default:
+				return map.tileAt(x, y);
+		}
+
 	}
 	
 	

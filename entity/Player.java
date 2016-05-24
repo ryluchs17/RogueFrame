@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+import item.*;
 import tile.TileMap;
 
 /**
@@ -32,7 +33,15 @@ public class Player extends AbstractEntity {
 		
 		this.ignore = true;
 		
+		faction = FACTION_PLAYER_OR_ALLY;
+		
 		grounded = true;
+		
+		inventory = new Inventory();
+		inventory.set(0, new Widget());
+		inventory.set(1, new Widget());
+		inventory.set(4, new BlockedSlot());
+		inventory.equip();
 		
 		hp_gro = 50;
 		str_gro = 50;

@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import entity.AbstractEntity;
 import item.AbstractItem;
 import item.Inventory;
 import tile.AbstractTile;
@@ -34,33 +35,45 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	 * 
 	 */
 	
-	
+	// number selected item index
 	private short selected = 0;
 	
+	// the inventory being managed by this panel
 	private Inventory items;
 	
+	// the AbstractEntity that this inventory belongs to
+	private AbstractEntity owner; 
+	
+	// whether the user is allowed to modify the contents of this panel
 	public boolean editable = false;
 	
+	// display modes
 	public final static short MODE_SELECT = 0;
 	public final static short MODE_INFO = 1;
 	
-	private short mode = 1;
+	// current mode
+	private short mode = MODE_SELECT;
 	
+	// length of panel in character
 	private static final int LENGTH_CHARS = 20;
 	
+	// the boxes representing the buttons a user can press
 	private static Rectangle equiptbutton = new Rectangle(0, 0, AbstractTile.STEP * 2, AbstractTile.STEP);
-	private static Rectangle details = new Rectangle(0, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
-	private static Rectangle swap = new Rectangle((LENGTH_CHARS/4) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
-	private static Rectangle use = new Rectangle((LENGTH_CHARS/2) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
-	private static Rectangle throwr = new Rectangle(((3 * LENGTH_CHARS)/4) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
+	private static Rectangle details = new Rectangle(0, AbstractTile.STEP * 7, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
+//	private static Rectangle swap = new Rectangle((LENGTH_CHARS/4) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
+//	private static Rectangle use = new Rectangle((LENGTH_CHARS/2) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
+//	private static Rectangle throwr = new Rectangle(((3 * LENGTH_CHARS)/4) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
 
+	public static final String EMPTY_ITEM_SLOT = "-----";
+	
 	/**
 	 * 
 	 */
-	public InventoryPanel(Inventory i) {
+	public InventoryPanel(AbstractEntity owner) {
 		super();
 		
-		items = i;
+		this.owner = owner;
+		items = owner.getInventory();
 		
 		this.setBackground(Color.BLACK);
 		this.addMouseListener(this);
@@ -81,12 +94,34 @@ public class InventoryPanel extends JPanel implements MouseListener{
 			case MODE_SELECT:
 				for(int y = 0; y < 5; y++) {
 					i = items.get(y);
-					
-					if(i != null) {
-						i.draw(g, (this.getWidth()/2) - AbstractTile.STEP * 4, y * AbstractTile.STEP);
+
+					if(i == null) {
+						// set color to light blue if y is selected; white if not
+						if(y == selected){ g2d.setColor(AbstractTile.TOOLTIP_ITEM); }else{ g2d.setColor(Color.WHITE); };
+						g2d.drawString(EMPTY_ITEM_SLOT, (this.getWidth()/2) - AbstractTile.STEP * 2, (y + 1) * AbstractTile.STEP);
+					} else {
+						i.drawUnshifted(g, (this.getWidth()/2) - AbstractTile.STEP * 4, y * AbstractTile.STEP);
+						// set color to light blue if y is selected; white if not
 						if(y == selected){ g2d.setColor(AbstractTile.TOOLTIP_ITEM); }else{ g2d.setColor(Color.WHITE); };
 						g2d.drawString(i.getName() + (i.isStackable() ? (" (" + i.uses + ") ") : " "), (this.getWidth()/2) - AbstractTile.STEP * 2, (y + 1) * AbstractTile.STEP);
 					}
+				}
+				
+				if(owner.getMap().tileAt(owner.getX(), owner.getY()).hasItem()) {
+					i = owner.getMap().tileAt(owner.getX(), owner.getY()).getItem();
+					
+					i.drawUnshifted(g, (this.getWidth()/2) - AbstractTile.STEP * 4, 5 * AbstractTile.STEP);
+					
+					// set color to light blue if y is selected; grey if not
+					if(5 == selected){ g2d.setColor(AbstractTile.TOOLTIP_ITEM); }else{ g2d.setColor(Color.GRAY); };
+					
+					g2d.drawString(i.getName() + (i.isStackable() ? (" (" + i.uses + ") ") : " "), (this.getWidth()/2) - AbstractTile.STEP * 2, 6 * AbstractTile.STEP);
+				} else {
+					
+					// set color to light blue if y is selected; grey if not
+					if(5 == selected){ g2d.setColor(AbstractTile.TOOLTIP_ITEM); }else{ g2d.setColor(Color.GRAY); };
+					
+					g2d.drawString(EMPTY_ITEM_SLOT, (this.getWidth()/2) - AbstractTile.STEP * 2, 6 * AbstractTile.STEP);
 				}
 				
 				if(items.hasEquipt()) {
@@ -101,18 +136,20 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				
 				g2d.drawString("Details", details.x, details.y + AbstractTile.STEP);
 				
-				g2d.setColor(editable ? Color.YELLOW : Color.GRAY);
+//				g2d.setColor(editable ? Color.YELLOW : Color.GRAY);
 				
-				g2d.drawString("Swap", swap.x, swap.y + AbstractTile.STEP);
-				g2d.drawString("Use", use.x, use.y + AbstractTile.STEP);
-				g2d.drawString("Throw", throwr.x, throwr.y + AbstractTile.STEP);
-				
+//				g2d.drawString("Swap", swap.x, swap.y + AbstractTile.STEP);
+//				g2d.drawString("Use", use.x, use.y + AbstractTile.STEP);
+//				g2d.drawString("Throw", throwr.x, throwr.y + AbstractTile.STEP);
+//				
 				break;
 		
 			case MODE_INFO:
-				if(items.get(selected) == null) {
+				if(selected == 5 && owner.getMap().tileAt(owner.getX(), owner.getY()).hasItem()) {
+					owner.getMap().tileAt(owner.getX(), owner.getY()).getItem().drawText(g, 0, 0);
+				} else if(items.get(selected) == null) {
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("Nothing selected", 0, AbstractTile.STEP);
+					g2d.drawString("There's nothing here", 0, AbstractTile.STEP);
 				} else {
 					items.get(selected).drawText(g, 0, 0);
 				}
@@ -127,7 +164,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(AbstractTile.STEP * LENGTH_CHARS, (AbstractTile.STEP + 2) * 6);
+		return new Dimension(AbstractTile.STEP * LENGTH_CHARS, (AbstractTile.STEP + 2) * 7);
 	}
 
 	@Override
@@ -163,9 +200,10 @@ public class InventoryPanel extends JPanel implements MouseListener{
 					repaint();
 				}
 				
-				for(int y = 0; y < 5; y++) {
+				for(int y = 0; y < 6; y++) {
 					if(mouse.y > y * AbstractTile.STEP && mouse.y < (y + 1) * AbstractTile.STEP && selected != y) {
 						selected = (short) y;
+						System.out.println(selected);
 						repaint();
 					}
 				}
@@ -186,14 +224,26 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		if(mode == this.MODE_SELECT) {
 			int mouseY = e.getY();
 			
-			for(int y = 0; y < 5; y++) {
+			for(int y = 0; y < 6; y++) {
 				if(mouseY > y * AbstractTile.STEP && mouseY < (y + 1) * AbstractTile.STEP && selected != y) {
-					items.swap(selected, y);
+					if(selected == 5) {
+						items.swap(y, owner.getMap().tileAt(owner.getX(), owner.getY()));
+					} else if(y == 5) {
+						items.swap(y, owner.getMap().tileAt(owner.getX(), owner.getY()));
+					} else {
+						items.swap(selected, y);
+					}
 					selected = (short) y;
 					repaint();
 				}
 				
 			}
+			
+//			if(mouseY > 5 * AbstractTile.STEP && mouseY < 5 * AbstractTile.STEP && selected != 5) {
+//				items.swap(selected, owner.getMap().tileAt(owner.getX(), owner.getY()));
+//				System.out.println("swapitybopity");
+//				repaint();
+//			}
 		}
 		
 	}

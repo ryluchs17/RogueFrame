@@ -37,5 +37,10 @@ public class Water extends AbstractTile {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public boolean canEnter(AbstractEntity e) {
+		return (!this.isOccupied()) && this.isPassable() && (e.ignore ? true : !avoid) && !e.grounded;
+	}
 
 }

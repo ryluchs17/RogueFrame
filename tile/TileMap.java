@@ -46,19 +46,24 @@ public class TileMap {
 		seed = generate.nextLong();
 		
 		Cartographer.r = new Random(seed);
-		tiles = Cartographer.createClassicMap(columns, rows);
+		//tiles = Cartographer.createClassicMap(columns, rows);
 		//tiles = Cartographer.createFort(columns, rows);
 		//tiles = Cartographer.createSafeMap(columns, rows);
-		//tiles = Cartographer.createMaze(columns, rows);
+		tiles = Cartographer.createMaze(columns, rows);
 		//tiles = Cartographer.createTest(columns, rows);
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 10; i++) {
 			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this);
 			tiles[e.getX()][e.getY()].setOccupant(e);
-			e.setMap(this);
 			entities.add(e);
+		}
+		
+		AbstractItem i;
+		for(int u = 0; u < 10; u++) {
+			i = generate.nextBoolean() ? new Widget() : new Sword();
+			tiles[generate.nextInt(this.length() - 5)][generate.nextInt(this.height() - 5)].setItem(i);;
 		}
 
 	}
@@ -172,7 +177,7 @@ public class TileMap {
 		for(int y = 0; y < this.rows; y++) {
 			for(int x = 0; x < this.columns; x++) {
 				if(tiles[x][y].getOccupant() != null) {
-					if(tiles[x][y].getOccupant().isDead()) {
+					if(tiles[x][y].getOccupant().hp <= 0) {
 						tiles[x][y].setOccupant(null);
 					}
 				}
@@ -183,7 +188,7 @@ public class TileMap {
 		
 		for(int i = 0; i < entities.size(); i++) {
 			entities.get(i).onTurn();
-			if(entities.get(i).isDead()) {
+			if(entities.get(i).hp <= 0) {
 				entities.remove(i);
 			}
 		}

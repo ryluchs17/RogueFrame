@@ -56,9 +56,9 @@ public class Magma extends AbstractTile {
 	@Override
 	public void onEntry() {
 		if(occupant.grounded) {
-			occupant.kill();
+			occupant.hp = 0;
 		} else {
-			//occupant.addHitpoints(-10);
+			occupant.hp -= 10;
 		}
 	}
 
