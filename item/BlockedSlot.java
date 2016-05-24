@@ -26,7 +26,6 @@ public class BlockedSlot extends AbstractItem {
 		this.description = "You can't store anything here.";
 		
 		this.stackable = false;
-		this.cursed = true;
 		this.locked = true;
 	}
 

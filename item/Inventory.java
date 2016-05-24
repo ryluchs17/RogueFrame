@@ -52,7 +52,7 @@ public class Inventory {
 	}
 	
 	public void equip() {
-		if(items[0] != null) equipt = !equipt;
+		if(items[0] != null && !(equipt && items[0].isCursed())) equipt = !equipt;
 	}
 	
 	public boolean hasEquipt() {

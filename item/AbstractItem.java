@@ -33,10 +33,10 @@ public abstract class AbstractItem {
 	// Can be stacked
 	protected boolean stackable;
 	
-	// determines whether the item can be removed from the top spot of the inventory
+	// determines whether the item can be unequipt
 	protected boolean cursed = false;
 	
-	// determines whether the item can be removed from inventory
+	// determines whether the item is locked in its inventory slot
 	protected boolean locked = false;
 	
 	// Number of uses for an item
@@ -150,6 +150,14 @@ public abstract class AbstractItem {
 	
 	public boolean isStackable() {
 		return stackable;
+	}
+	
+	public boolean isCursed() {
+		return cursed;
+	}
+	
+	public boolean isLocked() {
+		return locked;
 	}
 	
 	public int getDamage() {
