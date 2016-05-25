@@ -286,6 +286,8 @@ public abstract class AbstractEntity {
 		skl_cap += rng.nextInt(100) <= skl_gro ? 1 : 0;
 		spd_cap += rng.nextInt(100) <= spd_gro ? 1 : 0;
 		
+		level += 1;
+		
 		resetStats();
 	}
 	
@@ -330,35 +332,79 @@ public abstract class AbstractEntity {
 		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getCrit() : 0 + mag) - e.res;
 	}
 	
-	public void attack(AbstractEntity e) {
-		if(inventory.hasEquipt()) {
-			inventory.get(0).onUse(this);
-			
-			System.out.print(e.hp + " -> ");
-			
-			if(inventory.get(0).isMagical()) {
-				e.hp -= hit_mag(e) ? crit_mag(e) ? inventory.get(0).getDamage() + mag/2 : inventory.get(0).getDamage() : 0;
+	public void regen() {
+		if(hp < hp_cap && map.getRounds() % 2 == 0) {
+			if(hp + level/10 + 1 < hp_cap) {
+				hp += level/10 + 1;
 			} else {
-				e.hp -= hit_str(e) ? crit_str(e) ? inventory.get(0).getDamage() + str/2 : inventory.get(0).getDamage() : 0;
+				hp = hp_cap;
 			}
-			
-			System.out.println(e.hp);
-			
-		} else {
-			e.hp -= hit_str(e) ? crit_str(e) ? dam_str + str/2 : dam_str : 0;
 		}
 	}
 	
-	public void attack(AbstractTile t) {
-		if(t.isOccupied() /*&& faction != t.getOccupant().getFaction()*/) {
+	public void regenFast() {
+		if(hp < hp_cap) {
+			if(hp + level/10 + 1 < hp_cap) {
+				hp += level/10 + 1;
+			} else {
+				hp = hp_cap;
+			}
+		}
+	}
+	
+	public void regenSlow() {
+		if(hp < hp_cap && map.getRounds() % 3 == 0) {
+			if(hp + level/10 + 1 < hp_cap) {
+				hp += level/10 + 1;
+			} else {
+				hp = hp_cap;
+			}
+		}
+	}
+	
+	public void attack(AbstractEntity e) {
+		if(faction != e.faction) {
+			if(inventory != null && inventory.hasEquipt()) {
+				inventory.get(0).onUse(this);
+				
+				System.out.print(e.hp + " -> ");
+				
+				if(inventory.get(0).isMagical()) {
+					e.hp -= hit_mag(e) ? crit_mag(e) ? inventory.get(0).getDamage() + mag/2 : inventory.get(0).getDamage() : 0;
+				} else {
+					e.hp -= hit_str(e) ? crit_str(e) ? inventory.get(0).getDamage() + str/2 : inventory.get(0).getDamage() : 0;
+				}
+				
+				System.out.println(e.hp);
+				
+			} else {
+				e.hp -= hit_str(e) ? crit_str(e) ? dam_str + str/2 : dam_str : 0;
+			}
+		}
+	}
+	
+	public void interact(AbstractTile t) {
+		if(t.isOccupied()) {
 			attack(t.getOccupant());
 		} else {
 			t.onInteraction(this);
 		}
 	}
 	
-	public void attack(int xOffset, int yOffset) {
-		attack(map.tileAt(x + xOffset, y + yOffset));
+	public boolean attackAdjacent() {
+		for(int x = this.x - 1, y = this.y - 1; y <= this.y + 1; y++) {
+			for(x = this.x - 1; x <= this.x + 1; x++) {
+				if(map.contains(x, y) && map.tileAt(x, y).isOccupied()) {
+					attack(map.tileAt(x, y).getOccupant());
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void interact(int xOffset, int yOffset) {
+		interact(map.tileAt(x + xOffset, y + yOffset));
 	}
 	
 	/**

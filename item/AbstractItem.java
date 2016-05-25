@@ -36,6 +36,9 @@ public abstract class AbstractItem {
 	// determines whether the item can be unequipt
 	protected boolean cursed = false;
 	
+	// determines whether cursed status is shown on details screen
+	public boolean curseIsKnown = false; //TODO
+	
 	// determines whether the item is locked in its inventory slot
 	protected boolean locked = false;
 	

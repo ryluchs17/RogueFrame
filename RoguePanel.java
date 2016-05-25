@@ -48,7 +48,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 		map.setView(5, 5);
 		add(map, BorderLayout.CENTER);
 		
-		player = new Player(0, 0, 10, map.getMap());
+		player = new Player(0, 0, 20, map.getMap());
 		player.randomTeleport();
 		map.getMap().addEntity(player);
 		
@@ -77,9 +77,11 @@ public class RoguePanel extends JPanel implements KeyListener{
 	}
 	
 	public void newGame() {
+		if(player.hp <= 0) player.resetStats();
 		map.setMap(new TileMap(length, height));
 		player.setMap(map.getMap());
 		map.getMap().addEntity(player);
+		player.randomTeleport();
 	}
 		
 
@@ -90,101 +92,96 @@ public class RoguePanel extends JPanel implements KeyListener{
 				if(player.goNorth()) {
 					map.shiftView(0, -1);
 				} else {
-					player.attack(0, -1);
+					player.interact(0, -1);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_H:
 				if(player.goWest()) {
 					map.shiftView(-1, 0);
 				} else {
-					player.attack(-1, 0);
+					player.interact(-1, 0);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_L:
 				if(player.goEast()) {
 					map.shiftView(1, 0);
 				} else {
-					player.attack(1, 0);
+					player.interact(1, 0);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_J:
 				if(player.goSouth()) {
 					map.shiftView(0, 1);
 				} else {
-					player.attack(0, 1);
+					player.interact(0, 1);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_Y:
 				if(player.goNorthwest()) {
 					map.shiftView(-1, -1);
 				} else {
-					player.attack(-1, -1);
+					player.interact(-1, -1);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_U:
 				if(player.goNortheast()) {
 					map.shiftView(1, -1);
 				} else {
-					player.attack(1, -1);
+					player.interact(1, -1);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_B:
 				if(player.goSouthwest()) {
 					map.shiftView(-1, 1);
 				} else {
-					player.attack(-1, 1);
+					player.interact(-1, 1);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_N:
 				if(player.goSoutheast()) {
 					map.shiftView(1, 1);
 				} else {
-					player.attack(1, 1);
+					player.interact(1, 1);
 				}
-				ip.repaint();
 				map.rounds(1);
 				break;
-			case KeyEvent.VK_Z:
-				hpBar.shiftValue(-10);
-				hpBar.repaint();
-				mpBar.shiftValue(-10);
-				mpBar.repaint();
-				break;
-			case KeyEvent.VK_X:
-				hpBar.shiftValue(10);
-				hpBar.repaint();
-				mpBar.shiftValue(10);
-				mpBar.repaint();
-				break;
-			case KeyEvent.VK_C:
-				hpBar.setValue(0);
-				hpBar.repaint();
-				mpBar.setValue(0);
-				mpBar.repaint();
-				break;
+//			case KeyEvent.VK_Z:
+//				hpBar.shiftValue(-10);
+//				hpBar.repaint();
+//				mpBar.shiftValue(-10);
+//				mpBar.repaint();
+//				break;
+//			case KeyEvent.VK_X:
+//				hpBar.shiftValue(10);
+//				hpBar.repaint();
+//				mpBar.shiftValue(10);
+//				mpBar.repaint();
+//				break;
+//			case KeyEvent.VK_C:
+//				hpBar.setValue(0);
+//				hpBar.repaint();
+//				mpBar.setValue(0);
+//				mpBar.repaint();
+//				break;
 			case KeyEvent.VK_PERIOD:
 				map.rounds(1);
 				break;
 			case KeyEvent.VK_SPACE:
-				sp.repaint();
+				map.rounds(1);
 				break;
 			default:
 				break;
 		}
+		
+		ip.repaint();
+		sp.repaint();
 	}
 
 	@Override

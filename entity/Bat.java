@@ -4,9 +4,8 @@
 package entity;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.util.Random;
 
+import item.*;
 import tile.TileMap;
 
 /**
@@ -23,6 +22,8 @@ public class Bat extends AbstractEntity {
 	
 	private static final String BAT_DESCRIPTION = "A bat! How cute!";
 	
+	private static final Inventory BAT_INVENTORY = new Inventory(new AbstractItem[]{new Fangs(), null, null, null, null});
+	
 	public Bat(int x, int y, int level, TileMap map) {
 		super(x, y, level, map);
 		
@@ -31,6 +32,8 @@ public class Bat extends AbstractEntity {
 		
 		this.name = BAT_NAME;
 		this.description = BAT_DESCRIPTION;
+		
+		this.inventory = BAT_INVENTORY;
 		
 		grounded = false;
 		
@@ -59,6 +62,8 @@ public class Bat extends AbstractEntity {
 		//this.goUntilWallClockwise();
 		
 		this.randomWalk();
+		this.attackAdjacent();
+		this.regenFast();
 		
 		//color = isClearPath(map.getEntity(1)) ? Color.GREEN : Color.RED;
 		

@@ -48,7 +48,7 @@ public class Spike extends AbstractTile {
 	public void onEntry() {
 		// if grounded damage
 		if(occupant.grounded) {
-			//occupant.addHitpoints(-5);
+			occupant.hp -= 10;
 			// if stepped on and not red turn red
 			if(foreground != Color.RED) {
 				foreground = Color.RED;

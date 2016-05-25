@@ -38,12 +38,22 @@ public class Player extends AbstractEntity {
 		grounded = true;
 		
 		inventory = new Inventory();
-		inventory.set(0, new Widget());
+		inventory.set(0, new Sword());
 		inventory.set(1, new Widget());
+		inventory.set(2, new Widget());
+		inventory.set(3, new Fangs());
 		inventory.set(4, new BlockedSlot());
 		inventory.equip();
 		
-		hp_gro = 50;
+		hp_cap = 10;
+		str_cap = 5;
+		def_cap = 5;
+		mag_cap = 5;
+		res_cap = 5;
+		skl_cap = 3;
+		spd_cap = 3;
+		
+		hp_gro = 20;
 		str_gro = 50;
 		def_gro = 50;
 		mag_gro = 50;
@@ -56,7 +66,7 @@ public class Player extends AbstractEntity {
 	}
 	
 	public void onTurn() {
-
+		this.regen();
 	}
 
 	@Override
