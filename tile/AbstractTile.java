@@ -39,6 +39,9 @@ public abstract class AbstractTile {
 	// the abstract entity occupying this tile
 	protected AbstractEntity occupant = null;
 	
+	// whether an object is see-through or not
+	protected boolean opaque = false;
+	
 	// // Determines how much damage a tile can take before destruction
 	// private int durability;
 	// private int blastResistance;
@@ -293,10 +296,14 @@ public abstract class AbstractTile {
 
 	/**
 	 * Set tile visibility
-	 * @param iscovered Whether the tile should be covered
+	 * @param covered Whether the tile should be covered
 	 */
 	public void setCovered(boolean covered) {
 		this.covered = covered;
+	}
+	
+	public boolean isOpaque() {
+		return opaque;
 	}
 
 	/**

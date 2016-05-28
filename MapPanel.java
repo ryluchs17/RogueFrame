@@ -34,6 +34,12 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	//private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 	//private int AbstractTile.STEP = font.getSize();
 	
+	private StatusPanel selectDisplay;
+	
+	public void setStatusPanel(StatusPanel s) {
+		selectDisplay = s;
+	}
+	
 	// (x, y) position of the top left corner of the map display
 	private int viewX = 0; private int viewY = 0;
 	// length and height of the map display
@@ -188,6 +194,19 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		repaint(this.getWidthCenter(), this.getHeightCenter(), viewX + ((viewColumns+1)*AbstractTile.STEP), viewY + ((viewRows+1)*AbstractTile.STEP));
 	}
 	
+	public void center(int x, int y) {
+		Rectangle view = new Rectangle(viewY, viewY, viewColumns, viewRows);
+		
+		while(!view.contains(x, y)) {
+			if(viewX - 1 > 0 && x < viewX) viewX--;
+			if(viewX + 1 < map.length() && x > viewX) viewX++;
+			if(viewY - 1 < 0 && y < viewY) viewY--;
+			if(viewY + 1 < map.height() && y > viewY)viewY++;
+		}
+		
+		repaint();
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -200,7 +219,11 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 //				g.setColor(tiles[viewX + x][viewY + y].foreground);
 //				g.drawString(tiles[viewX + x][viewY + y].character, getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + (y+1)*AbstractTile.STEP);
 				
-				map.tileAt(viewX + x, viewY + y).draw(g, this.getWidthCenter() + x*AbstractTile.STEP - 2, getHeightCenter() + y*AbstractTile.STEP - 2);
+				map.getEntities().get(0).canSee(viewX + x, viewY + y);
+				
+				if(map.tileAt(viewX + x, viewY + y).isCovered()) {
+					map.tileAt(viewX + x, viewY + y).draw(g, this.getWidthCenter() + x*AbstractTile.STEP - 2, getHeightCenter() + y*AbstractTile.STEP - 2);
+				}
 			}
 		}
 		
@@ -218,6 +241,10 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 				if(mouse != null && bounds.contains(mouse)) {
 					map.tileAt(viewX + x, viewY + y).drawTooltip(g, mouse.x, mouse.y);
 					select = map.tileAt(viewX + x, viewY + y);
+					if(selectDisplay != null) { //TODO remove if needed
+						selectDisplay.setOwner(select.getOccupant());
+						selectDisplay.repaint();
+					}
 					
 //					g.setColor(Color.WHITE);
 //					g.drawString("mouse @ (" + (viewX + x) + ", " + (viewY + y) + ")", 0, 20);

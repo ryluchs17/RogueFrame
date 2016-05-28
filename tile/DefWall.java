@@ -22,6 +22,8 @@ public class DefWall extends AbstractTile {
 		
 		passable = false;
 		
+		opaque = true;
+		
 		name = "Wall";
 		description = "A sturdy wall.";
 	}

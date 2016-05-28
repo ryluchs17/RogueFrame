@@ -44,6 +44,14 @@ public class Bat extends AbstractEntity {
 //		
 //		setStats(true);
 		
+		hp_cap = 1;
+		str_cap = 2;
+		def_cap = 2;
+		mag_cap = 2;
+		res_cap = 2;
+		skl_cap = 7;
+		spd_cap = 6;
+		
 		hp_gro = 10;
 		str_gro = 30;
 		def_gro = 30;
@@ -61,9 +69,13 @@ public class Bat extends AbstractEntity {
 		
 		//this.goUntilWallClockwise();
 		
+		//this.randomWalk();
+		//this.attackAdjacent();
+		//this.goUntilWallClockwise();
+		
 		this.randomWalk();
 		this.attackAdjacent();
-		this.regenFast();
+		this.regen();
 		
 		//color = isClearPath(map.getEntity(1)) ? Color.GREEN : Color.RED;
 		

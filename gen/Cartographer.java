@@ -88,6 +88,14 @@ public class Cartographer {
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	
+	public static AbstractTile[][] createGrid(int columns, int rows) {
+		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.randomWalk(columns, rows, 7, 100), Const.DEFWALL, Const.DEFFLOOR);
+		shorts = ShortFunc.addWalkLayer(Const.DEFFLOOR, Const.DEFWALL, shorts, 14, 100);
+		shorts = ShortFunc.addCellLayer(Const.SPIKE, Const.DEFFLOOR, shorts, 35);
+		
+		return ShortFunc.mapFromShortArray(shorts);
+	}
+	
 	public static AbstractTile[][] createTest(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 35), Const.DEFWALL, Const.DEFFLOOR);
 		

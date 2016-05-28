@@ -49,12 +49,13 @@ public class TileMap {
 		//tiles = Cartographer.createClassicMap(columns, rows);
 		//tiles = Cartographer.createFort(columns, rows);
 		//tiles = Cartographer.createSafeMap(columns, rows);
-		tiles = Cartographer.createMaze(columns, rows);
-		//tiles = Cartographer.createTest(columns, rows);
+		//tiles = Cartographer.createMaze(columns, rows);
+		tiles = Cartographer.createTest(columns, rows);
+		//tiles = Cartographer.createGrid(columns, rows);
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 1; i++) {
 			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			entities.add(e);
@@ -133,17 +134,13 @@ public class TileMap {
 		return tiles[x][y];
 	}
 	
-	/**
+	/** TODO update
 	 * Returns the AbstractEntity at a given index
 	 * @param i The index of the AbstractEntity to get
 	 * @return The AbstractEntity at index i
 	 */
-	public AbstractEntity getEntity(int i) {
-		return entities.get(i);
-	}
-	
-	public void addEntity(AbstractEntity e) {
-		entities.add(e);
+	public ArrayList<AbstractEntity> getEntities() {
+		return entities;
 	}
 	
 	/**

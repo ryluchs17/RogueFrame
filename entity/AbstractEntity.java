@@ -332,10 +332,14 @@ public abstract class AbstractEntity {
 		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getCrit() : 0 + mag) - e.res;
 	}
 	
+	public int getHealthCap() {
+		return hp_cap;
+	}
+	
 	public void regen() {
 		if(hp < hp_cap && map.getRounds() % 2 == 0) {
-			if(hp + level/10 + 1 < hp_cap) {
-				hp += level/10 + 1;
+			if(hp + level/20 + 1 < hp_cap) {
+				hp += level/20 + 1;
 			} else {
 				hp = hp_cap;
 			}
@@ -344,8 +348,8 @@ public abstract class AbstractEntity {
 	
 	public void regenFast() {
 		if(hp < hp_cap) {
-			if(hp + level/10 + 1 < hp_cap) {
-				hp += level/10 + 1;
+			if(hp + level/20 + 1 < hp_cap) {
+				hp += level/20 + 1;
 			} else {
 				hp = hp_cap;
 			}
@@ -354,8 +358,8 @@ public abstract class AbstractEntity {
 	
 	public void regenSlow() {
 		if(hp < hp_cap && map.getRounds() % 3 == 0) {
-			if(hp + level/10 + 1 < hp_cap) {
-				hp += level/10 + 1;
+			if(hp + level/20 + 1 < hp_cap) {
+				hp += level/20 + 1;
 			} else {
 				hp = hp_cap;
 			}
@@ -498,6 +502,42 @@ public abstract class AbstractEntity {
 
 	}
 	
+	public boolean canSee(int x, int y) {
+		
+		// allow seeing on layer of opaque object
+		boolean allow = true;
+		
+		// THANK GOD FOR POLAR COORDINATES!
+		int radius = (int) Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
+		double theta = Math.atan2(y - this.y, x - this.x);
+
+		int xOffset;
+		int yOffset;
+		
+		//System.out.println("line to (" + radius + ", " + theta + ") (pol)");
+		
+		for(int i = 0; i <= radius; i++) {
+			xOffset = (int) (i*Math.cos(theta));
+			yOffset = (int) (i*Math.sin(theta));
+			
+			if(!map.contains(this.x + xOffset, this.y + yOffset)) {
+				return false;
+			}
+			
+			if(map.tileAt(this.x + xOffset, this.y + yOffset).isOpaque()) {
+				//System.out.println("returning FALSE at i = " + i);
+				if(allow) {
+					allow = false;
+				} else {
+					return false;
+				}
+			}
+			
+			map.tileAt(this.x + xOffset, this.y + yOffset).setCovered(true);
+		}
+		
+		return true;
+	}
 	
 	/**
 	 * Determines whether there is an uninterupted straight path to the given point (x, y) from the current position
@@ -505,78 +545,28 @@ public abstract class AbstractEntity {
 	 * @param y The y-coordinate
 	 * @return true if there is an uninterupted straight to (x, y) from the current position
 	 */
-	public boolean isClearPath(int x, int y) {
-		//System.out.println("()");
+	public boolean isClearPath(int x, double y) {
+		// THANK GOD FOR POLAR COORDINATES!
+		int radius = (int) Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
+		double theta = Math.atan2(y - this.y, x - this.x);
 		
-		if(x == this.x) {
-			// whether this is above the target
-			if(y < this.y) {
-				for(int i = this.y - 1; i > y; i--) {
-					//map.tileAt(this.x, i).setCovered(true);
-					if(!map.tileAt(this.x, i).canEnter(this)) return false;
-				}
-			} else {
-				for(int i = this.y + 1; i < y; i++) {
-					//map.tileAt(this.x, i).setCovered(true);
-					if(!map.tileAt(this.x, i).canEnter(this)) return false;
-				}
-			} 
-		} else if(y == this.y) {
-			// whether this right of the target
-			if(x < this.x) {
-				for(int i = this.x - 1; i > y; i--) {
-					//map.tileAt(i, this.y).setCovered(true);
-					if(!map.tileAt(i, this.y).canEnter(this)) return false;
-				}
-			} else {
-				for(int i = this.x + 1; i < y; i++) {
-					//map.tileAt(i, this.y).setCovered(true);
-					if(!map.tileAt(i, this.y).canEnter(this)) return false;
-				}
+		int xOffset;
+		int yOffset;
+		
+		System.out.println("line to (" + radius + ", " + theta + ") (pol)");
+		
+		for(int i = 2; i <= radius; i++) {
+			xOffset = (int) (i*Math.cos(theta));
+			yOffset = (int) (i*Math.sin(theta));
+			
+			if(!map.tileAt(this.x + xOffset, this.y + yOffset).canEnter(this)) {
+				System.out.println("returning FALSE at i = " + i);
+				return false;
 			}
-		} else if(Math.abs(this.x - x) >= Math.abs(this.y - y)) {
-			float m = (this.y - (float) y)/(this.x - (float) x);
 			
-			float b = y - m*x;
-			
-			//System.out.println("y = " + m + "x + " + b);
-			
-			// whether this is left of the target
-			if(x < this.x) {
-				for(int i = this.x - 1; i > x; i--) {
-					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
-					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
-					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
-				}
-			} else {
-				for(int i = this.x + 1; i < x; i++) {
-					//System.out.println("(" + i + " ," + (int) (m*i + b) + ")");
-					//map.tileAt(i, (int) (m*i + b)).setCovered(true);
-					if(!map.tileAt(i, (int) (m*i + b)).canEnter(this)) return false;
-				}
-			}
-		} else {
-			float m = (this.x - (float) x)/(this.y - (float) y);
-			
-			float b = x - m*y;
-			
-			//System.out.println("x = " + m + "y + " + b);
-			
-			// whether this is above the target
-			if(y < this.y) {
-				for(int i = this.y - 1; i > y; i--) {
-					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
-					//map.tileAt((int) (m*i + b), i).setCovered(true);
-					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
-				}
-			} else {
-				for(int i = this.y + 1; i < y; i++) {
-					//System.out.println("(" + (int) (m*i + b) + " ," + i + ")");
-					//map.tileAt((int) (m*i + b), i).setCovered(true);
-					if(!map.tileAt((int) (m*i + b), i).canEnter(this)) return false;
-				}
-			}
+			//map.tileAt(this.x + xOffset, this.y + yOffset).setCovered(true);
 		}
+		
 		return true;
 	}
 	
@@ -605,11 +595,11 @@ public abstract class AbstractEntity {
 	public boolean goNorth() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = NORTH;
+		
 		if(y - 1 > 0) {
 			if(map.tileAt(x, y - 1).canEnter(this)) {
-				y -= 1;
-				
-				facing = NORTH;
+				y -= 1;		
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -627,11 +617,11 @@ public abstract class AbstractEntity {
 	public boolean goSouth() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = SOUTH;
+		
 		if(y + 1 < map.height()) {
 			if(map.tileAt(x, y + 1).canEnter(this)) {
 				y += 1;
-				
-				facing = SOUTH;
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -649,11 +639,11 @@ public abstract class AbstractEntity {
 	public boolean goEast() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = EAST;
+		
 		if(x + 1 > 0) {
 			if(map.tileAt(x + 1, y).canEnter(this)) {
 				x += 1;
-				
-				facing = EAST;
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -671,11 +661,11 @@ public abstract class AbstractEntity {
 	public boolean goWest() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = WEST;
+		
 		if(x - 1 > 0) {
 			if(map.tileAt(x - 1, y).canEnter(this)) {
 				x -= 1;
-				
-				facing = WEST;
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -693,12 +683,12 @@ public abstract class AbstractEntity {
 	public boolean goNortheast() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = NORTHEAST;
+		
 		if(map.contains(x + 1, y - 1)) {
 			if(map.tileAt(x + 1, y - 1).canEnter(this)) {
 				x += 1;
 				y -= 1;
-				
-				facing = NORTHEAST;
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -716,12 +706,12 @@ public abstract class AbstractEntity {
 	public boolean goNorthwest() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = NORTHWEST;
+		
 		if(map.contains(x - 1, y - 1)) {
 			if(map.tileAt(x - 1, y - 1).canEnter(this)) {
 				this.x -= 1;
 				this.y -= 1;
-				
-				facing = NORTHWEST;
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -739,12 +729,12 @@ public abstract class AbstractEntity {
 	public boolean goSoutheast() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = SOUTHEAST;
+		
 		if(map.contains(x + 1, y + 1)) {
 			if(map.tileAt(x + 1, y + 1).canEnter(this)) {
 				x += 1;
 				y += 1;
-				
-				facing = SOUTHEAST;
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -762,12 +752,12 @@ public abstract class AbstractEntity {
 	public boolean goSouthwest() {
 		map.tileAt(this.x, this.y).setOccupant(null);
 		
+		facing = SOUTHWEST;
+		
 		if(map.contains(x - 1, y + 1)) {
 			if(map.tileAt(x - 1, y + 1).canEnter(this)) {
 				x -= 1;
 				y += 1;
-				
-				facing = SOUTHWEST;
 				
 				map.tileAt(this.x, this.y).setOccupant(this);
 				return true;
@@ -809,6 +799,10 @@ public abstract class AbstractEntity {
 		return moved;
 	}
 	
+	public boolean goTo(AbstractEntity e) {
+		return goTo(e.getX(), e.getY());
+	}
+	
 	/**
 	 * Moves one space away from the given point on the map
 	 * @param x The x-coordinate
@@ -842,6 +836,10 @@ public abstract class AbstractEntity {
 		}
 		
 		return moved;
+	}
+	
+	public boolean avoid(AbstractEntity e) {
+		return avoid(e.getX(), e.getY());
 	}
 	
 	/**

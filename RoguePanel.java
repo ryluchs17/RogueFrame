@@ -48,9 +48,9 @@ public class RoguePanel extends JPanel implements KeyListener{
 		map.setView(5, 5);
 		add(map, BorderLayout.CENTER);
 		
-		player = new Player(0, 0, 20, map.getMap());
+		player = new Player(0, 0, 10, map.getMap());
 		player.randomTeleport();
-		map.getMap().addEntity(player);
+		map.getMap().getEntities().add(0, player);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
@@ -70,18 +70,26 @@ public class RoguePanel extends JPanel implements KeyListener{
 		
 		add(panel, BorderLayout.SOUTH);
 		
+		panel = new JPanel(new GridLayout(2, 1));
 		sp = new StatusPanel(player);
-		add(sp , BorderLayout.WEST);
+		panel.add(sp);
+		StatusPanel s = new StatusPanel(null);
+		map.setStatusPanel(s);
+		panel.add(s);
+		add(panel , BorderLayout.WEST);
 		
 		setSize(getPreferredSize());
+		
+		map.center(player.getX(), player.getY());
 	}
 	
 	public void newGame() {
 		if(player.hp <= 0) player.resetStats();
 		map.setMap(new TileMap(length, height));
 		player.setMap(map.getMap());
-		map.getMap().addEntity(player);
+		map.getMap().getEntities().add(0, player);
 		player.randomTeleport();
+		map.center(player.getX(), player.getY());
 	}
 		
 
