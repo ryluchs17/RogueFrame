@@ -85,6 +85,8 @@ public class Cartographer {
 		//shorts = ShortFunc.addCellLayer(Const.DEFWALL, Const.DEFFLOOR, shorts, 20);
 		//shorts = ShortFunc.border(Const.MAGMA, shorts);
 		
+		shorts = ShortFunc.addScatterLayer(Const.SPIKE, Const.DEFFLOOR, shorts, 5);
+		
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	

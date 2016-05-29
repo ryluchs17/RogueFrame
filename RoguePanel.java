@@ -48,7 +48,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 		map.setView(5, 5);
 		add(map, BorderLayout.CENTER);
 		
-		player = new Player(0, 0, 10, map.getMap());
+		player = new Player(0, 0, 20, map.getMap());
 		player.randomTeleport();
 		map.getMap().getEntities().add(0, player);
 		
@@ -65,7 +65,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 //		mpBar.setColor(Color.BLUE);
 //		mpBar.setDecreaseColor(Color.WHITE);
 //		panel.add(mpBar);
-		ip = new InventoryPanel(player);
+		ip = new InventoryPanel(player, map);
 		panel.add(ip);
 		
 		add(panel, BorderLayout.SOUTH);

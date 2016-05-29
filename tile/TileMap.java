@@ -49,13 +49,13 @@ public class TileMap {
 		//tiles = Cartographer.createClassicMap(columns, rows);
 		//tiles = Cartographer.createFort(columns, rows);
 		//tiles = Cartographer.createSafeMap(columns, rows);
-		//tiles = Cartographer.createMaze(columns, rows);
-		tiles = Cartographer.createTest(columns, rows);
+		tiles = Cartographer.createMaze(columns, rows);
+		//tiles = Cartographer.createTest(columns, rows);
 		//tiles = Cartographer.createGrid(columns, rows);
 		
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < 10; i++) {
 			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			entities.add(e);
@@ -184,8 +184,9 @@ public class TileMap {
 		}
 		
 		for(int i = 0; i < entities.size(); i++) {
-			entities.get(i).onTurn();
+			entities.get(i).onBasicTurn();
 			if(entities.get(i).hp <= 0) {
+				entities.get(i).onDeath();
 				entities.remove(i);
 			}
 		}

@@ -33,6 +33,18 @@ public class ShortFunc {
 		return map;
 	}
 	
+	public static short[][] addScatterLayer(short newLayerID, short replaceID, short[][] array, int percentTrue) {
+		for(int x = 0, y = 0; y < array[0].length; y++) {
+			for(x = 0; x < array.length; x++) {
+				if(array[x][y] == replaceID && Cartographer.r.nextInt(100) <= percentTrue) {
+					array[x][y] = newLayerID;
+				}
+			}
+		}
+		
+		return array;
+	}
+	
 	public static short[][] addCellLayer(short newLayerID, short[][] array, int percentTrue) {
 		boolean[][] newLayer = BoolFunc.cellularAutomaton(array.length, array[0].length, percentTrue);
 		

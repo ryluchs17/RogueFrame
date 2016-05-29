@@ -47,6 +47,9 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	// whether the user is allowed to modify the contents of this panel
 	public boolean editable = false;
 	
+	// a map panel for getting throwing targets
+	public MapPanel map;
+	
 	// display modes
 	public final static short MODE_SELECT = 0;
 	public final static short MODE_INFO = 1;
@@ -60,6 +63,8 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	// the boxes representing the buttons a user can press
 	private static Rectangle equiptbutton = new Rectangle(0, 0, AbstractTile.STEP * 2, AbstractTile.STEP);
 	private static Rectangle details = new Rectangle(0, AbstractTile.STEP * 7, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
+	private static Rectangle use = new Rectangle(AbstractTile.STEP * 8, AbstractTile.STEP * 7, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
+	private static Rectangle throwcast = new Rectangle(AbstractTile.STEP * 13, AbstractTile.STEP * 7, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
 //	private static Rectangle swap = new Rectangle((LENGTH_CHARS/4) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
 //	private static Rectangle use = new Rectangle((LENGTH_CHARS/2) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
 //	private static Rectangle throwr = new Rectangle(((3 * LENGTH_CHARS)/4) * AbstractTile.STEP, AbstractTile.STEP * 6, AbstractTile.STEP * (LENGTH_CHARS/4), AbstractTile.STEP);
@@ -69,11 +74,13 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	/**
 	 * 
 	 */
-	public InventoryPanel(AbstractEntity owner) {
+	public InventoryPanel(AbstractEntity owner, MapPanel map) {
 		super();
 		
 		this.owner = owner;
 		items = owner.getInventory();
+		
+		this.map = map;
 		
 		this.setBackground(Color.BLACK);
 		this.addMouseListener(this);
@@ -125,7 +132,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				}
 				
 				if(items.hasEquipt()) {
-					g2d.setColor(editable ? Color.YELLOW : Color.GRAY);
+					g2d.setColor(editable ? items.get(0).isCursed() ? Color.MAGENTA : Color.YELLOW : Color.GRAY);
 					g2d.drawString("Eq", equiptbutton.x, equiptbutton.y + 10);
 				} else {
 					g2d.setColor(Color.GRAY);
@@ -135,6 +142,10 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				g2d.setColor(Color.YELLOW);
 				
 				g2d.drawString("Details", details.x, details.y + AbstractTile.STEP);
+				
+				g2d.drawString("Use", use.x, use.y + AbstractTile.STEP);
+				
+				g2d.drawString("Throw/Cast", throwcast.x, throwcast.y + AbstractTile.STEP);
 				
 //				g2d.setColor(editable ? Color.YELLOW : Color.GRAY);
 				
@@ -200,10 +211,33 @@ public class InventoryPanel extends JPanel implements MouseListener{
 					repaint();
 				}
 				
+				if(use.contains(mouse)) {
+					if(items.get(selected) != null) {
+						items.get(selected).onUse(owner);
+						
+						items.clean();
+						repaint();
+						map.rounds(1);
+					}
+				}
+				
+				if(throwcast.contains(mouse)) {
+					if(items.get(selected) != null && owner.isClearPath(map.getSelect())) {
+						if(selected != 5) {
+							owner.throwItem(selected, map.getSelect());
+						} else {
+							owner.throwItem(map.getSelect());
+						}
+						
+						repaint();
+						map.rounds(1);
+					}
+				}
+				
 				for(int y = 0; y < 6; y++) {
 					if(mouse.y > y * AbstractTile.STEP && mouse.y < (y + 1) * AbstractTile.STEP && selected != y) {
 						selected = (short) y;
-						System.out.println(selected);
+//						System.out.println(selected);
 						repaint();
 					}
 				}
@@ -221,7 +255,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(mode == this.MODE_SELECT) {
+		if(mode == MODE_SELECT) {
 			int mouseY = e.getY();
 			
 			for(int y = 0; y < 6; y++) {
@@ -229,7 +263,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 					if(selected == 5) {
 						items.swap(y, owner.getMap().tileAt(owner.getX(), owner.getY()));
 					} else if(y == 5) {
-						items.swap(y, owner.getMap().tileAt(owner.getX(), owner.getY()));
+						items.swap(selected, owner.getMap().tileAt(owner.getX(), owner.getY()));
 					} else {
 						items.swap(selected, y);
 					}

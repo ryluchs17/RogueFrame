@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import item.AbstractItem;
 import item.Inventory;
 import tile.AbstractTile;
 import tile.TileMap;
@@ -17,6 +18,8 @@ import tile.TileMap;
 
 public abstract class AbstractEntity {
 
+	// ! POSITION STUFF !
+	
 	// XY position on the grid
 	protected int x, y;
 	
@@ -36,11 +39,15 @@ public abstract class AbstractEntity {
 	// The map within which this AbstractEntity exists
 	protected TileMap map;
 	
+	// ! MISC STUFF !
+	
 	// The inventory that this AbstractEntity possesses
 	protected Inventory inventory;
 	
 	// The rng used by this AbstractEntity
 	protected Random rng;
+	
+	// ! GRAPHICS/FLAVOR TEXT !
 	
 	// Char and Color to display as
 	protected String character;
@@ -49,7 +56,7 @@ public abstract class AbstractEntity {
 	// Flavor text
 	protected String name, description;
 	
-	// Determines whether or not to display the tile under the mob
+	// Determines whether or not to display the tile under the mob (TODO not actually used)
 	public boolean visible = true;	
 	
 	// Determines whether the entity actually makes contact with the tile below it
@@ -76,24 +83,21 @@ public abstract class AbstractEntity {
 	// Character Level stuff
 	protected int level;
 	
-	/**
-	 * The maximum level an AbstractEntity can be
-	 */
-	public static final int MAX_LEVEL = 20;
+	// experience points
+	public short experience = 0;
+	
+	public static final short EXP_SPAWNER = 2;
+	public static final short EXP_TRASH = 5;
+	public static final short EXP_MOOK = 10;
+	public static final short EXP_ELITE_MOOK = 20;
+	public static final short EXP_MINIBOSS = 50;
+	public static final short EXP_BOSS = 100;
+	
+	// the base amount of earned upon defeat
+	public short expWorth;
 	
 	// ! MORE STATS STUFF BEGINS !
 
-//	protected int hp, atk, def, mag;
-//	
-//	// Base stats stuff
-//	protected int hp_base, atk_base, def_base, mag_base;
-//	
-//	// Stat multipliers
-//	protected short hp_stage = 0, atk_stage = 0, def_stage = 0, mag_stage = 0;
-//	
-//	// base damage with physical and magical attacks
-//	protected int base_physical_damage = 0, base_magic_damage = 0;
-	
 	protected int hp_cap, str_cap, def_cap, mag_cap, res_cap, skl_cap, spd_cap;
 	
 	protected int hp_gro, str_gro, def_gro, mag_gro, res_gro, skl_gro, spd_gro;
@@ -102,7 +106,20 @@ public abstract class AbstractEntity {
 	
 	public int dam_str = 0, dam_mag = 0;
 	
-	// ! STATS STUFF ENDS !
+	// ! REGEN STUFF !
+	
+	public static final short REGEN_RATE_NONE = 0;
+	
+	public static final short REGEN_RATE_FAST = 1;
+	
+	public static final short REGEN_RATE_NORM = 2;
+	
+	public static final short REGEN_RATE_SLOW = 3;
+	
+	// A regenerating AbstractEntity regains health at a rate of 1/20 max HP per #regenRate turns
+	protected short regenRate = REGEN_RATE_NORM;
+	
+	// ! CONSTRUCTORS !
 	
 	/**
 	 * Creates a new AbstractEntity at (x, y) at the given level
@@ -142,7 +159,7 @@ public abstract class AbstractEntity {
 	/**
 	 * What to do when attacked
 	 */
-	abstract public void onAttacked(AttackEvent e);
+	abstract public void onAttacked(AbstractEntity e);
 	
 	/**
 	 * What to do when killed
@@ -150,6 +167,25 @@ public abstract class AbstractEntity {
 	abstract public void onDeath();
 	
 	// ! ABSTRACT METHODS END !
+	
+	public void onBasicTurn() {
+		onTurn();
+		
+		regen();
+		if(experience >= 100) {
+			levelUp();
+			experience -= 100;
+		}
+	}
+	
+	public void onBasicAttacked(AbstractEntity e) {
+		onAttacked(e);
+		
+		if(hp <= 0) {
+			e.experience += (int) (expWorth * (level/ (float) e.level));
+			//System.out.println("gave " + (expWorth * (level/e.level)) + " exp");
+		}
+	}
 	
 	/**
 	 * Draw the AbstractEntity to the screen
@@ -277,6 +313,10 @@ public abstract class AbstractEntity {
 		faction = !faction;
 	}
 	
+	public int getLevel() {
+		return level;
+	}
+	
 	public void levelUp() {
 		hp_cap  += rng.nextInt(100) <= hp_gro  ? 2 : 1;
 		str_cap += rng.nextInt(100) <= str_gro ? 1 : 0;
@@ -296,14 +336,14 @@ public abstract class AbstractEntity {
 			levelUp();
 		}
 		
-		System.out.println("HP: " + hp_cap);
-		System.out.println("STR: " + str_cap);
-		System.out.println("DEF: " + def_cap);
-		System.out.println("MAG: " + mag_cap);
-		System.out.println("RES: " + res_cap);
-		System.out.println("SKL: " + skl_cap);
-		System.out.println("SPD: " + spd_cap);
-		System.out.println();
+//		System.out.println("HP: " + hp_cap);
+//		System.out.println("STR: " + str_cap);
+//		System.out.println("DEF: " + def_cap);
+//		System.out.println("MAG: " + mag_cap);
+//		System.out.println("RES: " + res_cap);
+//		System.out.println("SKL: " + skl_cap);
+//		System.out.println("SPD: " + spd_cap);
+//		System.out.println();
 	}
 	
 	public void resetStats() {
@@ -337,27 +377,7 @@ public abstract class AbstractEntity {
 	}
 	
 	public void regen() {
-		if(hp < hp_cap && map.getRounds() % 2 == 0) {
-			if(hp + level/20 + 1 < hp_cap) {
-				hp += level/20 + 1;
-			} else {
-				hp = hp_cap;
-			}
-		}
-	}
-	
-	public void regenFast() {
-		if(hp < hp_cap) {
-			if(hp + level/20 + 1 < hp_cap) {
-				hp += level/20 + 1;
-			} else {
-				hp = hp_cap;
-			}
-		}
-	}
-	
-	public void regenSlow() {
-		if(hp < hp_cap && map.getRounds() % 3 == 0) {
+		if(regenRate != 0 && hp < hp_cap && map.getRounds() % regenRate == 0) {
 			if(hp + level/20 + 1 < hp_cap) {
 				hp += level/20 + 1;
 			} else {
@@ -371,7 +391,7 @@ public abstract class AbstractEntity {
 			if(inventory != null && inventory.hasEquipt()) {
 				inventory.get(0).onUse(this);
 				
-				System.out.print(e.hp + " -> ");
+				//System.out.print(e.hp + " -> ");
 				
 				if(inventory.get(0).isMagical()) {
 					e.hp -= hit_mag(e) ? crit_mag(e) ? inventory.get(0).getDamage() + mag/2 : inventory.get(0).getDamage() : 0;
@@ -379,12 +399,23 @@ public abstract class AbstractEntity {
 					e.hp -= hit_str(e) ? crit_str(e) ? inventory.get(0).getDamage() + str/2 : inventory.get(0).getDamage() : 0;
 				}
 				
-				System.out.println(e.hp);
+				//System.out.println(e.hp);
 				
 			} else {
 				e.hp -= hit_str(e) ? crit_str(e) ? dam_str + str/2 : dam_str : 0;
 			}
+			e.onBasicAttacked(this);
 		}
+	}
+	
+	public void throwAttack(AbstractItem i, AbstractEntity e) {
+		if(i.isMagical()) {
+			e.hp -= hit_mag(e) ? crit_mag(e) ? i.getDamage() * 2 + mag/2 : i.getDamage() * 2 : 0;
+		} else {
+			e.hp -= hit_str(e) ? crit_str(e) ? i.getDamage() * 2 + str/2 : i.getDamage() * 2 : 0;
+		}
+		i.onUse(e);
+		e.onBasicAttacked(this);
 	}
 	
 	public void interact(AbstractTile t) {
@@ -409,6 +440,80 @@ public abstract class AbstractEntity {
 	
 	public void interact(int xOffset, int yOffset) {
 		interact(map.tileAt(x + xOffset, y + yOffset));
+	}
+	
+	public void throwItem(AbstractTile t) {
+		if(t.hasItem() && t.getItem().isThrowable()) {
+			
+			AbstractItem item = map.tileAt(x, y).getItem();
+			
+			if(item.isStackable()) {
+				
+				if(t.isOccupied()) {
+					throwAttack(item, t.getOccupant());
+				}
+				
+				if(!item.isConsumable()) {
+					if(t.isOccupied() && t.getItem().getName().equals(item.getName())) {
+						t.getItem().uses++;
+						item.uses--;
+					} else {
+						AbstractItem clone = (AbstractItem) item.clone();
+						t.setItem(clone);
+						item.uses--;
+					}
+				}
+				
+				if(item.uses <= 0) {
+					map.tileAt(x, y).setItem(null);
+				}
+				
+			} else {
+				
+				if(t.isOccupied()) {
+					throwAttack(item, t.getOccupant());
+				}
+				
+				t.setItem(item);
+				map.tileAt(x, y).setItem(null);
+			}
+		}
+	}
+	
+	public void throwItem(int index, AbstractTile t) {
+		if(inventory.has(index) && inventory.get(index).isThrowable()) {
+			
+			AbstractItem item = inventory.get(index);
+			
+			if(item.isStackable()) {
+				
+				if(t.isOccupied()) {
+					throwAttack(item, t.getOccupant());
+				}
+				
+				if(!item.isConsumable()) {
+					if(t.hasItem() && t.getItem().getName().equals(item.getName())) {
+						t.getItem().uses++;
+						item.uses--;
+					} else {
+						AbstractItem clone = (AbstractItem) item.clone();
+						t.setItem(clone);
+						item.uses--;
+					}
+				}
+					
+				inventory.clean();
+				
+			} else {
+				
+				if(t.isOccupied()) {
+					throwAttack(item, t.getOccupant());
+				}
+				
+				t.setItem(item);
+				inventory.remove(index);
+			}
+		}
 	}
 	
 	/**
@@ -526,17 +631,21 @@ public abstract class AbstractEntity {
 			
 			if(map.tileAt(this.x + xOffset, this.y + yOffset).isOpaque()) {
 				//System.out.println("returning FALSE at i = " + i);
-				if(allow) {
-					allow = false;
-				} else {
+//				if(allow) {
+//					allow = false;
+//				} else {
 					return false;
-				}
+//				}
 			}
 			
-			map.tileAt(this.x + xOffset, this.y + yOffset).setCovered(true);
+			//map.tileAt(this.x + xOffset, this.y + yOffset).setCovered(true);
 		}
 		
 		return true;
+	}
+	
+	public boolean canSee(AbstractTile t) {
+		return canSee(t.getX(), t.getY());
 	}
 	
 	/**
@@ -553,13 +662,13 @@ public abstract class AbstractEntity {
 		int xOffset;
 		int yOffset;
 		
-		System.out.println("line to (" + radius + ", " + theta + ") (pol)");
+//		System.out.println("line to (" + radius + ", " + theta + ") (pol)");
 		
 		for(int i = 2; i <= radius; i++) {
 			xOffset = (int) (i*Math.cos(theta));
 			yOffset = (int) (i*Math.sin(theta));
 			
-			if(!map.tileAt(this.x + xOffset, this.y + yOffset).canEnter(this)) {
+			if(!map.tileAt(this.x + xOffset, this.y + yOffset).canApproach(this)) {
 				System.out.println("returning FALSE at i = " + i);
 				return false;
 			}

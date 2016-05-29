@@ -22,6 +22,8 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	// the map displayed by this MapPanel
 	TileMap map;
 	
+	
+	
 	// point to draw look info at
 	private Point mouse = new Point(0, 0);
 	
@@ -103,13 +105,17 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		return map;
 	}
 	
+	public AbstractTile getSelect() {
+		return select;
+	}
+	
 	public void rounds(int r) {
 		
-		for(int x = 0, y = 0; y < map.height(); y++) {
-			for(x = 0; x < map.length(); x++) {
-				map.tileAt(x, y).setCovered(false);
-			}
-		}
+//		for(int x = 0, y = 0; y < map.height(); y++) {
+//			for(x = 0; x < map.length(); x++) {
+//				map.tileAt(x, y).setCovered(false);
+//			}
+//		}
 		
 		map.tick(r);
 		
@@ -219,9 +225,10 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 //				g.setColor(tiles[viewX + x][viewY + y].foreground);
 //				g.drawString(tiles[viewX + x][viewY + y].character, getWidthCenter() + x*AbstractTile.STEP, getHeightCenter() + (y+1)*AbstractTile.STEP);
 				
-				map.getEntities().get(0).canSee(viewX + x, viewY + y);
+				//map.getEntities().get(0).canSee(viewX + x, viewY + y);
 				
-				if(map.tileAt(viewX + x, viewY + y).isCovered()) {
+				//if(map.tileAt(viewX + x, viewY + y).isCovered()) {
+				if(map.getEntities().get(0).canSee(viewX + x, viewY + y)) {
 					map.tileAt(viewX + x, viewY + y).draw(g, this.getWidthCenter() + x*AbstractTile.STEP - 2, getHeightCenter() + y*AbstractTile.STEP - 2);
 				}
 			}

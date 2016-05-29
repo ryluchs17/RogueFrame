@@ -11,8 +11,6 @@ import tile.AbstractTile;
  */
 public class Inventory {
 	
-	private boolean equipt;
-	
 	private AbstractItem[] items;
 	
 	public Inventory() {
@@ -43,6 +41,15 @@ public class Inventory {
 		}
 	}
 	
+	public int getIndex(AbstractItem i) {
+		for(int x = 0; x < items.length; x++) {
+			if(items[x] == i) {
+				return x;
+			}
+		}
+		return -1;
+	}
+	
 	public void remove(int index) {
 		if(index >= 0 && index < items.length) {
 			items[index] = null;
@@ -58,15 +65,15 @@ public class Inventory {
 	}
 	
 	public void equip() {
-		if(items[0] != null && !(equipt && items[0].isCursed())) equipt = !equipt;
+		if(items[0] != null && !items[0].isCursed()) items[0].locked = !items[0].locked;
 	}
 	
 	public boolean hasEquipt() {
-		return equipt;
+		return items[0] != null ? items[0].locked : false;
 	}
 	
 	public void swap(int index, AbstractTile t) {
-		if(index >= 0 && index < items.length && !(index == 0 && equipt)) {
+		if(index >= 0 && index < items.length && (items[index] != null ? !items[index].isLocked() : true)) {
 			AbstractItem temp;
 			
 			if(t.hasItem() && items[index] != null && items[index].getName().equals(t.getItem().getName()) && items[index].isStackable()) {
@@ -81,7 +88,7 @@ public class Inventory {
 	}
 	
 	public void swap(int index1, int index2) {
-		if((index1 >= 0 && index1 < items.length) && (index2 >= 0 && index2 <= 4) && !((index1 == 0 || index2 == 0) && equipt)) {
+		if((index1 >= 0 && index1 < items.length) && (items[index1] != null ? !items[index1].isLocked() : true) && (items[index2] != null ? !items[index2].isLocked() : true)) {
 			AbstractItem temp;
 			
 			if(items[index1] != null && items[index2] != null && items[index1].getName().equals(items[index2].getName()) && items[index1].isStackable() && items[index1] != items[index2]) {
@@ -103,6 +110,10 @@ public class Inventory {
 		}
 		
 		return false;
+	}
+	
+	public boolean has(int index) {
+		return index > 0 && index < items.length && items[index] != null;
 	}
 	
 	public void clean() {

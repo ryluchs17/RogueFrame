@@ -30,8 +30,8 @@ public abstract class AbstractTile {
 	// Determines if this tile should be avoided by ai
 	protected boolean avoid = false; 
 	
-	// Determines whether or not to display background instead of the tile
-	protected boolean covered = false;
+//	// Determines whether or not to display background instead of the tile
+//	protected boolean covered = false;
 	
 	// An item stored on the tile
 	protected AbstractItem item = null;
@@ -286,26 +286,30 @@ public abstract class AbstractTile {
 		return occupant != null;
 	}
 
-	/**
-	 * Determines whether the tile is covered
-	 * @return Whether the tile is covered
-	 */
-	public boolean isCovered() {
-		return covered;
-	}
+//	/**
+//	 * Determines whether the tile is covered
+//	 * @return Whether the tile is covered
+//	 */
+//	public boolean isCovered() {
+//		return covered;
+//	}
 
-	/**
-	 * Set tile visibility
-	 * @param covered Whether the tile should be covered
-	 */
-	public void setCovered(boolean covered) {
-		this.covered = covered;
-	}
+//	/**
+//	 * Set tile visibility
+//	 * @param covered Whether the tile should be covered
+//	 */
+//	public void setCovered(boolean covered) {
+//		this.covered = covered;
+//	}
 	
 	public boolean isOpaque() {
 		return opaque;
 	}
 
+	public boolean canApproach(AbstractEntity e) {
+		return this.isPassable() && (e.ignore ? true : !avoid);
+	}
+	
 	/**
 	 * Determines whether an mob can enter the tile
 	 * @param A the mob to enter the tile

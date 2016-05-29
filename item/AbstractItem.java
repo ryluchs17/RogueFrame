@@ -42,6 +42,13 @@ public abstract class AbstractItem {
 	// determines whether the item is locked in its inventory slot
 	protected boolean locked = false;
 	
+	// determines whether the item can be thrown
+	protected boolean throwable = true;
+	
+	// determines whether the item is consumed upon use
+	// does not actually cause item to be consumed, merely tells external classes if it is
+	protected boolean consumable = false;
+	
 	// Number of uses for an item
 	public int uses = 1;
 	
@@ -116,7 +123,7 @@ public abstract class AbstractItem {
 		g2d.drawString(character, x, y + AbstractTile.STEP);
 		
 		g2d.setColor(Color.WHITE);
-		g2d.drawString(name, x + AbstractTile.STEP, y + AbstractTile.STEP);
+		g2d.drawString( curseIsKnown && cursed ? "Cursed" + name : name, x + AbstractTile.STEP, y + AbstractTile.STEP);
 		g2d.drawString(description, x, y + (AbstractTile.STEP + 2) * 2);
 		g2d.drawString((int) (damage * proficiency) + " damage" , x, y + (AbstractTile.STEP + 2) * 4);
 		g2d.drawString(hit + "%" + " hit", x, y + (AbstractTile.STEP + 2) * 5);
@@ -163,6 +170,14 @@ public abstract class AbstractItem {
 		return locked;
 	}
 	
+	public boolean isThrowable() {
+		return !cursed && !locked;
+	}
+	
+	public boolean isConsumable() {
+		return consumable;
+	}
+	
 	public int getDamage() {
 		return (int) (damage * proficiency);
 	}
@@ -181,5 +196,17 @@ public abstract class AbstractItem {
 	
 	public void improve() {
 		if(proficiency < max_proficiency) proficiency += 0.01;
+	}
+	
+	public Object clone() {
+		try {
+			AbstractItem clone = (AbstractItem) Class.forName(this.getClass().getName()).newInstance();
+			clone.damage = damage;
+			clone.proficiency = proficiency;
+			return clone;
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

@@ -35,6 +35,8 @@ public class Bat extends AbstractEntity {
 		
 		this.inventory = BAT_INVENTORY;
 		
+		this.expWorth = 10;
+		
 		grounded = false;
 		
 //		this.hp_base = 60;
@@ -86,7 +88,7 @@ public class Bat extends AbstractEntity {
 	}
 
 	@Override
-	public void onAttacked(AttackEvent e) {
+	public void onAttacked(AbstractEntity e) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -70,7 +70,7 @@ public class Player extends AbstractEntity {
 	}
 
 	@Override
-	public void onAttacked(AttackEvent e) {
+	public void onAttacked(AbstractEntity e) {
 		// TODO Auto-generated method stub
 		
 	}
