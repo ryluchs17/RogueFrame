@@ -45,7 +45,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	private AbstractEntity owner; 
 	
 	// whether the user is allowed to modify the contents of this panel
-	public boolean editable = false;
+	public boolean editable = true;
 	
 	// a map panel for getting throwing targets
 	public MapPanel map;
@@ -222,16 +222,14 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				}
 				
 				if(throwcast.contains(mouse)) {
-					if(items.get(selected) != null && owner.isClearPath(map.getSelect())) {
-						if(selected != 5) {
-							owner.throwItem(selected, map.getSelect());
-						} else {
-							owner.throwItem(map.getSelect());
-						}
-						
-						repaint();
-						map.rounds(1);
+					if(selected == 5) {
+						owner.throwItem(map.getSelect());
+					} else {
+						owner.throwItem(selected, map.getSelect());
 					}
+					
+					repaint();
+					map.rounds(1);
 				}
 				
 				for(int y = 0; y < 6; y++) {

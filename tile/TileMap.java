@@ -84,7 +84,7 @@ public class TileMap {
 		
 		Cartographer.r = new Random(seed);
 		//tiles = Cartographer.createClassicMap(columns, rows);
-		tiles = Cartographer.createFort(columns, rows);
+		//tiles = Cartographer.createFort(columns, rows);
 		
 //		update = new int[(this.columns*this.rows)/2][2];
 		
@@ -96,6 +96,19 @@ public class TileMap {
 			e.setMap(this);
 			entities.add(e);
 		}
+	}
+	
+	public TileMap(int columns, int rows, int depth, int playerlevel, short levelTypeID, long seed) {
+		
+		this.seed = seed;
+		generate = new Random(seed);
+		
+		this.rows = rows; this.columns = columns;
+		
+		Cartographer.r = new Random(seed);
+		tiles = Cartographer.makeMap(columns, rows, levelTypeID);
+		entities = Cartographer.populate(tiles, levelTypeID, depth, playerlevel);
+		Cartographer.fill(tiles);
 	}
 	
 	/**

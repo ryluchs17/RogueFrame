@@ -4,7 +4,10 @@
  */
 package gen;
 
+import java.util.ArrayList;
 import java.util.Random;
+
+import entity.AbstractEntity;
 import tile.*;
 //import java.io.*;
 
@@ -102,6 +105,21 @@ public class Cartographer {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 35), Const.DEFWALL, Const.DEFFLOOR);
 		
 		return ShortFunc.mapFromShortArray(shorts);
+	}
+
+	public static AbstractTile[][] makeMap(int columns, int rows, short levelTypeID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static ArrayList<AbstractEntity> populate(AbstractTile[][] tiles, short levelTypeID, int depth, int playerlevel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static void fill(AbstractTile[][] tiles) {
+		// TODO Auto-generated method stub
+		
 	}
 		
 }

@@ -11,9 +11,9 @@ import entity.AbstractEntity;
  * @author ryan
  *
  */
-public class DefFloor extends AbstractTile {
+public class StoneFloor extends AbstractTile {
 
-	public DefFloor(int x, int y) {
+	public StoneFloor(int x, int y) {
 		super(x, y);
 		
 		character = ".";
@@ -22,8 +22,8 @@ public class DefFloor extends AbstractTile {
 		
 		passable = true;
 		
-		name = "Floor";
-		description = "Unremarkable";
+		name = "Stone Floor";
+		description = "Rough on the feet";
 	}
 
 	/* (non-Javadoc)

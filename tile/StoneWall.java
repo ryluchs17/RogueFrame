@@ -11,9 +11,9 @@ import entity.AbstractEntity;
  * @author ryan
  *
  */
-public class DefWall extends AbstractTile {
+public class StoneWall extends AbstractTile {
 
-	public DefWall(int x, int y) {
+	public StoneWall(int x, int y) {
 		super(x, y);
 
 		character = "#";
@@ -24,8 +24,8 @@ public class DefWall extends AbstractTile {
 		
 		opaque = true;
 		
-		name = "Wall";
-		description = "A sturdy wall.";
+		name = "Stone Wall";
+		description = "Rough hewn stone";
 	}
 
 	/* (non-Javadoc)

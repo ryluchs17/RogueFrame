@@ -443,8 +443,7 @@ public abstract class AbstractEntity {
 	}
 	
 	public void throwItem(AbstractTile t) {
-		if(t.hasItem() && t.getItem().isThrowable()) {
-			
+		if(map.tileAt(x, y).hasItem() && map.tileAt(x, y).getItem().isThrowable()) {
 			AbstractItem item = map.tileAt(x, y).getItem();
 			
 			if(item.isStackable()) {
@@ -454,7 +453,7 @@ public abstract class AbstractEntity {
 				}
 				
 				if(!item.isConsumable()) {
-					if(t.isOccupied() && t.getItem().getName().equals(item.getName())) {
+					if(t.hasItem() && t.getItem().getName().equals(item.getName())) {
 						t.getItem().uses++;
 						item.uses--;
 					} else {
@@ -477,6 +476,8 @@ public abstract class AbstractEntity {
 				t.setItem(item);
 				map.tileAt(x, y).setItem(null);
 			}
+			
+			item.curseIsKnown = true;
 		}
 	}
 	
@@ -513,6 +514,8 @@ public abstract class AbstractEntity {
 				t.setItem(item);
 				inventory.remove(index);
 			}
+			
+			item.curseIsKnown = true;
 		}
 	}
 	

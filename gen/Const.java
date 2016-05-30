@@ -11,6 +11,19 @@ import tile.Water;
 public final class Const {
 	
 	// Tile constants
+	public static final short STONE_FLOOR = 0;
+	public static final short STONE_WALL = 1;
+	public static final short LAVA/*MAGMA*/ = 2;
+	public static final short WEB = 3;
+	public static final short TREE = 4;
+//	public static final short WATER = 5;
+	public static final short GRASS = 6;
+//	public static final short SPIKE = 7;
+	public static final short TRAP = 8;
+	public static final short WEED = 9;
+	public static final short OBSIDIAN = 10;
+	public static final short SAND = 11;
+	
 	
 	// defaults
 	public static final short DEFFLOOR = 0;
@@ -22,6 +35,20 @@ public final class Const {
 	public static final short SPIKE = 4;
 	public static final short MAGMA = 5;
 	
+	// Entity Constants
+	public static final short BAT = 0;
+	public static final short GIANT_BAT = 1;
+	public static final short BEAR = 2;
+	public static final short DRAGON = 3;
+	public static final short SPIDER = 4;
+	public static final short MUSHROOM = 5;
+	public static final short OWL = 6;
+	public static final short SALAMANDER = 7;
+	public static final short TICK = 8;
+	public static final short FIRE_ELEMENTAL = 9;
+	public static final short WATER_ELEMENTAL = 10;
+	public static final short EGG = 11;
+	
 	public static boolean isFilled(short id) {
 		return (id % 2) == 1;
 	}
@@ -32,11 +59,11 @@ public final class Const {
 		switch(id) {
 		
 			case DEFFLOOR:
-				tile = new DefFloor(x, y);
+				tile = new StoneFloor(x, y);
 				break;
 				
 			case DEFWALL:
-				tile = new DefWall(x, y);
+				tile = new StoneWall(x, y);
 				break;
 				
 			case SOIL:

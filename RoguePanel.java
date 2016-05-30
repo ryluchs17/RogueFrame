@@ -20,20 +20,24 @@ public class RoguePanel extends JPanel implements KeyListener{
 	
 	private static final long serialVersionUID = 1;
 	
-	private int length = 40; private int height = 40; 
+	private int length = 40; private int height = 40;
 	//private MapPanel map = new MapPanel(length, height, 18, 12, 420L);
 	//private MapPanel map = new MapPanel(20, 20, 15, 15, 420L);
 	//private MapPanel map = new MapPanel(100, 100, 40, 40, 420L);
 	private MapPanel map = new MapPanel(length, height, 35, 30);
 	//private MapPanel map = new MapPanel(length, height, 35, 35);
 	//private MapPanel map = new MapPanel(length, height, 35, 35, 42L);
-	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
-	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
-	
-	private AbstractEntity player;
+//	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
+//	private InfoBar mpBar = new InfoBar("Mana", 100, 50, 100);
 	
 	private InventoryPanel ip;
 	private StatusPanel sp;
+	
+	private AbstractEntity player;
+	private int depth = 0;
+	private Random generate = new Random();
+	private long[] seeds;
+	private TileMap[] levels;
 	
 	/**
 	 * RogueFrame constructor
@@ -91,7 +95,43 @@ public class RoguePanel extends JPanel implements KeyListener{
 		player.randomTeleport();
 		map.center(player.getX(), player.getY());
 	}
+	
+	public void generateWorld() {
+		seeds = new long[generate.nextInt(15) + 10];
+		for(int i = 0; i < seeds.length - 1; i++) {
+			seeds[i] = generate.nextLong();
+		}
 		
+		levels = new TileMap[seeds.length];
+		levels[depth] = new TileMap(length + generate.nextInt(20), height + generate.nextInt(20), depth, 1, (short) generate.nextInt(5), seeds[depth]);
+		
+		player = new Player(0, 0, 1, levels[depth]);
+		player.randomTeleport();
+		levels[depth].getEntities().add(0, player);
+	}
+	
+	public void descend() {
+		if(levels[depth + 1] != null) {
+			player.setMap(levels[depth + 1]);
+			player.randomTeleport();
+		} else {
+			if(depth + 1 == levels.length - 1) {
+				levels[depth + 1] = new TileMap(40, 40, depth, player.getLevel(), (short) 5 , seeds[depth + 1]);
+			} else {
+				levels[depth + 1] = new TileMap(length + generate.nextInt(20), height + generate.nextInt(20), depth, player.getLevel(), (short) generate.nextInt(5), seeds[depth + 1]);
+			}
+			
+			player.setMap(levels[depth + 1]);
+			player.randomTeleport();
+		}
+		
+		depth++;
+	}
+	
+	public void ascend() {
+		player.setMap(levels[depth - 1]);
+		depth--;
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -160,24 +200,12 @@ public class RoguePanel extends JPanel implements KeyListener{
 				}
 				map.rounds(1);
 				break;
-//			case KeyEvent.VK_Z:
-//				hpBar.shiftValue(-10);
-//				hpBar.repaint();
-//				mpBar.shiftValue(-10);
-//				mpBar.repaint();
-//				break;
-//			case KeyEvent.VK_X:
-//				hpBar.shiftValue(10);
-//				hpBar.repaint();
-//				mpBar.shiftValue(10);
-//				mpBar.repaint();
-//				break;
-//			case KeyEvent.VK_C:
-//				hpBar.setValue(0);
-//				hpBar.repaint();
-//				mpBar.setValue(0);
-//				mpBar.repaint();
-//				break;
+			case KeyEvent.VK_Z:
+				ascend();
+				break;
+			case KeyEvent.VK_X:
+				descend();
+				break;
 			case KeyEvent.VK_PERIOD:
 				map.rounds(1);
 				break;
