@@ -8,26 +8,29 @@ import java.awt.Color;
 import entity.AbstractEntity;
 
 /**
- * A powerful magical weapon for spell casters
+ * A cheap consumable ammo item for RogueFrame
  * @author Ryan Luchs
  *
  */
-public class Hex extends AbstractItem {
+public class ObsidianShard extends AbstractItem {
 
-	public Hex() {
-		this.character = "*";
-		this.color = Color.MAGENTA;
+	private static final Color OBSIDIAN_COLOR = Color.MAGENTA.darker().darker();
+	
+	public ObsidianShard() {
 		
-		this.name = "Hex";
-		this.description = "Wicked magick";
+		this.character = "'";
+		this.color = OBSIDIAN_COLOR;
+		
+		this.name = "Obsidian Shard";
+		this.description = "Broken lava glass";
 		
 		this.stackable = true;
 		this.consumable = true;
 		
-		this.damage = 4;
-		this.hit = 40;
-		this.crit = 60;
-		this.magical = true;
+		this.damage = 12;
+		this.hit = 65;
+		this.crit = 15;
+		this.magical = false;
 	}
 
 	/* (non-Javadoc)
@@ -36,9 +39,7 @@ public class Hex extends AbstractItem {
 	@Override
 	public void onUse(AbstractEntity m) {
 		improve();
-		if(m.getInventory().hasEquipt()) {
-			m.getInventory().get(0).cursed = true;
-		}
+		uses--;
 
 	}
 
@@ -48,10 +49,8 @@ public class Hex extends AbstractItem {
 	@Override
 	public void onThrown(AbstractEntity e) {
 		improve();
-		if(e.getInventory().hasEquipt()) {
-			e.getInventory().get(0).cursed = true;
-		}
-		
+		uses--;
+
 	}
 
 	/* (non-Javadoc)

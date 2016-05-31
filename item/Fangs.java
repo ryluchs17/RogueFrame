@@ -15,9 +15,6 @@ import tile.AbstractTile;
  */
 public class Fangs extends AbstractItem {
 	
-	/**
-	 * 
-	 */
 	public Fangs() {
 		
 		this.character = "\"";

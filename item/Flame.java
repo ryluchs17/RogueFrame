@@ -25,7 +25,7 @@ public class Flame extends AbstractItem {
 		this.stackable = true;
 		this.consumable = true;
 		
-		this.damage = 40;
+		this.damage = 32;
 		this.hit = 40;
 		this.crit = 0;
 		this.magical = true;

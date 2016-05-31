@@ -6,6 +6,7 @@ package tile;
 import java.awt.Color;
 
 import entity.AbstractEntity;
+import item.ObsidianShard;
 
 /**
  * A black lava glass destructible wall tile for RogueFrame
@@ -55,6 +56,8 @@ public class Obsidian extends AbstractTile {
 				
 				name = "Obsidian rubble";
 				description = "There was a wall here...";
+				
+				item = ((x + y)/2) % 2  == 0 ? new ObsidianShard() : null;
 			}
 			
 		}
