@@ -38,6 +38,8 @@ public class Salamander extends AbstractEntity {
 		
 		this.expWorth = 20;
 		
+		this.regenRate = AbstractEntity.REGEN_RATE_SLOW;
+		
 		hp_cap = 12;
 		str_cap = 10;
 		def_cap = 6;

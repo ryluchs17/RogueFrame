@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * RougeFrame map template
+ * RougeFrame Map display panel
  * @author Ryan Luchs
  *
  */
@@ -39,10 +39,6 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	
 	private StatusPanel selectDisplay;
 	
-	public void setStatusPanel(StatusPanel s) {
-		selectDisplay = s;
-	}
-	
 	// (x, y) position of the top left corner of the map display
 	private int viewX = 0; private int viewY = 0;
 	// length and height of the map display
@@ -52,11 +48,11 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	public static final Font font = new Font("Monospaced", Font.PLAIN, 12);
 
 	/**
-	 * Creates a new Map of size columns * rows, with a display of size viewColumns * viewRows.
-	 * @param columns The length of the map in tiles
-	 * @param rows The height of the map in tiles
-	 * @param viewColumns The length of the map display in tiles
-	 * @param viewRows The height of the map display in tiles
+	 * Creates a new MapPanel of the TileMap map with a window size of viewColumns * viewRows with a designated player
+	 * @param map
+	 * @param player
+	 * @param viewColumns
+	 * @param viewRows
 	 */
 	public MapPanel(TileMap map, AbstractEntity player, int viewColumns, int viewRows) {
 		super();
@@ -79,19 +75,43 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		this.addMouseMotionListener(this);
 	}
 	
+	/**
+	 * Sets a status panel that displays AbstractEntity into on mouseover
+	 * @param s the status panel to link to
+	 */
+	public void setStatusPanel(StatusPanel s) {
+		selectDisplay = s;
+	}
+	
+	/**
+	 * Sets the TileMap for this pane to display
+	 * @param map The TileMap to display
+	 */
 	public void setMap(TileMap map) {
 		this.map = map;
 		repaint();
 	}
 	
+	/**
+	 * Gets the TileMap this pane is displaying
+	 * @return The TileMap being displayed
+	 */
 	public TileMap getMap() {
 		return map;
 	}
 	
+	/**
+	 * Gets the AbstractTile at the mouse's current position
+	 * @return The AbstractTile at the mouse's current position
+	 */
 	public AbstractTile getSelect() {
 		return select;
 	}
 	
+	/**
+	 * Advances the state of the TileMap r number of rounds
+	 * @param r The number of rounds
+	 */
 	public void rounds(int r) {
 		
 //		for(int x = 0, y = 0; y < map.height(); y++) {
@@ -183,6 +203,11 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		repaint(this.getWidthCenter() - 10, this.getHeightCenter() - 10, viewX + ((viewColumns+1)*AbstractTile.STEP), viewY + ((viewRows+1)*AbstractTile.STEP));
 	}
 	
+	/**
+	 * Centers the viewing window on the given point as best as possible without going out of range
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public void center(int x, int y) {
 		Rectangle view = new Rectangle(viewY, viewY, viewColumns, viewRows);
 		

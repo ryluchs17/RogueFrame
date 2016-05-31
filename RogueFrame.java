@@ -91,7 +91,8 @@ public class RogueFrame extends JFrame implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case "new game":
-				game.newGame();
+				//game.newGame();
+				JOptionPane.showMessageDialog(this, "This feature is currently unsupported. Sorry.");
 				break;
 			default:
 				break;

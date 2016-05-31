@@ -4,6 +4,12 @@ import tile.*;
 import item.*;
 import entity.*;
 
+/**
+ * A list of constants for all AbstractTile, AbstractEntity, and AbstractItem variants
+ * with corresponding generation functions
+ * @author Ryan Luchs
+ *
+ */
 public final class Const {
 	
 	// level constants
@@ -54,10 +60,13 @@ public final class Const {
 	public static final short WATER_ELEMENTAL = 10;
 	public static final short EGG = 11;
 	
-	public static boolean isFilled(short id) {
-		return (id % 2) == 1;
-	}
-	
+	/**
+	 * Instantiates a new AbstractTile variant that matches the given ID number
+	 * @param id The ID number of the tile
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @return The AbstractTile
+	 */
 	public static AbstractTile makeTile(short id, int x, int y) {
 		AbstractTile tile = null;
 		
@@ -119,61 +128,68 @@ public final class Const {
 		return tile;
 	}
 	
-	public static AbstractEntity makeEntity(short id, int x, int y, int level, TileMap map) {
+	/**
+	 * Instantiates a new AbstractEntity variant that matches the given ID number at a random location in the given TileMap
+	 * @param id The ID number of the AbstractEntity
+	 * @param level The level of the AbstractEntity
+	 * @param map The TileMap for the AbstractEntity to exist in
+	 * @return The AbstractEntity
+	 */
+	public static AbstractEntity makeEntity(short id, int level, TileMap map) {
 		AbstractEntity e;
 		
 		switch(id) {
 		
 			case BAT:
-				e = new Bat(x, y, level, map);
+				e = new Bat(0, 0, level, map);
 				break;
 			
 			case GIANT_BAT:
-				e = new GiantBat(x, y, level, map);
+				e = new GiantBat(0, 0, level, map);
 				break;
 				
 			case BEAR:
-				e = new Bear(x, y, level, map);
+				e = new Bear(0, 0, level, map);
 				break;
 				
 			case DRAGON:
-				e = new Dragon(x, y, level, map);
+				e = new Dragon(0, 0, level, map);
 				break;
 				
 			case SPIDER:
-				e = new Spider(x, y, level, map);
+				e = new Spider(0, 0, level, map);
 				break;
 				
 			case OWL:
-				e = new Owl(x, y, level, map);
+				e = new Owl(0, 0, level, map);
 				break;
 				
 			case SALAMANDER:
-				e = new Salamander(x, y, level, map);
+				e = new Salamander(0, 0, level, map);
 				break;
 				
 			case TICK:
-				e = new Tick(x, y, level, map);
+				e = new Tick(0, 0, level, map);
 				break;
 				
 			case FIRE_ELEMENTAL:
-				e = new FireElemental(x, y, level, map);
+				e = new FireElemental(0, 0, level, map);
 				break;
 			
 			case WATER_ELEMENTAL:
-				e = new WaterElemental(x, y, level, map);
+				e = new WaterElemental(0, 0, level, map);
 				break;
 				
 			case EGG:
-				e = new DragonEgg(x, y, level, map);
+				e = new DragonEgg(0, 0, level, map);
 				break;
 				
 			default:
-				e = new DragonEgg(x, y, level, map);
+				e = new DragonEgg(0, 0, level, map);
 				break;
 		}
 		
-		map.tileAt(x, y).setOccupant(e);
+		map.tileAt(0, 0).setOccupant(e);
 		e.randomTeleport();
 		
 		return e;

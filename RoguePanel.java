@@ -13,7 +13,8 @@ import tile.TileMap;
 import item.*;
 
 /**
- * @author ryan
+ * The main game class for RogueFrame
+ * @author Ryan Luchs
  *
  */
 public class RoguePanel extends JPanel implements KeyListener{
@@ -40,7 +41,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 	private TileMap[] levels;
 	
 	/**
-	 * RogueFrame constructor
+	 * RoguePanel constructor
 	 */
 	public RoguePanel() {
 		
@@ -85,15 +86,9 @@ public class RoguePanel extends JPanel implements KeyListener{
 		map.center(player.getX(), player.getY());
 	}
 	
-	public void newGame() {
-		if(player.hp <= 0) player.resetStats();
-		map.setMap(new TileMap(length, height));
-		player.setMap(map.getMap());
-		map.getMap().getEntities().add(0, player);
-		player.randomTeleport();
-		map.center(player.getX(), player.getY());
-	}
-	
+	/**
+	 * Generates a new set of levels
+	 */
 	public void generateWorld() {
 		seeds = new long[generate.nextInt(15) + 10];
 		for(int i = 0; i < seeds.length - 1; i++) {
@@ -109,6 +104,10 @@ public class RoguePanel extends JPanel implements KeyListener{
 		levels[depth].player = player;
 	}
 	
+	/**
+	 * Shifts the player into the next level
+	 * Generates a new level if one does not yet exist in that location
+	 */
 	public void descend() {
 		if(depth + 1 < levels.length) {
 			if(levels[depth + 1] == null) {
@@ -135,6 +134,9 @@ public class RoguePanel extends JPanel implements KeyListener{
 		}
 	}
 	
+	/**
+	 * Shifts the player into the previous level
+	 */
 	public void ascend() {
 		if(depth > 0) {
 			levels[depth].getEntities().remove(player);

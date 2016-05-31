@@ -95,6 +95,12 @@ public abstract class AbstractItem {
 	 */
 	abstract public void onEquipt(AbstractEntity m);
 	
+	/**
+	 * Draws this AbstractItem at the given coordinates (x, y)
+	 * @param g The graphic object to draw on
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public void draw(Graphics g, int x, int y) {
 		
 		Graphics2D g2d = (Graphics2D) g;
@@ -104,6 +110,12 @@ public abstract class AbstractItem {
 		
 	}
 	
+	/**
+	 * Draws this AbstractItem at the given coordinates (x, y) unadjusted for fitting on a menu
+	 * @param g The graphic object to draw on
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public void drawUnshifted(Graphics g, int x, int y) {
 		
 		Graphics2D g2d = (Graphics2D) g;
@@ -113,6 +125,12 @@ public abstract class AbstractItem {
 		
 	}
 	
+	/**
+	 * Draws a summery of this AbstractItem (x, y)
+	 * @param g The graphic object to draw on
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public void drawText(Graphics g, int x, int y) {
 		
 		Graphics2D g2d = (Graphics2D) g;
@@ -129,10 +147,18 @@ public abstract class AbstractItem {
 		
 	}
 	
+	/**
+	 * Gets the name of this AbstractItem
+	 * @return The name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Gets the description of this AbstractItem
+	 * @return The description
+	 */
 	public String getDescription() {
 		return description;
 	}
@@ -156,42 +182,81 @@ public abstract class AbstractItem {
 //		return y;
 //	}
 	
+	/**
+	 * Returns whether this AbstractItem can be stacked
+	 * @return true if stackable
+	 */
 	public boolean isStackable() {
 		return stackable;
 	}
 	
+	/**
+	 * Returns whether this AbstractItem can be unequipped
+	 * @return true if not unequippable
+	 */
 	public boolean isCursed() {
 		return cursed;
 	}
 	
+	/**
+	 * Returns whether this AbstractItem is locked in an inventory position
+	 * @return true if locked
+	 */
 	public boolean isLocked() {
 		return locked;
 	}
 	
+	/**
+	 * Returns whether this AbstractItem can be thrown
+	 * @return true if throwable
+	 */
 	public boolean isThrowable() {
 		return !cursed && !locked;
 	}
 	
+	/**
+	 * Returns whether this AbstractItem is consumed on use
+	 * @return true if consumable
+	 */
 	public boolean isConsumable() {
 		return consumable;
 	}
 	
+	/**
+	 * Returns the damage dealt by this AbstractItem when used as a weapon
+	 * @return the damage
+	 */
 	public int getDamage() {
 		return (int) (damage * proficiency);
 	}
 	
+	/**
+	 * Returns the hit rate of this AbtractItem
+	 * @return the hit rate
+	 */
 	public int getHit() {
 		return hit;
 	}
 	
+	/**
+	 * Returns the critical hit rate of this AbtractItem
+	 * @return the critical hit rate
+	 */
 	public int getCrit() {
 		return crit;
 	}
 	
+	/**
+	 * Returns whether this AbstractItem is magical for purposes of damage calculation
+	 * @return true if magical
+	 */
 	public boolean isMagical() {
 		return magical;
 	}
 	
+	/**
+	 * Increases this AstractItem's internal damage multiplier
+	 */
 	public void improve() {
 		if(proficiency < 1) proficiency += 0.0025;
 	}

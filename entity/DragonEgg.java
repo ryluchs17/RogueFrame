@@ -46,6 +46,8 @@ public class DragonEgg extends AbstractEntity {
 		
 		this.expWorth = 50;
 		
+		this.regenRate = AbstractEntity.REGEN_RATE_SLOW;
+		
 		this.grounded = false;
 		
 		this.ignore = true;

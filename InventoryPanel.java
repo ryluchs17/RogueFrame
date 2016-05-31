@@ -21,6 +21,7 @@ import tile.AbstractTile;
  */
 
 /**
+ * A class for the display and editing of an AbstractEntity's inventory
  * @author Ryan Luchs
  *
  */
@@ -72,7 +73,9 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	public static final String EMPTY_ITEM_SLOT = "-----";
 	
 	/**
-	 * 
+	 * Creates a new InventoryPanel
+	 * @param owner the AbstractEntity that possesses the inventory too be displayed
+	 * @param map the MapPanel that this InventoryPanel links to
 	 */
 	public InventoryPanel(AbstractEntity owner, MapPanel map) {
 		super();
@@ -100,6 +103,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		
 			case MODE_SELECT:
 				for(int y = 0; y < 5; y++) {
+					// the main operating mode
 					i = items.get(y);
 
 					if(i == null) {
@@ -156,6 +160,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				break;
 		
 			case MODE_INFO:
+				// this displays info about the item
 				if(selected == 5 && owner.getMap().tileAt(owner.getX(), owner.getY()).hasItem()) {
 					owner.getMap().tileAt(owner.getX(), owner.getY()).getItem().drawText(g, 0, 0);
 				} else if(items.get(selected) == null) {
@@ -201,16 +206,19 @@ public class InventoryPanel extends JPanel implements MouseListener{
 			case MODE_SELECT:
 				Point mouse = e.getPoint();
 				
+				// equip an item
 				if(equiptbutton.contains(mouse)) {
 					items.equip();
 					repaint();
 				}
 				
+				// read an item's details
 				if(details.contains(mouse)) {
 					mode = MODE_INFO;
 					repaint();
 				}
 				
+				// use an item
 				if(use.contains(mouse)) {
 					if(items.get(selected) != null) {
 						items.get(selected).onUse(owner);
@@ -221,6 +229,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 					}
 				}
 				
+				// throw/cast an item
 				if(throwcast.contains(mouse)) {
 					if(selected == 5) {
 						owner.throwItem(map.getSelect());
@@ -232,6 +241,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 					map.rounds(1);
 				}
 				
+				// select an item
 				for(int y = 0; y < 6; y++) {
 					if(mouse.y > y * AbstractTile.STEP && mouse.y < (y + 1) * AbstractTile.STEP && selected != y) {
 						selected = (short) y;
@@ -256,6 +266,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		if(mode == MODE_SELECT) {
 			int mouseY = e.getY();
 			
+			// switch items when released
 			for(int y = 0; y < 6; y++) {
 				if(mouseY > y * AbstractTile.STEP && mouseY < (y + 1) * AbstractTile.STEP && selected != y) {
 					if(selected == 5) {

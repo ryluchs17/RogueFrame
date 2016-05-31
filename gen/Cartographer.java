@@ -17,31 +17,19 @@ import tile.*;
  */
 public class Cartographer {
 
-	public static Random r;
-	
-//	public static void write(String filename, short[][] array) {
-//		File file = new File(filename);
-//		try {
-//			PrintWriter writer = new PrintWriter(file);
-//			
-//			writer.print(array.length + "x" + array[0].length + ":");
-//			
-//			for(int x = 0, y = 0; y < array[0].length; y++) {
-//				for(x = 0; x < array.length; x++) {
-//					writer.print(array[x][y] + ", ");
-//				}
-//			}
-//			
-//			writer.close();
-//			
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	/**
+	 * The random object used in all of the classes in the gen package
+	 */
+	public static Random r = new Random();
 	
 	// ! SPECIFIC GENERATION FUNCTIONS !
 	
+	/**
+	 * Generates a cave style map
+	 * @param columns The length of map
+	 * @param rows The height of the map
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] createCave(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 40), Const.STONE_WALL, Const.STONE_FLOOR);
 		shorts = ShortFunc.addCellLayer(Const.WATER, Const.STONE_FLOOR, shorts, 40);
@@ -52,6 +40,12 @@ public class Cartographer {
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	
+	/**
+	 * Generates a forest style map
+	 * @param columns The length of map
+	 * @param rows The height of the map
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] createForest(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 55), Const.TREE, Const.GRASS);
 
@@ -66,6 +60,12 @@ public class Cartographer {
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	
+	/**
+	 * Generates a maze style map
+	 * @param columns The length of map
+	 * @param rows The height of the map
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] createMaze(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 55), Const.STONE_WALL, Const.STONE_FLOOR);
 //		shorts = ShortFunc.addCellLayer(Const.STONE_FLOOR, Const.STONE_WALL, shorts, 40);
@@ -85,6 +85,12 @@ public class Cartographer {
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	
+	/**
+	 * Generates a lava tube style map
+	 * @param columns The length of map
+	 * @param rows The height of the map
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] createLavaTube(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 55), Const.OBSIDIAN, Const.STONE_FLOOR);
 		shorts = ShortFunc.addCellLayer(Const.STONE_WALL, Const.OBSIDIAN, shorts, 30);
@@ -97,6 +103,12 @@ public class Cartographer {
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	
+	/**
+	 * Generates a island style map
+	 * @param columns The length of map
+	 * @param rows The height of the map
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] createIsland(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 45), Const.WATER, Const.GRASS);
 		shorts = ShortFunc.addCellLayer(Const.BUSH, Const.GRASS, shorts, 40);
@@ -108,6 +120,12 @@ public class Cartographer {
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	
+	/**
+	 * Generates a boss map
+	 * @param columns The length of map
+	 * @param rows The height of the map
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] createBoss(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 50), Const.OBSIDIAN, Const.STONE_FLOOR);
 		shorts = ShortFunc.addCellLayer(Const.STONE_WALL, Const.OBSIDIAN, shorts, 35);
@@ -118,12 +136,25 @@ public class Cartographer {
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	
+	/**
+	 * Generates a mostly empty map useful for testing features
+	 * @param columns The length of the map
+	 * @param rows The height of the map
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] createTest(int columns, int rows) {
 		short[][] shorts = ShortFunc.booleanArrayToShortArray(BoolFunc.cellularAutomaton(columns, rows, 35), Const.STONE_WALL, Const.STONE_FLOOR);
 		
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 
+	/**
+	 * Generates a map type matching the given ID number
+	 * @param columns The length of the map
+	 * @param rows The height of the map
+	 * @param levelTypeID The ID number to generate
+	 * @return The map as an AbstractTile[][]
+	 */
 	public static AbstractTile[][] makeMap(int columns, int rows, short levelTypeID) {
 		switch(levelTypeID) {
 		
@@ -152,7 +183,7 @@ public class Cartographer {
 
 	public static void addEntities(short id, int level, int min, int max, TileMap map, ArrayList<AbstractEntity> ents) {
 		for(int i = 0; i < min + r.nextInt((max - min) + 1); i++) {
-			ents.add(Const.makeEntity(id, 0, 0, level, map));
+			ents.add(Const.makeEntity(id, level, map));
 		}
 	}
 	

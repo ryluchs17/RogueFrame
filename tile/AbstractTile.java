@@ -141,41 +141,6 @@ public abstract class AbstractTile {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		// shows (x, y) of tile reather than name
-//		if(occupant != null) {
-//			// make an empty black square to put text in
-//			g2d.setColor(Color.BLACK);
-//			g2d.fillRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-//			
-//			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
-//			
-//			// prepare to draw text and border
-//			g2d.setColor(Color.WHITE);
-//			
-//			// draw in text in white		
-//			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
-//			g2d.drawString(occupant.getDescription(), x + STEP * 2, y + STEP * 2 + 2);
-//			
-//			// draw white rectangle as border
-//			g2d.drawRect(x, y, occupant.getDescription().length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-//		} else {
-//			// make an empty black square to put text in
-//			g2d.setColor(Color.BLACK);
-//			g2d.fillRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-//			
-//			draw(g, (int) (x + (STEP*TOOLTIP_BOX_RATIO)/2), (int) (y + (STEP*TOOLTIP_BOX_RATIO)/2));
-//			
-//			// prepare to draw text and border
-//			g2d.setColor(Color.WHITE);
-//			
-//			// draw in text in white		
-//			g2d.drawString("(" + this.x + ", " + this.y + ")", x + STEP * 2, y + STEP + 2);
-//			g2d.drawString(description, x + STEP * 2, y + STEP * 2 + 2);
-//			
-//			// draw white rectangle as border
-//			g2d.drawRect(x, y, description.length() * STEP, (int) (TOOLTIP_BOX_RATIO * STEP * 2));
-//		}
-		
 		if(occupant != null) {
 			// make an empty black square to put text in
 			g2d.setColor(Color.BLACK);
@@ -228,26 +193,50 @@ public abstract class AbstractTile {
 		
 	}
 	
+	/**
+	 * Gets the length of the tooltip for this tile
+	 * @return The tooltip length
+	 */
 	public int getTooltipLength() {
 		return description.length() * STEP;
 	}
 	
+	/**
+	 * Gets the height of the tooltip for this tile
+	 * @return The tooltip height
+	 */
 	public int getTooltipHeight() {
 		return (int) (TOOLTIP_BOX_RATIO * STEP * 2) + 1;
 	}
 	
+	/**
+	 * Sets the AbstractItem contained by this AbstractTile
+	 * @param item The AbstractItem
+	 */
 	public void setItem(AbstractItem item) {
 		this.item = item;
 	}
 	
+	/**
+	 * Gets the AbstractItem contained by this AbstractTile
+	 * @return The AbstractItem
+	 */
 	public AbstractItem getItem() {
 		return item;
 	}
 	
+	/**
+	 * Gets whether this AbstractTile contains an AbstactItem
+	 * @return true if has item
+	 */
 	public boolean hasItem() {
 		return item != null;
 	}
 	
+	/**
+	 * Sets a AbstractEntity to occupy this AbstractTile
+	 * @param e The entity
+	 */
 	public void setOccupant(AbstractEntity e) {
 		if(occupant != null) {
 			onExit();
@@ -258,14 +247,26 @@ public abstract class AbstractTile {
 		}
 	}
 	
+	/**
+	 * Gets the occupant of this AbstractTile
+	 * @return The occupant
+	 */
 	public AbstractEntity getOccupant() {
 		return occupant;
 	}
 	
+	/**
+	 * Gets the x-coordinate of this AbstractTile
+	 * @return the x-coordinate
+	 */
 	public int getX() {
 		return x;
 	}
 	
+	/**
+	 * Gets the y-coordinate of this AbstractTile
+	 * @return the y-coordinate
+	 */
 	public int getY() {
 		return y;
 	}
@@ -302,10 +303,19 @@ public abstract class AbstractTile {
 //		this.covered = covered;
 //	}
 	
+	/**
+	 * Returns whether an AbtractEntity can see through this AbstractTile
+	 * @return true if can not see
+	 */
 	public boolean isOpaque() {
 		return opaque;
 	}
 
+	/**
+	 * Returns whether an AbstractEntity can enter this AbstractTile ignoring any occupants
+	 * @param e The AbstractEntity
+	 * @return true if can enter
+	 */
 	public boolean canApproach(AbstractEntity e) {
 		return this.isPassable() && (e.ignore ? true : !avoid);
 	}
@@ -327,6 +337,10 @@ public abstract class AbstractTile {
 		return (!this.isOccupied()) && this.isPassable() && (e.ignore ? true : !avoid);
 	}
 
+	/**
+	 * Returns the name of this AbstractTile
+	 * @return The name
+	 */
 	public String getName() {
 		return name;
 	}

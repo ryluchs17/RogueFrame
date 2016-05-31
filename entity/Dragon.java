@@ -49,6 +49,8 @@ public class Dragon extends AbstractEntity {
 		
 		this.expWorth = 50;
 		
+		this.regenRate = AbstractEntity.REGEN_RATE_SLOW;
+		
 		this.grounded = true;
 		
 		this.ignore = true;

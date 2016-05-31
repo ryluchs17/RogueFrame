@@ -67,12 +67,6 @@ public abstract class AbstractEntity {
 	
 	// ! TYPE STUFF !
 	
-//	/*
-//	 * Type is the product of several primes,
-//	 * if faction % (number) is 0 then the creature is
-//	 * part of that faction 
-//	 */
-	
 	public static boolean FACTION_HOSTILE = false;
 	public static boolean FACTION_PLAYER_OR_ALLY = true;
 	
@@ -119,6 +113,7 @@ public abstract class AbstractEntity {
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
 	 * @param level The level of the AbstractEntity
+	 * @param map The TileMap for the AbstractEntity to exist in
 	 */
 	public AbstractEntity(int x, int y, int level, TileMap map) {
 		this.x = x;
@@ -161,6 +156,9 @@ public abstract class AbstractEntity {
 	
 	// ! ABSTRACT METHODS END !
 	
+	/**
+	 * Calls onTurn() custom functionality before regenerating and checking for level-ups
+	 */
 	public void onBasicTurn() {
 		onTurn();
 		
@@ -171,6 +169,10 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	/**
+	 * Calls onAttacked() custom functionality before checking whether to award experience to an opponent
+	 * @param e
+	 */
 	public void onBasicAttacked(AbstractEntity e) {
 		onAttacked(e);
 		
@@ -237,79 +239,57 @@ public abstract class AbstractEntity {
 		this.map = map;
 	}
 	
+	/**
+	 * Gets the map this AbstractEntity currently exists in
+	 * @return The map containing this AbstractEntity
+	 */
 	public TileMap getMap() {
 		return map;
 	}
 	
+	/**
+	 * Gets this AbtractEntity's inventory
+	 * @return This AbstractEntity's inventory
+	 */
 	public Inventory getInventory() {
 		return inventory;
 	}
 	
-//	/**
-//	 * Adds the given number to the hitpoints of this AbstractEntity
-//	 * The number will not go over the max, if it goes under zero the AbstractEntity is tagged as dead
-//	 * @param hitpoints
-//	 */
-//	public void addHitpoints(int hitpoints) {
-//		if(this.hitpoints + hitpoints > hp) {
-//			hitpoints = hp;
-//		} else {
-//			this.hitpoints += hitpoints;
-//		}
-//		
-//		if(this.hitpoints <= 0) {
-//			dead = true;
-//		}
-//	}
-	
-//	
-//	public void physicalAttack(AbstractEntity e, int baseDamage) {
-//		e.hitpoints -= (level/MAX_LEVEL) * (atk/e.def) * baseDamage; // TODO fix to use float math
-//	}
-//	
-//	public void magicAttack(AbstractEntity e, int baseDamage) {
-//		e.hitpoints -= (level/MAX_LEVEL) * ((mag + e.mag)/(1.75 * e.def)) * baseDamage; // TODO fix to use float math
-//	}
-	
-//	/**
-//	 * Recalculated the stats of this AbstractEntity
-//	 * @param fillHitpoints True if current hitpoints should be set to max after stats are calculated
-//	 */
-//	public void setStats(boolean fillHitpoints) {
-//		hp = (int) ((((level * hp_base) / (MAX_LEVEL / 2)) + level) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-//		
-//		atk = (int) (((level * atk_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-//		def = (int) (((level * def_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-//		mag = (int) (((level * mag_base) / MAX_LEVEL + 1) * (1 + (hp_stage > 0 ? 0.125 * hp_stage : 0.0625 * hp_stage)));
-//		
-////		System.out.println(name + " @ " + "(" + x + ", " + y + ")");
-////		System.out.println("HP : " + hp);
-////		System.out.println("ATK : " + atk);
-////		System.out.println("DEF : " + def);
-////		System.out.println("MAG : " + mag);
-//		
-//		if(fillHitpoints) {
-//			hitpoints = hp;
-//		}
-//		
-//	}
-	
+	/**
+	 * Gets the faction of this AbstractEntity (true = player aligned)
+	 * @return The faction
+	 */
 	public boolean getFaction() {
 		return faction;
 	}
 	
+	/**
+	 * Sets the faction of this AbstractEntity
+	 * @param faction The faction
+	 */
 	public void setFaction(boolean faction) {
 		this.faction = faction;
 	}
 	
+	/**
+	 * Inverts the faction of this AbstractEntity
+	 */
 	public void switchFaction() {
 		faction = !faction;
 	}
 	
+	/**
+	 * Gets the level of this AbstractEntity
+	 * @return The level of this AbstractEntity
+	 */
 	public int getLevel() {
 		return level;
 	}
 	
+	/**
+	 * Increases the level of this AbstractEntity by 1
+	 * including a corresponding increase in stats
+	 */
 	public void levelUp() {
 		hp_cap  += rng.nextInt(100) <= hp_gro  ? 2 : 1;
 		str_cap += rng.nextInt(100) <= str_gro ? 1 : 0;
@@ -324,6 +304,10 @@ public abstract class AbstractEntity {
 		resetStats();
 	}
 	
+	/**
+	 * Increases the level of this AbstractEntity by a given number of levels
+	 * @param levels The number of levels
+	 */
 	public void levelUp(int levels) {
 		for(int i = 0; i < levels; i++) {
 			levelUp();
@@ -339,6 +323,9 @@ public abstract class AbstractEntity {
 //		System.out.println();
 	}
 	
+	/**
+	 * Resets all stats to their maximum
+	 */
 	public void resetStats() {
 		hp = hp_cap;
 		str = str_cap;
@@ -349,26 +336,53 @@ public abstract class AbstractEntity {
 		spd = spd_cap;
 	}
 	
+	/**
+	 * Determines whether this AbstractEntity will hit another with a physical attack
+	 * @param e The entity to attack
+	 * @return true if hit
+	 */
 	public boolean hit_str(AbstractEntity e) {
 		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getHit() : 0 + str + skl) - (e.def + e.spd);
 	}
 	
+	/**
+	 * Determines whether this AbstractEntity will hit another with a magical attack
+	 * @param e The entity to attack
+	 * @return true if hit
+	 */
 	public boolean hit_mag(AbstractEntity e) {
 		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getHit() : 0 + mag + skl) - (e.res + e.spd);
 	}
 	
+	/**
+	 * Determines whether an attack wil score a critical hit against an AbstractEntity
+	 * @param e The entity to attack
+	 * @return true if critical hit
+	 */
 	public boolean crit_str(AbstractEntity e) {
 		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getCrit() : 0 + str) - e.def;
 	}
 	
+	/**
+	 * Determines whether an attack wil score a critical hit against an AbstractEntity
+	 * @param e The entity to attack
+	 * @return true if critical hit
+	 */
 	public boolean crit_mag(AbstractEntity e) {
 		return rng.nextInt(100) <= (inventory.hasEquipt() ? inventory.get(0).getCrit() : 0 + mag) - e.res;
 	}
 	
+	/**
+	 * Gets the maximum health of this AbstractEntity
+	 * @return The maximum health og this AbstractEntity
+	 */
 	public int getHealthCap() {
 		return hp_cap;
 	}
 	
+	/**
+	 * Causes this AbstractEntity to regain a small amount of hp
+	 */
 	public void regen() {
 		if(regenRate != 0 && hp < hp_cap && map.getRounds() % regenRate == 0) {
 			if(hp + level/20 + 1 < hp_cap) {
@@ -379,6 +393,11 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	/**
+	 * Attacks a specified AbstractEntity
+	 * AbstractEntities of the same faction will not be harmed
+	 * @param e The target
+	 */
 	public void attack(AbstractEntity e) {
 		if(faction != e.faction) {
 			if(inventory != null && inventory.hasEquipt()) {
@@ -401,6 +420,11 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	/**
+	 * Performs a throwing attack on a given AbstractEntity with a given AbstractItem
+	 * @param i The item
+	 * @param e The target
+	 */
 	public void throwAttack(AbstractItem i, AbstractEntity e) {
 		if(i.isMagical()) {
 			e.hp -= hit_mag(e) ? crit_mag(e) ? i.getDamage() * 2 + mag/2 : i.getDamage() * 2 : 0;
@@ -411,6 +435,11 @@ public abstract class AbstractEntity {
 		e.onBasicAttacked(this);
 	}
 	
+	/**
+	 * Causes this AbstractEntity to interact with a specified tile
+	 * if it is occupied the occupant will be attacked instead
+	 * @param t The AbstractTile
+	 */
 	public void interact(AbstractTile t) {
 		if(t.isOccupied()) {
 			attack(t.getOccupant());
@@ -419,6 +448,11 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	/**
+	 * Attacks the first AbstractEntity found in an adjacent space
+	 * AbstractEntities of the same faction will not be harmed
+	 * @return
+	 */
 	public boolean attackAdjacent() {
 		for(int x = this.x - 1, y = this.y - 1; y <= this.y + 1; y++) {
 			for(x = this.x - 1; x <= this.x + 1; x++) {
@@ -431,10 +465,21 @@ public abstract class AbstractEntity {
 		return false;
 	}
 	
+	/**
+	 * Causes the AbtractEntity to interact with the AbstractTile at the given offset
+	 * if the tile is occupied its occupant will be attacked
+	 * @param xOffset The offset on the x-axis
+	 * @param yOffset The offset on the y-axis
+	 */
 	public void interact(int xOffset, int yOffset) {
 		interact(map.tileAt(x + xOffset, y + yOffset));
 	}
 	
+	/**
+	 * Throws the item on the AbstractTile occuied by this AbstractEntity at a given AbstractTile
+	 * if the target tile is occupied the occupant will be attacked
+	 * @param t The target tile
+	 */
 	public void throwItem(AbstractTile t) {
 		if(map.tileAt(x, y).hasItem() && map.tileAt(x, y).getItem().isThrowable()) {
 			AbstractItem item = map.tileAt(x, y).getItem();
@@ -474,6 +519,12 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	/**
+	 * Throws the item at the given index in this AbstractEntity's inventory at the given AbstractTile
+	 * if the target tile is occupied the occupant will be attacked
+	 * @param index The index of the AbstractItem to throw
+	 * @param t The target tile
+	 */
 	public void throwItem(int index, AbstractTile t) {
 		if(inventory.has(index) && inventory.get(index).isThrowable()) {
 			
@@ -516,7 +567,7 @@ public abstract class AbstractEntity {
 	 * Kills the AbstractEntity
 	 */
 	public void kill() {
-		hp = 0;
+		hp = -256;
 	}
 	
 	/**
@@ -603,6 +654,12 @@ public abstract class AbstractEntity {
 
 	}
 	
+	/**
+	 * Determines whether this AbstractEntity can see the AbstractTile at (x, y)
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @return true if can see
+	 */
 	public boolean canSee(int x, int y) {
 		
 		// allow seeing on layer of opaque object
@@ -640,10 +697,20 @@ public abstract class AbstractEntity {
 		return true;
 	}
 	
+	/**
+	 * Determines whether this AbstractEntity can see the given AbstractTile
+	 * @param t The AbstractTile
+	 * @return true if can see
+	 */
 	public boolean canSee(AbstractTile t) {
 		return canSee(t.getX(), t.getY());
 	}
 	
+	/**
+	 * Determines whether this AbstractEntity can see the given AbstractEntity
+	 * @param e The AbstractEntity
+	 * @return true if can see
+	 */
 	public boolean canSee(AbstractEntity e) {
 		return canSee(e.getX(), e.getY());
 	}
@@ -1101,6 +1168,12 @@ public abstract class AbstractEntity {
 		}
 	}
 	
+	/**
+	 * Attempts to teleport this AbstractEntity to the given coordinate (x, y)
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @return true if successful
+	 */
 	public boolean teleport(int x, int y) {
 		if(x > 0 && x < map.length() && y > 0 && y < map.height() && map.tileAt(x, y).canEnter(this)) {
 			map.tileAt(this.x, this.y).setOccupant(null);
@@ -1110,6 +1183,9 @@ public abstract class AbstractEntity {
 		return false;
 	}
 	
+	/**
+	 * Teleports this AbstractEntity to a random save space within the confines of the map
+	 */
 	public void randomTeleport() {
 		map.tileAt(x, y).setOccupant(null);
 		

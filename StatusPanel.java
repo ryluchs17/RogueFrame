@@ -15,7 +15,8 @@ import tile.AbstractTile;
  */
 
 /**
- * @author ryan
+ * A class for displaying the statistics of an AbstractEntity
+ * @author Ryan Luchs
  *
  */
 public class StatusPanel extends JPanel {
@@ -27,6 +28,10 @@ public class StatusPanel extends JPanel {
 	
 	private int previousHP;
 
+	/**
+	 * StatusPanel constructor
+	 * @param owner The AbstractEntity to display the status of
+	 */
 	public StatusPanel(AbstractEntity owner) {
 		this.owner = owner;
 		if(owner != null)this.previousHP = owner.hp;
@@ -35,6 +40,10 @@ public class StatusPanel extends JPanel {
 		this.setBackground(Color.BLACK);
 	}
 	
+	/**
+	 * Sets the AbstractEntity to display the status of
+	 * @param e The AbstractEntity
+	 */
 	public void setOwner(AbstractEntity e) {
 		owner = e;
 	}
