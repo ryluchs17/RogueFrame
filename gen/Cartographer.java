@@ -12,8 +12,8 @@ import tile.*;
 //import java.io.*;
 
 /**
- * @author SJHSStudent
- *
+ * A map generator for RogueFrame
+ * @author Ryan Luchs
  */
 public class Cartographer {
 
@@ -181,12 +181,28 @@ public class Cartographer {
 		}
 	}
 
+	/**
+	 * Adds a number of AbstractEntities of a specific ID to a given ArrayList<AbstractEntity>
+	 * @param id The ID number of the AbstractEntities to add
+	 * @param level The level of theAbstractEntities
+	 * @param min The minimum number of AbstractEntities
+	 * @param max The maximum number of AbstractEntities
+	 * @param map The map these AbstractEntities will exist in
+	 * @param ents The ArrayList<AbstractEntity> to add these AbstractEntities to
+	 */
 	public static void addEntities(short id, int level, int min, int max, TileMap map, ArrayList<AbstractEntity> ents) {
 		for(int i = 0; i < min + r.nextInt((max - min) + 1); i++) {
 			ents.add(Const.makeEntity(id, level, map));
 		}
 	}
 	
+	/**
+	 * Population method for a cave map
+	 * @param map The map to populate
+	 * @param depth The depth of the level
+	 * @param playerLevel the level of the player
+	 * @return the ArrayList<AbstractEntity> for the given TileMap
+	 */
 	public static ArrayList<AbstractEntity> populateCave(TileMap map, int depth, int playerLevel) {
 		ArrayList<AbstractEntity> population = new ArrayList<AbstractEntity>();
 		int level = (depth + playerLevel)/2 + 1;
@@ -200,6 +216,13 @@ public class Cartographer {
 		return population;
 	}
 	
+	/**
+	 * Population method for a forest map
+	 * @param map The map to populate
+	 * @param depth The depth of the level
+	 * @param playerLevel the level of the player
+	 * @return the ArrayList<AbstractEntity> for the given TileMap
+	 */
 	public static ArrayList<AbstractEntity> populateForest(TileMap map, int depth, int playerLevel) {
 		ArrayList<AbstractEntity> population = new ArrayList<AbstractEntity>();
 		int level = (depth + playerLevel)/2 + 1;
@@ -212,6 +235,13 @@ public class Cartographer {
 		return population;
 	}
 	
+	/**
+	 * Population method for a maze map
+	 * @param map The map to populate
+	 * @param depth The depth of the level
+	 * @param playerLevel the level of the player
+	 * @return the ArrayList<AbstractEntity> for the given TileMap
+	 */
 	public static ArrayList<AbstractEntity> populateMaze(TileMap map, int depth, int playerLevel) {
 		ArrayList<AbstractEntity> population = new ArrayList<AbstractEntity>();
 		int level = (depth + playerLevel)/2 + 1;
@@ -223,6 +253,13 @@ public class Cartographer {
 		return population;
 	}
 	
+	/**
+	 * Population method for a lava tube map
+	 * @param map The map to populate
+	 * @param depth The depth of the level
+	 * @param playerLevel the level of the player
+	 * @return the ArrayList<AbstractEntity> for the given TileMap
+	 */
 	public static ArrayList<AbstractEntity> populateLavaTube(TileMap map, int depth, int playerLevel) {
 		ArrayList<AbstractEntity> population = new ArrayList<AbstractEntity>();
 		int level = (depth + playerLevel)/2 + 1;
@@ -236,6 +273,13 @@ public class Cartographer {
 		return population;
 	}
 	
+	/**
+	 * Population method for an island map
+	 * @param map The map to populate
+	 * @param depth The depth of the level
+	 * @param playerLevel the level of the player
+	 * @return the ArrayList<AbstractEntity> for the given TileMap
+	 */
 	public static ArrayList<AbstractEntity> populateIsland(TileMap map, int depth, int playerLevel) {
 		ArrayList<AbstractEntity> population = new ArrayList<AbstractEntity>();
 		int level = (depth + playerLevel)/2 + 1;
@@ -246,6 +290,13 @@ public class Cartographer {
 		return population;
 	}
 	
+	/**
+	 * Population method for a boss map
+	 * @param map The map to populate
+	 * @param depth The depth of the level
+	 * @param playerLevel the level of the player
+	 * @return the ArrayList<AbstractEntity> for the given TileMap
+	 */
 	public static ArrayList<AbstractEntity> populateBoss(TileMap map, int depth, int playerLevel) {
 		ArrayList<AbstractEntity> population = new ArrayList<AbstractEntity>();
 		int level = (depth + playerLevel)/2 + 1;
@@ -255,6 +306,13 @@ public class Cartographer {
 		return population;
 	}
 
+	/**
+	 * Populates a map type matching the given ID number
+	 * @param levelTypeID The ID number to populate
+	 * @param depth The depth of the level
+	 * @param playerLevel The level of the player
+	 * @return The ArrayList<AbstractEntity> for the given TileaMap
+	 */
 	public static ArrayList<AbstractEntity> populate(TileMap map, short levelTypeID, int depth, int playerLevel) {
 		switch(levelTypeID) {
 			case Const.CAVE:

@@ -2,6 +2,7 @@ package gen;
 
 /**
  * A class of static methods used in word generation that operate on 2D boolean arrays
+ * Credit to the people at Rogue Basin for some concepts and code samples
  * @author Ryan Luchs
  *
  */
