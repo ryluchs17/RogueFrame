@@ -9,23 +9,25 @@ import entity.AbstractEntity;
 import tile.AbstractTile;
 
 /**
- * @author SJHSStudent
+ * A slashing weapon for tough clawed enemies
+ * @author Ryan Luchs
  *
  */
-public class Widget extends AbstractItem {
+public class Claws extends AbstractItem {
 
-	/**
-	 * 
-	 */
-	public Widget() {
-		
-		this.character = CHAR_MISC;
+	public Claws() {
+		this.character = "/";
 		this.color = Color.WHITE;
 		
-		this.name = "Widget";
-		this.description = "TEST ITEM!";
+		this.name = "Claws";
+		this.description = "Wicked rending claws";
 		
-		this.stackable = true;
+		this.stackable = false;
+		
+		this.damage = 20;
+		this.hit = 85;
+		this.crit = 10;
+		this.magical = false;
 	}
 
 	/* (non-Javadoc)
@@ -33,7 +35,7 @@ public class Widget extends AbstractItem {
 	 */
 	@Override
 	public void onUse(AbstractEntity m) {
-		// TODO Auto-generated method stub
+		improve();
 
 	}
 

@@ -9,23 +9,26 @@ import entity.AbstractEntity;
 import tile.AbstractTile;
 
 /**
- * @author SJHSStudent
+ * A magical weapon for dragons and fire elementals
+ * @author Ryan Luchs
  *
  */
-public class Widget extends AbstractItem {
+public class Flame extends AbstractItem {
 
-	/**
-	 * 
-	 */
-	public Widget() {
+	public Flame() {
+		this.character = "*";
+		this.color = Color.ORANGE;
 		
-		this.character = CHAR_MISC;
-		this.color = Color.WHITE;
-		
-		this.name = "Widget";
-		this.description = "TEST ITEM!";
+		this.name = "Flame";
+		this.description = "Don't try this at home";
 		
 		this.stackable = true;
+		this.consumable = true;
+		
+		this.damage = 40;
+		this.hit = 40;
+		this.crit = 0;
+		this.magical = true;
 	}
 
 	/* (non-Javadoc)
@@ -33,7 +36,7 @@ public class Widget extends AbstractItem {
 	 */
 	@Override
 	public void onUse(AbstractEntity m) {
-		// TODO Auto-generated method stub
+		improve();
 
 	}
 
@@ -42,7 +45,7 @@ public class Widget extends AbstractItem {
 	 */
 	@Override
 	public void onThrown(AbstractEntity e) {
-		// TODO Auto-generated method stub
+		improve();
 
 	}
 

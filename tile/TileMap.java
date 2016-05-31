@@ -33,6 +33,9 @@ public class TileMap {
 	//private Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 	//private int AbstractTile.STEP = font.getSize();
 	
+	// a convenient reference to the player
+	public AbstractEntity player;
+	
 	/**
 	 * Creates a new Map of size columns * rows, with a display of size viewColumns * viewRows.
 	 * @param columns The length of the map in tiles
@@ -56,7 +59,7 @@ public class TileMap {
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
 		for(int i = 0; i < 10; i++) {
-			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this);
+			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 1, this);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			entities.add(e);
 		}
@@ -91,7 +94,7 @@ public class TileMap {
 		AbstractEntity e;
 		entities = new ArrayList<AbstractEntity>();
 		for(int i = 0; i < 10; i++) {
-			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 10, this);
+			e = new Bat(generate.nextInt(this.length() - 5),generate.nextInt(this.height() - 5), 1, this);
 			tiles[e.getX()][e.getY()].setOccupant(e);
 			e.setMap(this);
 			entities.add(e);
@@ -107,8 +110,8 @@ public class TileMap {
 		
 		Cartographer.r = new Random(seed);
 		tiles = Cartographer.makeMap(columns, rows, levelTypeID);
-		entities = Cartographer.populate(tiles, levelTypeID, depth, playerlevel);
-		Cartographer.fill(tiles);
+		entities = Cartographer.populate(this, levelTypeID, depth, playerlevel);
+		//Cartographer.fill(tiles);
 	}
 	
 	/**

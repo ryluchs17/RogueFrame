@@ -3,8 +3,18 @@ package tile;
 import java.awt.Color;
 import entity.AbstractEntity;
 
+/**
+ * A water tile for RogueFrame
+ * @author Ryan Luchs
+ *
+ */
 public class Water extends AbstractTile {
 
+	/**
+	 * Creates an new instance at (x, y) on the map
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 */
 	public Water(int x, int y) {
 		super(x, y);
 

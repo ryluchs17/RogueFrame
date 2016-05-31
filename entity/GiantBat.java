@@ -9,11 +9,11 @@ import item.*;
 import tile.TileMap;
 
 /**
- * A bat enemy for RogueFrame
+ * A giant bat enemy for RogueFrame
  * @author Ryan Luchs
  *
  */
-public class Bat extends AbstractEntity {
+public class GiantBat extends AbstractEntity {
 	
 	private static final Color BAT_BROWN = new Color(140, 100, 60);
 	
@@ -26,36 +26,36 @@ public class Bat extends AbstractEntity {
 	 * @param level The level of the instance
 	 * @param map The map the instance exists in
 	 */
-	public Bat(int x, int y, int level, TileMap map) {
+	public GiantBat(int x, int y, int level, TileMap map) {
 		super(x, y, level, map);
 		
-		this.character = "b";
+		this.character = "B";
 		this.color = BAT_BROWN;
 		
-		this.name = "Bat";
-		this.description = "A bat! How cute!";
+		this.name = "Giant Bat";
+		this.description = "It's still cute...";
 		
 		this.inventory = BAT_INVENTORY;
 		
-		this.expWorth = 5;
+		this.expWorth = 10;
 		
 		grounded = false;
 		
 		hp_cap = 6;
-		str_cap = 2;
-		def_cap = 2;
+		str_cap = 4;
+		def_cap = 4;
 		mag_cap = 2;
-		res_cap = 2;
-		skl_cap = 7;
-		spd_cap = 6;
+		res_cap = 4;
+		skl_cap = 14;
+		spd_cap = 12;
 		
-		hp_gro = 10;
-		str_gro = 30;
-		def_gro = 30;
+		hp_gro = 20;
+		str_gro = 45;
+		def_gro = 45;
 		mag_gro = 30;
-		res_gro = 30;
-		skl_gro = 65;
-		spd_gro = 80;
+		res_gro = 45;
+		skl_gro = 75;
+		spd_gro = 85;
 		
 		levelUp(level);
 		

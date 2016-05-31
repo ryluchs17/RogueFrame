@@ -6,26 +6,27 @@ package item;
 import java.awt.Color;
 
 import entity.AbstractEntity;
-import tile.AbstractTile;
 
 /**
- * @author SJHSStudent
+ * An annoying exp draining weapon for annoying enemies
+ * @author Ryan Luchs
  *
  */
-public class Widget extends AbstractItem {
+public class Proboscis extends AbstractItem {
 
-	/**
-	 * 
-	 */
-	public Widget() {
+	public Proboscis() {
+		this.character = "/";
+		this.color = Color.RED;
 		
-		this.character = CHAR_MISC;
-		this.color = Color.WHITE;
+		this.name = "Proboscis";
+		this.description = "You won't even feel it";
 		
-		this.name = "Widget";
-		this.description = "TEST ITEM!";
+		this.stackable = false;
 		
-		this.stackable = true;
+		this.damage = 8;
+		this.hit = 80;
+		this.crit = 0;
+		this.magical = false;
 	}
 
 	/* (non-Javadoc)
@@ -33,12 +34,14 @@ public class Widget extends AbstractItem {
 	 */
 	@Override
 	public void onUse(AbstractEntity m) {
-		// TODO Auto-generated method stub
+		if(m.experience > 0) {
+			m.experience -= damage/2;
+		}
 
 	}
 
 	/* (non-Javadoc)
-	 * @see item.AbstractItem#onThrown(tile.AbstractTile)
+	 * @see item.AbstractItem#onThrown(entity.AbstractEntity)
 	 */
 	@Override
 	public void onThrown(AbstractEntity e) {

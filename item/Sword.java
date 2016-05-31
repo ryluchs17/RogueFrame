@@ -24,7 +24,7 @@ public class Sword extends AbstractItem {
 		
 		this.stackable = false;
 		
-		this.damage = 6;
+		this.damage = 20;
 		this.hit = 80;
 		this.crit = 10;
 		this.magical = false;
@@ -43,7 +43,7 @@ public class Sword extends AbstractItem {
 	 * @see item.AbstractItem#onThrown(tile.AbstractTile)
 	 */
 	@Override
-	public void onThrown(AbstractTile t) {
+	public void onThrown(AbstractEntity e) {
 		// TODO Auto-generated method stub
 
 	}

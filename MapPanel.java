@@ -22,7 +22,8 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	// the map displayed by this MapPanel
 	TileMap map;
 	
-	
+	// the player
+	private AbstractEntity player;
 	
 	// point to draw look info at
 	private Point mouse = new Point(0, 0);
@@ -57,39 +58,21 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 	 * @param viewColumns The length of the map display in tiles
 	 * @param viewRows The height of the map display in tiles
 	 */
-	public MapPanel(int columns, int rows, int viewColumns, int viewRows) {
+	public MapPanel(TileMap map, AbstractEntity player, int viewColumns, int viewRows) {
 		super();
 		
 		setFocusable(true);
 		
+		setBackground(Color.BLACK);
+		setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		
 		this.viewColumns = viewColumns;
 		this.viewRows = viewRows;
 
-		map = new TileMap(columns, rows);
+		this.map = map;
+		this.player = player;
 		
 		this.viewColumns = viewColumns; this.viewRows = viewRows;
-		
-		select = map.tileAt(0, 0);
-		
-		this.addMouseMotionListener(this);
-	}
-	
-	/**
-	 * Creates a new Map of size columns * rows, with a display of size viewColumns * viewRows generated using the given seed.
-	 * @param columns The length of the map in tiles
-	 * @param rows The height of the map in tiles
-	 * @param viewColumns The length of the map display in tiles
-	 * @param viewRows The height of the map display in tiles
-	 */
-	public MapPanel(int columns, int rows, int viewColumns, int viewRows, long seed) {
-		super();
-
-		setFocusable(true);
-		
-		this.viewColumns = viewColumns;
-		this.viewRows = viewRows;
-
-		map = new TileMap(columns, rows, seed);
 		
 		select = map.tileAt(0, 0);
 		
@@ -197,7 +180,7 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
 		
 		// repaint tiles
-		repaint(this.getWidthCenter(), this.getHeightCenter(), viewX + ((viewColumns+1)*AbstractTile.STEP), viewY + ((viewRows+1)*AbstractTile.STEP));
+		repaint(this.getWidthCenter() - 10, this.getHeightCenter() - 10, viewX + ((viewColumns+1)*AbstractTile.STEP), viewY + ((viewRows+1)*AbstractTile.STEP));
 	}
 	
 	public void center(int x, int y) {
@@ -228,7 +211,7 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 				//map.getEntities().get(0).canSee(viewX + x, viewY + y);
 				
 				//if(map.tileAt(viewX + x, viewY + y).isCovered()) {
-				if(map.getEntities().get(0).canSee(viewX + x, viewY + y)) {
+				if(player.canSee(viewX + x, viewY + y)) {
 					map.tileAt(viewX + x, viewY + y).draw(g, this.getWidthCenter() + x*AbstractTile.STEP - 2, getHeightCenter() + y*AbstractTile.STEP - 2);
 				}
 			}

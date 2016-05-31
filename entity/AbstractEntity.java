@@ -86,13 +86,6 @@ public abstract class AbstractEntity {
 	// experience points
 	public short experience = 0;
 	
-	public static final short EXP_SPAWNER = 2;
-	public static final short EXP_TRASH = 5;
-	public static final short EXP_MOOK = 10;
-	public static final short EXP_ELITE_MOOK = 20;
-	public static final short EXP_MINIBOSS = 50;
-	public static final short EXP_BOSS = 100;
-	
 	// the base amount of earned upon defeat
 	public short expWorth;
 	
@@ -414,7 +407,7 @@ public abstract class AbstractEntity {
 		} else {
 			e.hp -= hit_str(e) ? crit_str(e) ? i.getDamage() * 2 + str/2 : i.getDamage() * 2 : 0;
 		}
-		i.onUse(e);
+		i.onThrown(e);
 		e.onBasicAttacked(this);
 	}
 	
@@ -634,11 +627,11 @@ public abstract class AbstractEntity {
 			
 			if(map.tileAt(this.x + xOffset, this.y + yOffset).isOpaque()) {
 				//System.out.println("returning FALSE at i = " + i);
-//				if(allow) {
-//					allow = false;
-//				} else {
+				if(allow) {
+					allow = false;
+				} else {
 					return false;
-//				}
+				}
 			}
 			
 			//map.tileAt(this.x + xOffset, this.y + yOffset).setCovered(true);
@@ -649,6 +642,10 @@ public abstract class AbstractEntity {
 	
 	public boolean canSee(AbstractTile t) {
 		return canSee(t.getX(), t.getY());
+	}
+	
+	public boolean canSee(AbstractEntity e) {
+		return canSee(e.getX(), e.getY());
 	}
 	
 	/**
@@ -672,7 +669,7 @@ public abstract class AbstractEntity {
 			yOffset = (int) (i*Math.sin(theta));
 			
 			if(!map.tileAt(this.x + xOffset, this.y + yOffset).canApproach(this)) {
-				System.out.println("returning FALSE at i = " + i);
+				//System.out.println("returning FALSE at i = " + i);
 				return false;
 			}
 			
@@ -1116,10 +1113,16 @@ public abstract class AbstractEntity {
 	public void randomTeleport() {
 		map.tileAt(x, y).setOccupant(null);
 		
+		boolean temp = ignore;
+		
+		ignore = false;
+		
 		while(!map.tileAt(x, y).canEnter(this)) {
 			x = rng.nextInt(map.length());
 			y = rng.nextInt(map.height());
 		}
+		
+		ignore = temp;
 		
 		map.tileAt(x, y).setOccupant(this);
 	}

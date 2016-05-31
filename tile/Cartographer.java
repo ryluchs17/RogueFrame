@@ -70,7 +70,7 @@ public class Cartographer {
 		
 		for(int y = 0; y < array[0].length; y++) {
 			for(int x = 0; x < array.length; x++) {
-				map[x][y] = array[x][y] ? new DefWall(x, y) : new Soil(x, y);
+				map[x][y] = array[x][y] ? new StoneWall(x, y) : new Soil(x, y);
 			}
 		}
 		

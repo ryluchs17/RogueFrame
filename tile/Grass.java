@@ -1,6 +1,3 @@
-/**
- * 
- */
 package tile;
 
 import java.awt.Color;
@@ -8,44 +5,34 @@ import java.awt.Color;
 import entity.AbstractEntity;
 
 /**
- * A basic flooring tile for RogueFrame
+ * An outdoors type floor tile for RogueFrame
  * @author Ryan Luchs
  *
  */
-public class StoneFloor extends AbstractTile {
+public class Grass extends AbstractTile {
 
+	private static final Color GRASS_FOREGROUND = new Color(100, 50, 0);
+	
 	/**
 	 * Creates an new instance at (x, y) on the map
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
 	 */
-	public StoneFloor(int x, int y) {
+	public Grass(int x, int y) {
 		super(x, y);
 		
-		character = ".";
-		foreground = Color.WHITE;
-		background = Color.BLACK;
+		character = "-";
+		foreground = GRASS_FOREGROUND;
+		background = Color.GREEN;
 		
 		passable = true;
 		
-		name = "Stone Floor";
-		description = "Rough on the feet";
+		name = "Grass";
+		description = "Natural carpeting";
 	}
 
-	/* (non-Javadoc)
-	 * @see tile.AbstractTile#onInteraction(entity.AbstractEntity)
-	 */
 	@Override
 	public void onInteraction(AbstractEntity e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see tile.AbstractTile#onTurn()
-	 */
-	@Override
-	public void onTurn() {
 		// TODO Auto-generated method stub
 
 	}
@@ -53,13 +40,19 @@ public class StoneFloor extends AbstractTile {
 	@Override
 	public void onEntry() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onExit() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void onTurn() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

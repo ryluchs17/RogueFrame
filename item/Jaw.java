@@ -9,23 +9,26 @@ import entity.AbstractEntity;
 import tile.AbstractTile;
 
 /**
- * @author SJHSStudent
+ * A crushing weapon for strong jawed enemies
+ * @author Ryan Luchs
  *
  */
-public class Widget extends AbstractItem {
+public class Jaw extends AbstractItem {
 
-	/**
-	 * 
-	 */
-	public Widget() {
+	public Jaw() {
 		
-		this.character = CHAR_MISC;
+		this.character = "}";
 		this.color = Color.WHITE;
 		
-		this.name = "Widget";
-		this.description = "TEST ITEM!";
+		this.name = "Jaw";
+		this.description = "Powerful crushing jaws";
 		
-		this.stackable = true;
+		this.stackable = false;
+		
+		this.damage = 24;
+		this.hit = 60;
+		this.crit = 15;
+		this.magical = false;
 	}
 
 	/* (non-Javadoc)
@@ -33,7 +36,7 @@ public class Widget extends AbstractItem {
 	 */
 	@Override
 	public void onUse(AbstractEntity m) {
-		// TODO Auto-generated method stub
+		improve();
 
 	}
 

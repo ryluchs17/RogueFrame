@@ -42,7 +42,7 @@ public class BlockedSlot extends AbstractItem {
 	 * @see item.AbstractItem#onThrown(tile.AbstractTile)
 	 */
 	@Override
-	public void onThrown(AbstractTile t) {
+	public void onThrown(AbstractEntity e) {
 		// TODO Auto-generated method stub
 
 	}

@@ -34,7 +34,7 @@ public abstract class AbstractItem {
 	protected boolean stackable;
 	
 	// determines whether the item can be unequipt
-	protected boolean cursed = false;
+	public boolean cursed = false;
 	
 	// determines whether cursed status is shown on details screen
 	public boolean curseIsKnown = false; //TODO
@@ -64,9 +64,7 @@ public abstract class AbstractItem {
 	protected int crit;
 	
 	// weapon proficiency
-	protected float proficiency = 0.5F;
-	
-	protected float max_proficiency = 1.5F;
+	protected float proficiency = 0.25F;
 	
 	// whether the item does physical or magical damage when wielded as weapon
 	protected boolean magical;
@@ -90,7 +88,7 @@ public abstract class AbstractItem {
 	/**
 	 * What happens when the item is throw
 	 */
-	abstract public void onThrown(AbstractTile t);
+	abstract public void onThrown(AbstractEntity e);
 	
 	/**
 	 * What happens to an entity that equips this item
@@ -195,7 +193,7 @@ public abstract class AbstractItem {
 	}
 	
 	public void improve() {
-		if(proficiency < max_proficiency) proficiency += 0.01;
+		if(proficiency < 1) proficiency += 0.0025;
 	}
 	
 	public Object clone() {

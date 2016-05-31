@@ -326,4 +326,8 @@ public abstract class AbstractTile {
 		
 		return (!this.isOccupied()) && this.isPassable() && (e.ignore ? true : !avoid);
 	}
+
+	public String getName() {
+		return name;
+	}
 }

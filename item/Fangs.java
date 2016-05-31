@@ -9,19 +9,18 @@ import entity.AbstractEntity;
 import tile.AbstractTile;
 
 /**
- * @author ryan
+ * A weak piercing weapon for enemies
+ * @author Ryan Luchs
  *
  */
 public class Fangs extends AbstractItem {
-
-	private static final String CHAR_FANGS = "\"";
 	
 	/**
 	 * 
 	 */
 	public Fangs() {
 		
-		this.character = CHAR_FANGS;
+		this.character = "\"";
 		this.color = Color.WHITE;
 		
 		this.name = "Fangs";
@@ -29,12 +28,10 @@ public class Fangs extends AbstractItem {
 		
 		this.stackable = false;
 		
-		this.damage = 4;
+		this.damage = 12;
 		this.hit = 70;
 		this.crit = 5;
 		this.magical = false;
-		
-		this.max_proficiency = 2;
 	}
 
 	/* (non-Javadoc)
@@ -42,7 +39,7 @@ public class Fangs extends AbstractItem {
 	 */
 	@Override
 	public void onUse(AbstractEntity m) {
-		this.improve();
+		improve();
 		
 	}
 
@@ -50,7 +47,7 @@ public class Fangs extends AbstractItem {
 	 * @see item.AbstractItem#onThrown(tile.AbstractTile)
 	 */
 	@Override
-	public void onThrown(AbstractTile t) {
+	public void onThrown(AbstractEntity e) {
 		// TODO Auto-generated method stub
 
 	}

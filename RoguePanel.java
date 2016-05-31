@@ -24,7 +24,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 	//private MapPanel map = new MapPanel(length, height, 18, 12, 420L);
 	//private MapPanel map = new MapPanel(20, 20, 15, 15, 420L);
 	//private MapPanel map = new MapPanel(100, 100, 40, 40, 420L);
-	private MapPanel map = new MapPanel(length, height, 35, 30);
+	private MapPanel map;
 	//private MapPanel map = new MapPanel(length, height, 35, 35);
 	//private MapPanel map = new MapPanel(length, height, 35, 35, 42L);
 //	private InfoBar hpBar = new InfoBar("Health", 100, 50, 100);
@@ -46,15 +46,13 @@ public class RoguePanel extends JPanel implements KeyListener{
 		
 		setLayout(new BorderLayout());
 		setBackground(Color.BLACK);
+
+		generateWorld();
 		
-		map.setBackground(Color.BLACK);
-		map.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		map.setView(5, 5);
+		map = new MapPanel(levels[depth], player, 35, 30);
+		map.center(player.getX(), player.getY());
+		
 		add(map, BorderLayout.CENTER);
-		
-		player = new Player(0, 0, 20, map.getMap());
-		player.randomTeleport();
-		map.getMap().getEntities().add(0, player);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
@@ -103,34 +101,56 @@ public class RoguePanel extends JPanel implements KeyListener{
 		}
 		
 		levels = new TileMap[seeds.length];
-		levels[depth] = new TileMap(length + generate.nextInt(20), height + generate.nextInt(20), depth, 1, (short) generate.nextInt(5), seeds[depth]);
+		levels[depth] = new TileMap(length/* + generate.nextInt(20)*/, height/* + generate.nextInt(20)*/, depth, 1, (short) generate.nextInt(5), seeds[depth]);
 		
 		player = new Player(0, 0, 1, levels[depth]);
 		player.randomTeleport();
 		levels[depth].getEntities().add(0, player);
+		levels[depth].player = player;
 	}
 	
 	public void descend() {
-		if(levels[depth + 1] != null) {
-			player.setMap(levels[depth + 1]);
-			player.randomTeleport();
-		} else {
-			if(depth + 1 == levels.length - 1) {
-				levels[depth + 1] = new TileMap(40, 40, depth, player.getLevel(), (short) 5 , seeds[depth + 1]);
-			} else {
-				levels[depth + 1] = new TileMap(length + generate.nextInt(20), height + generate.nextInt(20), depth, player.getLevel(), (short) generate.nextInt(5), seeds[depth + 1]);
+		if(depth + 1 < levels.length) {
+			if(levels[depth + 1] == null) {
+				if(depth + 1 == levels.length - 1) {
+					levels[depth + 1] = new TileMap(40, 40, depth, player.getLevel(), (short) 5 , seeds[depth + 1]);
+				} else {
+					levels[depth + 1] = new TileMap(40, 40, depth, player.getLevel(), (short) generate.nextInt(5), seeds[depth + 1]);
+				}
 			}
 			
-			player.setMap(levels[depth + 1]);
+			levels[depth].getEntities().remove(player);
+			levels[depth].player = null;
+			
+			++depth;
+			
+			levels[depth].player = player;
+			
+			player.setMap(levels[depth]);
 			player.randomTeleport();
+			levels[depth].getEntities().add(0, player);
+			
+			map.setMap(levels[depth]);
+			map.center(player.getX(), player.getY());
 		}
-		
-		depth++;
 	}
 	
 	public void ascend() {
-		player.setMap(levels[depth - 1]);
-		depth--;
+		if(depth > 0) {
+			levels[depth].getEntities().remove(player);
+			levels[depth].player = null;
+			
+			--depth;
+			
+			levels[depth].player = player;
+			
+			player.setMap(levels[depth]);
+			player.randomTeleport();
+			levels[depth].getEntities().add(0, player);
+			
+			map.setMap(levels[depth]);
+			map.center(player.getX(), player.getY());
+		}
 	}
 
 	@Override

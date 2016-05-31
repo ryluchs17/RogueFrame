@@ -8,30 +8,31 @@ import java.awt.Color;
 import entity.AbstractEntity;
 
 /**
- * A basic wall tile for RogueFrame
+ * A vision obscuring passable tile for RogueFrame
  * @author Ryan Luchs
  *
  */
-public class StoneWall extends AbstractTile {
+public class Bush extends AbstractTile {
 
+	private static final Color BUSH_BROWN = new Color(84, 55, 8);
+	
 	/**
 	 * Creates an new instance at (x, y) on the map
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
 	 */
-	public StoneWall(int x, int y) {
+	public Bush(int x, int y) {
 		super(x, y);
-
+		
 		character = "#";
-		foreground = Color.WHITE;
-		background = Color.BLACK; //new Color(128, 0, 0);
+		foreground = Color.GREEN;
+		background = BUSH_BROWN;
 		
-		passable = false;
-		
+		passable = true;
 		opaque = true;
 		
-		name = "Stone Wall";
-		description = "Rough hewn stone";
+		name = "Bush";
+		description = "Watch out for ticks...";
 	}
 
 	/* (non-Javadoc)
@@ -44,24 +45,30 @@ public class StoneWall extends AbstractTile {
 	}
 
 	/* (non-Javadoc)
+	 * @see tile.AbstractTile#onEntry()
+	 */
+	@Override
+	public void onEntry() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see tile.AbstractTile#onExit()
+	 */
+	@Override
+	public void onExit() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
 	 * @see tile.AbstractTile#onTurn()
 	 */
 	@Override
 	public void onTurn() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void onEntry() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onExit() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

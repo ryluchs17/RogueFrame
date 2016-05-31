@@ -8,18 +8,20 @@ import java.awt.Color;
 import entity.AbstractEntity;
 
 /**
- * A basic flooring tile for RogueFrame
+ * A trap for stone flooring for RogueFrame
  * @author Ryan Luchs
  *
  */
-public class StoneFloor extends AbstractTile {
+public class Trap extends AbstractTile {
+	
+	private boolean tripped = false;
 
 	/**
 	 * Creates an new instance at (x, y) on the map
 	 * @param x The x-coordinate
 	 * @param y The y-coordinate
 	 */
-	public StoneFloor(int x, int y) {
+	public Trap(int x, int y) {
 		super(x, y);
 		
 		character = ".";
@@ -42,24 +44,39 @@ public class StoneFloor extends AbstractTile {
 	}
 
 	/* (non-Javadoc)
+	 * @see tile.AbstractTile#onEntry()
+	 */
+	@Override
+	public void onEntry() {
+		if(!tripped && occupant.grounded) {
+			occupant.hp -= occupant.getHealthCap()/3;
+			
+			character = "X";
+			
+			name = "Trap";
+			description = "That smarts...";
+			
+			tripped = true;
+		}
+
+	}
+
+	/* (non-Javadoc)
+	 * @see tile.AbstractTile#onExit()
+	 */
+	@Override
+	public void onExit() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
 	 * @see tile.AbstractTile#onTurn()
 	 */
 	@Override
 	public void onTurn() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void onEntry() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onExit() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
