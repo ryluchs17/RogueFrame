@@ -54,56 +54,53 @@ public class StatusPanel extends JPanel {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		if(owner == null) {
+		if(owner != null) {
+			g2d.setFont(MapPanel.font);
+			
+			owner.draw(g, 0, (int) (AbstractTile.STEP * 0.25));
+			
 			g2d.setColor(Color.WHITE);
-			g2d.drawString("empty", 0, AbstractTile.STEP);
-		} else {
-		g2d.setFont(MapPanel.font);
-		
-		owner.draw(g, 0, (int) (AbstractTile.STEP * 0.25));
-		
-		g2d.setColor(Color.WHITE);
-		
-		g2d.drawString(owner.getName(), AbstractTile.STEP, AbstractTile.STEP);
-		
-		g2d.drawString("LVL: " + owner.getLevel() + " " + owner.experience + "/100", 0, AbstractTile.STEP * 6);
-		
-		g2d.setColor(Color.GREEN);
-		
-		g2d.fillRect(0, AbstractTile.STEP * 2, (owner.hp * LENGTH * AbstractTile.STEP)/(owner.getHealthCap()), AbstractTile.STEP);
-		if(owner.hp < previousHP) {
-			g2d.setColor(Color.RED);
-			g2d.fillRect((owner.hp * LENGTH * AbstractTile.STEP)/(owner.getHealthCap()), AbstractTile.STEP * 2, ((previousHP - owner.hp) * LENGTH * AbstractTile.STEP)/(owner.getHealthCap()), AbstractTile.STEP);
-		}
-		
-		g2d.setColor(Color.YELLOW);
-		
-		g2d.fillRect(0, AbstractTile.STEP * 4, (owner.experience * LENGTH * AbstractTile.STEP)/100, AbstractTile.STEP);
-		
-		g2d.setColor(Color.WHITE);
-		
-		g2d.drawString("HP : " + (owner.hp > 0 ? owner.hp : 0) + "/" + owner.getHealthCap(), 0, AbstractTile.STEP * 4);
-		g2d.drawString("STR: " + owner.str, 0, AbstractTile.STEP * 7);
-		g2d.drawString("DEF: " + owner.def, 0, AbstractTile.STEP * 8);
-		g2d.drawString("MAG: " + owner.mag, 0, AbstractTile.STEP * 9);
-		g2d.drawString("RES: " + owner.res, 0, AbstractTile.STEP * 10);
-		g2d.drawString("SKL: " + owner.skl, 0, AbstractTile.STEP * 11);
-		g2d.drawString("SPD: " + owner.spd, 0, AbstractTile.STEP * 12);
-		
-		if(owner.getInventory().hasEquipt()) {
-			g2d.drawString(((owner.getInventory().get(0).isMagical() ? owner.mag : owner.str) + owner.skl + owner.getInventory().get(0).getHit()) + "% hit", 0, AbstractTile.STEP * 13);
-			g2d.drawString(((owner.getInventory().get(0).isMagical() ? owner.mag : owner.str) + owner.getInventory().get(0).getCrit()) + "% crit", 0, AbstractTile.STEP * 14);
-			g2d.drawString((owner.getInventory().get(0).getDamage() + (owner.getInventory().get(0).isMagical() ? owner.mag/2 : owner.str/2)) + " crit damage", 0, AbstractTile.STEP * 16);
-		} else {
-			g2d.drawString((owner.skl + owner.str) + "% hit", 0, AbstractTile.STEP * 13);
-			g2d.drawString(owner.str + "% crit", 0, AbstractTile.STEP * 14);
-			g2d.drawString((owner.dam_str + owner.str/2) + " crit damage", 0, AbstractTile.STEP * 16);
-		}
-		
-		g2d.drawString((owner.spd + owner.def) + "|" + (owner.spd + owner.mag) + "% dodge", 0, AbstractTile.STEP * 15);
-//		g2d.drawString((owner.spd + owner.mag) + "% avoid mag", 0, AbstractTile.STEP * 13);
-		
-		previousHP = owner.hp;
+			
+			g2d.drawString(owner.getName(), AbstractTile.STEP, AbstractTile.STEP);
+			
+			g2d.drawString("LVL: " + owner.getLevel() + " " + owner.experience + "/100", 0, AbstractTile.STEP * 6);
+			
+			g2d.setColor(Color.GREEN);
+			
+			g2d.fillRect(0, AbstractTile.STEP * 2, (owner.hp * LENGTH * AbstractTile.STEP)/(owner.getHealthCap()), AbstractTile.STEP);
+			if(owner.hp < previousHP) {
+				g2d.setColor(Color.RED);
+				g2d.fillRect((owner.hp * LENGTH * AbstractTile.STEP)/(owner.getHealthCap()), AbstractTile.STEP * 2, ((previousHP - owner.hp) * LENGTH * AbstractTile.STEP)/(owner.getHealthCap()), AbstractTile.STEP);
+			}
+			
+			g2d.setColor(Color.YELLOW);
+			
+			g2d.fillRect(0, AbstractTile.STEP * 4, (owner.experience * LENGTH * AbstractTile.STEP)/100, AbstractTile.STEP);
+			
+			g2d.setColor(Color.WHITE);
+			
+			g2d.drawString("HP : " + (owner.hp > 0 ? owner.hp : 0) + "/" + owner.getHealthCap(), 0, AbstractTile.STEP * 4);
+			g2d.drawString("STR: " + owner.str, 0, AbstractTile.STEP * 7);
+			g2d.drawString("DEF: " + owner.def, 0, AbstractTile.STEP * 8);
+			g2d.drawString("MAG: " + owner.mag, 0, AbstractTile.STEP * 9);
+			g2d.drawString("RES: " + owner.res, 0, AbstractTile.STEP * 10);
+			g2d.drawString("SKL: " + owner.skl, 0, AbstractTile.STEP * 11);
+			g2d.drawString("SPD: " + owner.spd, 0, AbstractTile.STEP * 12);
+			
+			if(owner.getInventory().hasEquipt()) {
+				g2d.drawString(((owner.getInventory().get(0).isMagical() ? owner.mag : owner.str) + owner.skl + owner.getInventory().get(0).getHit()) + "% hit", 0, AbstractTile.STEP * 13);
+				g2d.drawString(((owner.getInventory().get(0).isMagical() ? owner.mag : owner.str) + owner.getInventory().get(0).getCrit()) + "% crit", 0, AbstractTile.STEP * 14);
+				g2d.drawString((owner.getInventory().get(0).getDamage() + (owner.getInventory().get(0).isMagical() ? owner.mag/2 : owner.str/2)) + " crit damage", 0, AbstractTile.STEP * 16);
+			} else {
+				g2d.drawString((owner.skl + owner.str) + "% hit", 0, AbstractTile.STEP * 13);
+				g2d.drawString(owner.str + "% crit", 0, AbstractTile.STEP * 14);
+				g2d.drawString((owner.dam_str + owner.str/2) + " crit damage", 0, AbstractTile.STEP * 16);
+			}
+			
+			g2d.drawString((owner.spd + owner.def) + "|" + (owner.spd + owner.mag) + "% dodge", 0, AbstractTile.STEP * 15);
+	//		g2d.drawString((owner.spd + owner.mag) + "% avoid mag", 0, AbstractTile.STEP * 13);
+			
+			previousHP = owner.hp;
 		}
 	}
 	

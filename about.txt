@@ -1,0 +1,137 @@
+Copyright 2016, Ryan Luchs, All rights reserved
+Version 1.0
+
+You suddenly find yourself flung through strange
+beautiful and hostile lands. Explore them until
+the game crashes~~~
+
+The last level is unique. Slightly.
+
+A work in progress.
+
+NOTES
+
+For those unfamiliar to RougeLikes, you're the
+red @
+
+If you die just re-run the program, at least
+until I get the whole thing running more
+smoothly.
+
+CONTROLS
+
+ y  k  u
+  \ | /
+h - . - l
+  / | \
+ b  j  n
+
+-Cardinal Directions-
+
+NORTH: k
+SOUTH: j
+EAST : l
+WEST : h
+
+-Secondary Directions-
+
+NORTHEAST: u
+NORTHWEST: y
+SOUTHEAST: n
+SOUTHWEST: b
+
+-Other-
+
+WAIT: . or spacebar
+
+PREVIOUS LEVEL: z
+NEXT LEVEL    : x
+
+REDRAW SCREEN : r
+
+*NOTE: To attack an enemy, walk into them.*
+
+-Inventory-
+
+The inventory is mostly mouse operated
+For now...
+
+*NOTE: the bottom most slot represents the
+contents of the ground space beneath your
+charater"
+
+SELECT: left click on an item
+SWAP  : left click, drag to new slot, release
+
+EQUIP : left click the small "Eq" button to
+toggle equip, you must equip an item to
+attack with it. If the "Eq" turns magenta,
+the item is cursed and cannot be unequipped
+
+DETAILS: select an item and click "Details"
+left click on the details screen to exit it
+
+USE: use the selected item
+
+THROW/CAST: select an square on the map,
+select and item, and click Throw/Cast.
+
+The item will be thrown at that space,
+damageing any enemies in that square
+
+Cursed items and items in the top inventory
+slot cannot be thrown.
+
+*NOTE: time passes when you throw or use an item*
+
+STATISTICS
+
+-Player Stats-
+
+There are 8 stats
+
+HP: When this reaches 0 you die
+
+LVL: Increases the amount of HP you regain each
+turn, amoung other things
+
+STR: Increases hit and critical hit rates
+for non-magical attacks
+
+DEF: Decreases enemy hit and critical hit rates
+for non-magical attacks
+
+MAG: Increases hit and critical hit rates
+for magical attacks
+
+RES: Decreases enemy hit and critical hit rates
+for magical attacks
+
+SKL: Increases hit rate
+
+SPD: Decreases enemy hit rate
+
+-Weapon Stats-
+
+Damage: The amount of HP one losses when hit by
+this weapon.
+
+*NOTE: Throwing/Casting does damage x 2*
+
+Magical/Non-Magical: Whether this item uses
+MAG or STR when attacking
+
+Hit: The percent (%) chance of hitting an enemy 
+with an attack. Misses do no damage.
+
+Crit: The percent (%) chance an attack will be a
+"Critical Hit", which does
+damage + (STR or MAG)/2 damage to an enemy
+
+TECHNICAL
+
+hit rate = (hit + SKL + STR|MAG) - (enemy SPD + enemy DEF|RES)
+crit rate = (crit + STR|MAG) - (enemy DEF|RES)
+
+regen rate:
+if(total turns % REGEN_CONSTANT == 0) MAX HP += (MAX HP/20) + 1

@@ -18,6 +18,7 @@ public class RogueFrame extends JFrame implements KeyListener, ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	RoguePanel game;
+	HelpFrame help;
 	
 	/**
 	 * RogueFrame constructor
@@ -25,8 +26,12 @@ public class RogueFrame extends JFrame implements KeyListener, ActionListener {
 	public RogueFrame() {
 		super("Rogue Fr@me");
 		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 		game = new RoguePanel();
 		add(game);
+		
+		help = new HelpFrame();
 		
 		this.addKeyListener(this);
 		
@@ -44,6 +49,29 @@ public class RogueFrame extends JFrame implements KeyListener, ActionListener {
         
         menuItem = new JMenuItem("New");
         menuItem.setActionCommand("new game");
+        menuItem.setForeground(Color.WHITE);
+        menuItem.setBackground(Color.BLACK);
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        
+       // menu.addSeparator();
+        
+        menuItem = new JMenuItem("Exit");
+        menuItem.setActionCommand("exit");
+        menuItem.setForeground(Color.WHITE);
+        menuItem.setBackground(Color.BLACK);
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        
+        menuBar.add(menu);
+        
+        menuBar.add( Box.createHorizontalGlue() );
+        
+        menu = new JMenu("Help");
+        menu.setForeground(Color.WHITE);
+        
+        menuItem = new JMenuItem("About");
+        menuItem.setActionCommand("help");
         menuItem.setForeground(Color.WHITE);
         menuItem.setBackground(Color.BLACK);
         menuItem.addActionListener(this);
@@ -91,8 +119,14 @@ public class RogueFrame extends JFrame implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case "new game":
-				//game.newGame();
-				JOptionPane.showMessageDialog(this, "This feature is currently unsupported. Sorry.");
+				game.newGame();
+				//JOptionPane.showMessageDialog(this, "This feature is currently unsupported. Sorry.");
+				break;
+			case "exit":
+				System.exit(0);
+				break;
+			case "help":
+				help.setVisible(true);
 				break;
 			default:
 				break;

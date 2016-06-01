@@ -87,6 +87,16 @@ public class RoguePanel extends JPanel implements KeyListener{
 	}
 	
 	/**
+	 * Makes a new player
+	 */
+	public void newGame() {
+		player.hp = player.getHealthCap();
+		levels[depth].getEntities().add(0, player);
+		player.randomTeleport();
+		map.rounds(1);
+	}
+	
+	/**
 	 * Generates a new set of levels
 	 */
 	public void generateWorld() {
@@ -233,6 +243,9 @@ public class RoguePanel extends JPanel implements KeyListener{
 				break;
 			case KeyEvent.VK_SPACE:
 				map.rounds(1);
+				break;
+			case KeyEvent.VK_R:
+				repaint();
 				break;
 			default:
 				break;

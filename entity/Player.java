@@ -43,7 +43,7 @@ public class Player extends AbstractEntity {
 		inventory.set(2, new Flame());
 		inventory.equip();
 		
-		hp_cap = 20;
+		hp_cap = 16;
 		str_cap = 6;
 		def_cap = 6;
 		mag_cap = 6;

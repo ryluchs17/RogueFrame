@@ -15,7 +15,7 @@ import java.util.Random;
  *
  */
 
-public class MapPanel extends JPanel implements MouseMotionListener {
+public class MapPanel extends JPanel implements MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -73,6 +73,7 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 		select = map.tileAt(0, 0);
 		
 		this.addMouseMotionListener(this);
+		this.addMouseListener(this);
 	}
 	
 	/**
@@ -276,18 +277,49 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+//		this.repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
+//		mouse = e.getPoint();
+//		this.repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
+//		//repaint();
+		
+//		repaint(0, 0, this.getWidth(), 20);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
 		this.repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
 		mouse = e.getPoint();
 		this.repaint(mouse.x, mouse.y, mouse.x + select.getTooltipLength(), select.getTooltipHeight());
-		//repaint();
 		
-//		repaint(0, 0, this.getWidth(), 20);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

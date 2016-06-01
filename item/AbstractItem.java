@@ -141,6 +141,11 @@ public abstract class AbstractItem {
 		g2d.setColor(Color.WHITE);
 		g2d.drawString( curseIsKnown && cursed ? "Cursed" + name : name, x + AbstractTile.STEP, y + AbstractTile.STEP);
 		g2d.drawString(description, x, y + (AbstractTile.STEP + 2) * 2);
+		
+		g2d.setColor(Color.GRAY);
+		g2d.drawString(magical ? "Magical" : "Non-magical", x, y + (AbstractTile.STEP + 2) * 3);
+		
+		g2d.setColor(Color.WHITE);
 		g2d.drawString((int) (damage * proficiency) + " damage" , x, y + (AbstractTile.STEP + 2) * 4);
 		g2d.drawString(hit + "%" + " hit", x, y + (AbstractTile.STEP + 2) * 5);
 		g2d.drawString(crit + "%" + " crit", x, y + (AbstractTile.STEP + 2) * 6);
