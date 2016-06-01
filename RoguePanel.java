@@ -100,7 +100,7 @@ public class RoguePanel extends JPanel implements KeyListener{
 	 * Generates a new set of levels
 	 */
 	public void generateWorld() {
-		seeds = new long[generate.nextInt(15) + 10];
+		seeds = new long[5 + generate.nextInt(5)];
 		for(int i = 0; i < seeds.length - 1; i++) {
 			seeds[i] = generate.nextLong();
 		}

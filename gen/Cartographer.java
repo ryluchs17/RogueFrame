@@ -117,6 +117,8 @@ public class Cartographer {
 		
 		shorts = ShortFunc.addScatterLayer(Const.SNARE, Const.GRASS, shorts, 5);
 		
+		shorts = ShortFunc.addCellLayer(Const.DEEP_WATER, Const.WATER, shorts, 20);
+		
 		return ShortFunc.mapFromShortArray(shorts);
 	}
 	

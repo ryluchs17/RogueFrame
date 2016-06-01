@@ -26,7 +26,7 @@ public class Magma extends AbstractTile {
 		avoid = true;
 		
 		name = "Magma";
-		description = "Don't touch the floor.";
+		description = "Instant death";
 	}
 
 	/* (non-Javadoc)
@@ -61,8 +61,6 @@ public class Magma extends AbstractTile {
 	public void onEntry() {
 		if(occupant.grounded) {
 			occupant.kill();;
-		} else {
-			occupant.hp -= 10;
 		}
 	}
 

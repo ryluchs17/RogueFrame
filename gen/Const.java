@@ -33,7 +33,7 @@ public final class Const {
 	public static final short BUSH = 9;
 	public static final short OBSIDIAN = 10;
 	public static final short SNARE = 11;
-	public static final short SAND = 12;
+	public static final short DEEP_WATER = 12;
 	
 	
 //	// defaults
@@ -118,6 +118,10 @@ public final class Const {
 				
 			case SNARE:
 				tile = new Snare(x, y);
+				break;
+				
+			case DEEP_WATER:
+				tile = new DeepWater(x, y);
 				break;
 			
 			default:
